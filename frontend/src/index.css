@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ───────────────────────────────────────────────────────── */
+:root {
+  --paper: #E0D8C1;
+  --digital-white: #F7F5EE;
+  --ink: #232A2A;
+  --black: #000000;
+  --orange: #F19020;
+  --signal: #E54A25;
+  --panel: #1F2525;
+  --panel-fg: #F7F5EE;
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: "Figtree", system-ui, sans-serif;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.container-page {
+  @apply mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8;
+}
+
+.section-pad {
+  @apply py-16 lg:py-24;
+}
+
+/* ── Typography ──────────────────────────────────────────────────────────── */
+.font-display {
+  font-family: "Rajdhani", system-ui, sans-serif;
+}
+
+.font-editorial {
+  font-family: "Figtree", system-ui, sans-serif;
+}
+
+.font-mono-sys {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+.sys-chip {
+  @apply font-display text-[11px] font-semibold uppercase tracking-[0.18em];
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.btn-orange {
+  @apply inline-flex items-center gap-2 rounded-full bg-[#F19020] px-5 py-2.5 font-display text-[13.5px] font-semibold uppercase tracking-[0.12em] text-[#232A2A] transition-all hover:bg-[#E0841A] active:scale-95;
+}
+
+.btn-ink {
+  @apply inline-flex items-center gap-2 rounded-full bg-[#232A2A] px-5 py-2.5 font-display text-[13.5px] font-semibold uppercase tracking-[0.12em] text-[#F7F5EE] transition-all hover:bg-[#1a1f1f] active:scale-95;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center gap-2 rounded-full border border-[#232A2A]/30 px-5 py-2.5 font-display text-[13.5px] font-semibold uppercase tracking-[0.12em] text-[#232A2A] transition-all hover:border-[#232A2A] active:scale-95;
+  background-color: transparent;
+}
+.btn-ghost:hover {
+  background-color: rgba(35, 42, 42, 0.06);
+}
+
+/* ── Orange route system ─────────────────────────────────────────────────── */
+.nav-route-bar {
+  @apply absolute bottom-0 h-[3px] rounded-t-full bg-[#F19020] transition-all duration-300;
+  position: absolute;
+}
+
+/* ── Link underline draw animation ──────────────────────────────────────── */
+.link-draw {
+  @apply relative inline-block;
+}
+.link-draw::after {
+  content: "";
+  @apply absolute bottom-0 left-0 h-[1.5px] w-0 bg-[#F19020] transition-all duration-300;
+}
+.link-draw:hover::after {
+  @apply w-full;
+}
+
+/* ── Highlight marker ────────────────────────────────────────────────────── */
+.hl-marker {
+  background: linear-gradient(transparent 60%, rgba(241, 144, 32, 0.35) 60%);
+}
+
+/* ── Reveal animation ────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── Diagonal background accent ─────────────────────────────────────────── */
+.diagonal-accent {
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+/* ── Section band helpers ────────────────────────────────────────────────── */
+.band-ink {
+  @apply bg-[#232A2A] text-[#F7F5EE];
+}
+
+.band-paper {
+  @apply bg-[#E0D8C1] text-[#232A2A];
+}
+
+.band-black {
+  @apply bg-[#000000] text-[#F7F5EE];
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--paper);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink);
+  border-radius: 3px;
+}
+
+/* ── Marquee (ProofStrip) ────────────────────────────────────────────────── */
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee-left {
+  animation: marquee-left 28s linear infinite;
+}
+
+/* ── Focus ring ──────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}

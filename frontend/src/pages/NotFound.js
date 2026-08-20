@@ -1,0 +1,23 @@
+import React from "react";
+import { Seo } from "@/components/Seo";
+import { MagneticButton } from "@/components/MagneticButton";
+import { RouteLine } from "@/components/RouteLine";
+
+export default function NotFound() {
+  return (
+    <div className="relative flex min-h-[86vh] flex-col items-center justify-center px-4 pt-[68px] text-center" data-testid="not-found-page">
+      <Seo title="404 — Not in the Roadmap — Hi Anzy" description="This page does not exist. The rest of the system does." />
+      <RouteLine d="M0,50 C 25,10 50,90 75,30 C 88,5 95,60 100,40" viewBox="0 0 100 100" strokeWidth={1.4} className="pointer-events-none absolute inset-x-0 top-1/3 h-40 w-full opacity-40" start="top 100%" end="top 40%" />
+      <p className="sys-chip text-[#E54A25]">ERROR 404 / UNPLANNED</p>
+      <h1 className="font-display mt-4 max-w-3xl leading-[0.9] text-[#232A2A] text-6xl sm:text-7xl lg:text-8xl" data-testid="not-found-headline">
+        Well. This clearly wasn&rsquo;t in the roadmap.
+      </h1>
+      <p className="font-mono-sys mt-5 max-w-md text-[12px] leading-relaxed text-[#232A2A]/60">
+        // The page you wanted either moved, never existed, or is being quietly retired without a funeral.
+      </p>
+      <MagneticButton to="/" className="btn-ink mt-9" testId="not-found-home-button">
+        Take me somewhere useful
+      </MagneticButton>
+    </div>
+  );
+}

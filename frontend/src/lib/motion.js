@@ -1,0 +1,110 @@
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
+
+gsap.registerPlugin(ScrollTrigger);
+
+export { gsap, ScrollTrigger };
+
+export const prefersReducedMotion = () =>
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+export const useReducedMotion = () => {
+  const [reduced, setReduced] = useState(prefersReducedMotion());
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const fn = () => setReduced(mq.matches);
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
+  }, []);
+  return reduced;
+};
+
+export const webglAvailable = () => {
+  try {
+    const c = document.createElement("canvas");
+    return !!(c.getContext("webgl2") || c.getContext("webgl"));
+  } catch (e) {
+    return false;
+  }
+};
+
+/** Smooth scrolling via Lenis, synced with ScrollTrigger. Disabled for reduced motion. */
+export const LenisProvider = ({ children }) => {
+  useEffect(() => {
+    if (prefersReducedMotion()) return undefined;
+    const lenis = new Lenis({ lerp: 0.12, smoothWheel: true });
+    window.__lenis = lenis;
+    lenis.on("scroll", ScrollTrigger.update);
+    const raf = (time) => lenis.raf(time * 1000);
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
+    return () => {
+      gsap.ticker.remove(raf);
+      lenis.destroy();
+      window.__lenis = null;
+    };
+  }, []);
+  return children;
+};
+
+/** Scroll restoration + ScrollTrigger refresh on route change. */
+export const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true });
+    window.scrollTo(0, 0);
+    const t = setTimeout(() => ScrollTrigger.refresh(), 250);
+    return () => clearTimeout(t);
+  }, [pathname]);
+  return null;
+};
+
+/** Intersection reveal hook — adds .is-visible when in view. */
+export const useRevealObserver = () => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+    if (prefersReducedMotion()) {
+      const showAll = () => el.querySelectorAll(".reveal:not(.is-visible)").forEach((n) => n.classList.add("is-visible"));
+      showAll();
+      // Async-rendered content (fetched cases, portfolio, etc.) must also be shown.
+      const mo = new MutationObserver(showAll);
+      mo.observe(el, { childList: true, subtree: true });
+      return () => mo.disconnect();
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    const observeAll = () => el.querySelectorAll(".reveal:not(.is-visible)").forEach((n) => io.observe(n));
+    observeAll();
+    // Watch for async-rendered .reveal nodes (fetched case studies, portfolio wall, …)
+    // — without this they are never observed and stay hidden at opacity 0.
+    const mo = new MutationObserver(observeAll);
+    mo.observe(el, { childList: true, subtree: true });
+    // Safety net: content must never stay hidden if the observer misbehaves.
+    const failsafe = setTimeout(() => {
+      el.querySelectorAll(".reveal:not(.is-visible)").forEach((n) => {
+        const r = n.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) n.classList.add("is-visible");
+      });
+    }, 1600);
+    return () => {
+      clearTimeout(failsafe);
+      mo.disconnect();
+      io.disconnect();
+    };
+  }, []);
+  return ref;
+};

@@ -1,0 +1,42 @@
+[
+  {
+    "content": "Diagnose blank /why-hi-anzy page (capture artifact - no defect)",
+    "status": "completed"
+  },
+  {
+    "content": "Fix async .reveal never observed bug (MutationObserver in useRevealObserver)",
+    "status": "completed"
+  },
+  {
+    "content": "Footer easter-egg made contextual (ABC->ROI route)",
+    "status": "completed"
+  },
+  {
+    "content": "Remove 'From ABC to ROI' tagline from Nav",
+    "status": "completed"
+  },
+  {
+    "content": "Add deck-referenced halftone 3JS motion backdrop to Home",
+    "status": "completed"
+  },
+  {
+    "content": "Turn NOW into 'NOW WHAT?' on Home question cards",
+    "status": "completed"
+  },
+  {
+    "content": "Network hero: fix alignment + fill with stats panel",
+    "status": "completed"
+  },
+  {
+    "content": "Swap all serif body text to sans (Newsreader -> Figtree)",
+    "status": "completed"
+  },
+  {
+    "content": "Run testing_agent_v3 full validation (iteration 3: 100% pass)",
+    "status": "completed"
+  },
+  {
+    "content": "Update plan.md",
+    "status": "completed"
+  }
+]

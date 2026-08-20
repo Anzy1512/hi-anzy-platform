@@ -1,0 +1,83 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { Seo } from "@/components/Seo";
+import { Reveal } from "@/components/Reveal";
+import { SectionHeading } from "@/components/SectionHeading";
+import { MagneticButton } from "@/components/MagneticButton";
+import { RouteLine } from "@/components/RouteLine";
+import { useRevealObserver } from "@/lib/motion";
+import { track } from "@/lib/api";
+import { CATEGORIES } from "@/data/content";
+
+export default function WhatWeDo() {
+  const ref = useRevealObserver();
+  return (
+    <div ref={ref} className="pt-[84px]" data-testid="what-we-do-page">
+      <Seo title="What We Do — Hi Anzy" description="Business audit and strategy, brand and experience, technology and automation, growth, media and creators, advisory and scale — run as one connected system." />
+      <section className="container-page section-pad">
+        <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
+          <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHAT WE DO
+        </Reveal>
+        <Reveal delay={80}>
+          <h1 className="font-display mt-5 max-w-4xl leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="what-we-do-h1">
+            What does Hi Anzy actually do<span className="text-[#E54A25]">?</span>
+          </h1>
+        </Reveal>
+        <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
+          We work on how a business is understood, how it operates and how it grows. Which often means
+          connecting departments that did not realise they were working on the same problem.
+          <span className="font-semibold"> Everything connects.</span>
+        </Reveal>
+      </section>
+
+      <div className="mx-auto max-w-[1280px] space-y-8 px-4 pb-20 sm:px-6 lg:px-8 lg:pb-28">
+        {CATEGORIES.map((c, i) => (
+          <Reveal key={c.num}>
+            <article className={`relative grid gap-8 overflow-hidden rounded-[18px] p-7 sm:p-10 lg:grid-cols-12 ${i % 2 === 0 ? "panel-paper" : "panel-dark"}`} data-testid={`wwd-category-${c.num}`}>
+              <RouteLine d="M0,90 C 30,60 60,100 100,55" viewBox="0 0 100 100" strokeWidth={1.2} className="pointer-events-none absolute inset-0 h-full w-full opacity-25" />
+              <div className="relative lg:col-span-5">
+                <div className="flex items-center gap-4">
+                  <span className={`font-display text-6xl leading-none ${i % 2 === 0 ? "text-[#F19020]" : "text-[#F19020]"}`}>{c.num}</span>
+                  <span className={`sys-chip ${i % 2 === 0 ? "text-[#232A2A]/45" : "text-[#F7F5EE]/45"}`}>{c.system}</span>
+                </div>
+                <h2 className={`font-display mt-4 text-[clamp(2.1rem,3.3vw,3.5rem)] leading-[0.98] ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F7F5EE]"}`}>{c.label}</h2>
+                <p className={`font-editorial mt-2 text-[clamp(1.2rem,1.5vw,1.5rem)] font-medium ${i % 2 === 0 ? "text-[#232A2A]/65" : "text-[#F7F5EE]/65"}`}>{c.title}</p>
+                <p className={`mt-4 text-[17px] leading-[1.6] ${i % 2 === 0 ? "text-[#232A2A]/80" : "text-[#F7F5EE]/80"}`}>{c.copy}</p>
+                <p className={`mt-4 text-[16.5px] leading-[1.58] ${i % 2 === 0 ? "text-[#232A2A]/70" : "text-[#F7F5EE]/70"}`}><span className="font-mono-sys text-[12px] tracking-widest text-[#E54A25]">Why it matters — </span>{c.why}</p>
+              </div>
+              <div className="relative lg:col-span-7">
+                <p className={`sys-chip ${i % 2 === 0 ? "text-[#232A2A]/45" : "text-[#F7F5EE]/45"}`}>CAPABILITIES</p>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {c.capabilities.map((cap) => (
+                    <li key={cap} className={`sys-chip rounded-full border px-3 py-1.5 ${i % 2 === 0 ? "border-[#F19020]/70 text-[#232A2A]/80" : "border-[#F19020]/60 text-[#F7F5EE]/85"}`}>{cap}</li>
+                  ))}
+                </ul>
+                <div className="mt-6 flex flex-wrap items-center gap-4">
+                  <span className={`sys-chip inline-flex items-center gap-2 rounded-full px-3 py-1.5 ${i % 2 === 0 ? "bg-[#232A2A] text-[#F7F5EE]" : "bg-[#F7F5EE] text-[#232A2A]"}`}>
+                    METHOD STAGE · {c.methodStage}
+                  </span>
+                  <Link to="/work" className={`link-draw text-[13.5px] font-semibold ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F19020]"}`} onClick={() => track("service_explored", { category: c.label, to: "work" })}>
+                    Related work
+                  </Link>
+                  <Link to="/contact" className={`link-draw text-[13.5px] font-semibold ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F19020]"}`}>
+                    Talk about this
+                  </Link>
+                </div>
+              </div>
+            </article>
+          </Reveal>
+        ))}
+
+        <Reveal>
+          <div className="flex flex-wrap items-center justify-between gap-6 rounded-[18px] bg-[#D8CFB4]/60 p-8">
+            <p className="font-display text-3xl text-[#232A2A] sm:text-4xl">One business. One system. One brief away.</p>
+            <MagneticButton to="/contact" className="btn-ink" hoverText="Good start." testId="wwd-bottom-cta" onClick={() => track("cta_primary_click", { cta: "what_we_do_bottom" })}>
+              Start a Conversation <ArrowRight size={15} />
+            </MagneticButton>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  );
+}

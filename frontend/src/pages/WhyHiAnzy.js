@@ -1,0 +1,111 @@
+import React from "react";
+import { ArrowRight } from "lucide-react";
+import { Seo } from "@/components/Seo";
+import { Reveal } from "@/components/Reveal";
+import { MagneticButton } from "@/components/MagneticButton";
+import { RouteLine } from "@/components/RouteLine";
+import { useRevealObserver } from "@/lib/motion";
+import { track } from "@/lib/api";
+
+export default function WhyHiAnzy() {
+  const ref = useRevealObserver();
+  return (
+    <div ref={ref} className="pt-[68px]" data-testid="why-hi-anzy-page">
+      <Seo title="Why Hi Anzy — The Name, The Instinct, The Work" description="Anzy began as a signature under poems. It grew into a way of seeing businesses: see differently, make thoughtfully." />
+      <section className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="grid items-start gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
+              <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHY HI ANZY
+            </Reveal>
+            <Reveal delay={80}>
+              <h1 className="font-display mt-5 leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="why-h1">
+                Who is Anzy, anyway<span className="text-[#E54A25]">?</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={160} as="p" className="mt-7 max-w-2xl text-base leading-relaxed text-[#232A2A]/85 sm:text-lg">
+              Anzy began as a signature under poems. A name for the part of a person that notices things — the
+              detail everyone walked past, the question nobody asked. Over the years the signature travelled:
+              from verses to stories, from stories to stages, from stages to brands, to technology, to whole
+              businesses. The medium kept changing. The instinct never did.
+            </Reveal>
+            <Reveal delay={220} as="p" className="font-display mt-6 text-3xl text-[#F19020] sm:text-4xl">
+              See differently. Make thoughtfully.
+            </Reveal>
+          </div>
+          <div className="lg:col-span-5">
+            <Reveal delay={200}>
+              <figure className="cutout-img rounded-[18px]" style={{ aspectRatio: "4/5" }}>
+                <img src="https://images.unsplash.com/flagged/photo-1559487098-6174e343345c?auto=format&fit=crop&w=1200&q=80" alt="Black and white editorial portrait — a person mid-thought" loading="lazy" />
+              </figure>
+              <figcaption className="font-mono-sys mt-2 text-[10.5px] text-[#232A2A]/50">FIG.03 — THE PART THAT NOTICES THINGS</figcaption>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative mx-auto max-w-[1280px] px-4 pb-20 sm:px-6 lg:px-8 lg:pb-28">
+        <RouteLine d="M10,0 C 40,20 0,45 30,60 C 60,75 20,90 50,100" viewBox="0 0 100 100" strokeWidth={0.8} className="pointer-events-none absolute left-0 top-0 hidden h-full w-1/2 opacity-40 lg:block" />
+        <div className="space-y-8">
+          <Reveal>
+            <article className="panel-dark relative grid gap-6 p-8 sm:p-10 lg:grid-cols-12" data-testid="why-section-hi">
+              <div className="lg:col-span-4">
+                <p className="sys-chip text-[#F19020]">01 / THE GREETING</p>
+                <h2 className="font-display mt-2 text-5xl text-[#F7F5EE]">Why “Hi”?</h2>
+              </div>
+              <div className="lg:col-span-8">
+                <p className="text-[15px] leading-relaxed text-[#F7F5EE]/85">
+                  Because most good things begin with a conversation. A partnership. A new idea. A question someone
+                  finally asked out loud. “Hi” is the smallest possible unit of beginning — and beginnings are our
+                  favourite part of the work.
+                </p>
+                <p className="mt-4 text-[15px] leading-relaxed text-[#F7F5EE]/85">
+                  The name is approachable. The work is rigorous. <span className="text-[#F19020]">The contrast is intentional.</span>
+                </p>
+                <p className="font-mono-sys mt-4 text-[11px] text-[#F7F5EE]/45">// We take the brief seriously. Ourselves, slightly less.</p>
+              </div>
+            </article>
+          </Reveal>
+
+          <div className="grid gap-8 lg:grid-cols-2">
+            <Reveal>
+              <article className="panel-paper h-full p-8 sm:p-10" data-testid="why-section-dreamers">
+                <p className="sys-chip text-[#232A2A]/55">02 / THE TEMPERAMENT</p>
+                <h2 className="font-display mt-2 text-5xl text-[#232A2A]">Dreamers + Doers</h2>
+                <p className="mt-5 text-[15px] leading-relaxed text-[#232A2A]/82">
+                  We sit between <span className="font-mono-sys text-[14px]">“What if?”</span> and
+                  <span className="font-mono-sys text-[14px]"> “It works.”</span> Close enough to the dream to protect
+                  its ambition. Close enough to the build to guarantee its delivery. It is a strange place to stand.
+                  It is also where the interesting problems get solved.
+                </p>
+              </article>
+            </Reveal>
+            <Reveal delay={100}>
+              <article className="panel-paper h-full p-8 sm:p-10" data-testid="why-section-compass">
+                <p className="sys-chip text-[#232A2A]/55">03 / THE MECHANICS</p>
+                <h2 className="font-display mt-2 text-5xl text-[#232A2A]">Compass + Engine</h2>
+                <p className="mt-5 text-[15px] leading-relaxed text-[#232A2A]/82">
+                  The compass finds direction. The engine creates movement. Direction without movement is theory.
+                  Movement without direction is <span className="font-semibold text-[#E54A25]">expensive</span>.
+                  Every engagement carries both — which is why the strategy deck and the shipped system come from
+                  the same accountable place.
+                </p>
+              </article>
+            </Reveal>
+          </div>
+
+          <Reveal>
+            <div className="flex flex-wrap items-center justify-between gap-6 rounded-[18px] bg-[#D8CFB4]/60 p-8">
+              <p className="font-display max-w-xl text-3xl leading-tight text-[#232A2A] sm:text-4xl">
+                Complexity is common. <span className="text-[#F19020]">Clarity is engineered.</span>
+              </p>
+              <MagneticButton to="/contact" className="btn-ink" hoverText="Good start." testId="why-cta" onClick={() => track("cta_primary_click", { cta: "why_hi_anzy" })}>
+                Say Hi <ArrowRight size={15} />
+              </MagneticButton>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </div>
+  );
+}
