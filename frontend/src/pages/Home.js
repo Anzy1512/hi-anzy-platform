@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -73,13 +73,6 @@ const Hero = ({ show3d }) => {
         <div className="lg:col-span-5">
           <Reveal delay={200}>
             <div className="panel-dark relative overflow-hidden" style={{ aspectRatio: "4/4.6" }} data-testid="hero-core-frame">
-              <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
-                <span className="red-bar" />
-                <span className="sys-chip text-[#F7F5EE]/60">FIG.01 — THE ANZY SYSTEM CORE</span>
-              </div>
-              <div className="sys-chip absolute bottom-4 left-4 z-10 flex items-center gap-1.5 text-[#F19020]">
-                SCROLL TO CONNECT <ArrowDown size={12} />
-              </div>
               <div className="absolute inset-0">
                 {show3d ? (
                   <ThreeSafe fallback={<SystemCoreFallback />}>
@@ -104,14 +97,13 @@ const SomethingsOff = () => (
   <section className="container-page section-pad" data-testid="home-somethings-off-section">
     <div className="grid gap-10 lg:grid-cols-12">
       <div className="lg:col-span-5">
-        <SectionHeading kicker="SYS.CHECK / 02" title={<>Something&rsquo;s off<span className="text-[#E54A25]">.</span></>} testId="somethings-off-heading" />
+        <SectionHeading kicker="SYS.CHECK" title={<>Something&rsquo;s off<span className="text-[#E54A25]">.</span></>} testId="somethings-off-heading" />
         <Reveal delay={140} as="p" className="font-mono-sys mt-6 max-w-sm text-[13px] leading-relaxed text-[#232A2A]/55">
           // Symptoms observed in the wild. Names withheld. Patterns, unfortunately, not.
         </Reveal>
         <Reveal delay={220}>
           <figure className="relative mt-8 hidden max-w-[300px] lg:block" data-parallax="18">
             <img src="/brand/art-cube-head.png" alt="Halftone collage — a person with a puzzle cube for a head" loading="lazy" className="w-full" />
-            <figcaption className="font-mono-sys mt-2 text-[12px] text-[#232A2A]/50">FIG.02 — COMPLEXITY, WEARING A NICE SHIRT</figcaption>
           </figure>
         </Reveal>
       </div>
@@ -142,7 +134,7 @@ const SomethingsOff = () => (
 /* ========================== S03 — WHY / HOW / NOW ========================== */
 const WhyHowNow = () => (
   <section className="container-page section-pad" data-testid="home-why-how-now-section">
-    <SectionHeading kicker="THE QUESTIONS / 03" title="Three questions. Surprisingly useful." testId="why-how-now-heading" />
+    <SectionHeading kicker="THE QUESTIONS" title="Three questions. Surprisingly useful." testId="why-how-now-heading" />
     <div className="relative mt-12 grid gap-6 lg:grid-cols-3">
       <RouteLine d="M0,30 C 25,5 40,55 55,30 C 70,8 85,50 100,25" viewBox="0 0 100 60" strokeWidth={2.4} className="pointer-events-none absolute -top-8 left-0 hidden h-16 w-full lg:block" />
       {WHY_HOW_NOW.map((b, i) => (
@@ -150,7 +142,6 @@ const WhyHowNow = () => (
           <div className={`${i === 1 ? "panel-paper" : "panel-dark"} cap-tile h-full p-7 sm:p-8`} data-testid={`why-how-now-panel-${b.key.toLowerCase()}`}>
             <div className="flex items-center justify-between">
               <span className="font-display text-6xl leading-none text-[#F19020]">{b.label || b.key}</span>
-              <span className={`sys-chip ${i === 1 ? "text-[#232A2A]/45" : "text-[#F7F5EE]/45"}`}>{`Q.0${i + 1}`}</span>
             </div>
             <p className={`font-editorial mt-4 text-[clamp(1.15rem,1.45vw,1.4rem)] font-medium leading-[1.35] ${i === 1 ? "text-[#232A2A]" : "text-[#F7F5EE]"}`}>{b.q}</p>
             <ul className="mt-5 flex flex-wrap gap-2">
@@ -173,7 +164,7 @@ const spans = ["lg:col-span-5", "lg:col-span-7", "lg:col-span-7", "lg:col-span-5
 const WhatWeDoGrid = () => (
   <section className="container-page section-pad" data-testid="home-what-we-do-section">
     <div className="flex flex-wrap items-end justify-between gap-6">
-      <SectionHeading kicker="CAPABILITIES / 04" title={<>A business is one system.<br />Our capabilities behave like one too.</>} testId="what-we-do-heading" className="max-w-3xl" />
+      <SectionHeading kicker="CAPABILITIES" title={<>A business is one system.<br />Our capabilities behave like one too.</>} testId="what-we-do-heading" className="max-w-3xl" />
       <Reveal delay={150}>
         <MagneticButton to="/what-we-do" className="btn-paper" testId="what-we-do-cta" onClick={() => track("service_explored", { from: "home_grid_cta" })}>
           Explore What We Do <ArrowRight size={15} />
@@ -248,7 +239,7 @@ const MethodSection = () => {
     <section className="bg-[#D8CFB4]/60 section-pad" data-testid="home-method-section">
       <div className="container-page">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading kicker="THE HI ANZY METHOD / 05" title={<>See it. Shape it. Build it.<br />Bring it together. Make it grow.</>} testId="method-heading" className="max-w-3xl" />
+          <SectionHeading kicker="THE HI ANZY METHOD" title={<>See it. Shape it. Build it.<br />Bring it together. Make it grow.</>} testId="method-heading" className="max-w-3xl" />
           <Reveal delay={150}>
             <MagneticButton to="/how-we-work" className="btn-paper" testId="method-cta" onClick={() => track("method_explored", { from: "home_method" })}>
               See the Method <ArrowRight size={15} />
@@ -298,7 +289,7 @@ const Diagnostic = () => (
         <div className="lg:col-span-6">
           <p className="sys-chip flex items-center gap-3 text-[#F7F5EE]/55">
             <span className="inline-block h-[3px] w-8 rounded-full bg-[#F19020]" />
-            BUSINESS SYSTEMS DIAGNOSTIC / 06
+            BUSINESS SYSTEMS DIAGNOSTIC
           </p>
           <Reveal as="h2" delay={80} className="font-editorial mt-5 max-w-[20ch] text-[clamp(1.8rem,3.1vw,3.4rem)] font-medium leading-[1.12] text-[#F7F5EE]" testId="diagnostic-heading">
             Maybe you don&rsquo;t need <em>what you think</em> you need.
@@ -356,7 +347,7 @@ const WorkPreview = () => {
   return (
     <section className="container-page section-pad" data-testid="home-work-section">
       <div className="flex flex-wrap items-end justify-between gap-6">
-        <SectionHeading kicker="PROOF / 07" title="Less portfolio. More proof." testId="work-heading" />
+        <SectionHeading kicker="PROOF" title="Less portfolio. More proof." testId="work-heading" />
         <Reveal delay={150}>
           <MagneticButton to="/work" className="btn-paper" hoverText="Receipts this way." testId="work-cta">
             See the Work <ArrowRight size={15} />
@@ -379,7 +370,7 @@ const WorkPreview = () => {
               className="case-card group block w-[340px] shrink-0 rounded-[18px] border border-[#232A2A]/15 bg-[#F7F5EE] p-6 sm:w-[400px]"
             >
               <div className="flex items-center justify-between gap-3">
-                <ProvenanceTag value={cs.provenance} />
+                <ProvenanceTag label={cs.provenance} />
                 <span className="sys-chip text-[#232A2A]/45">{cs.year}</span>
               </div>
               <h3 className="font-display mt-4 text-3xl leading-[0.95] text-[#232A2A]">{cs.title}</h3>
@@ -408,7 +399,7 @@ const NetworkPreview = ({ show3d }) => {
       <div className="container-page">
         <div className="grid items-center gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <SectionHeading dark kicker="THE NETWORK / 08" title={<>The team changes. The accountability doesn&rsquo;t.</>} testId="network-heading" />
+            <SectionHeading dark kicker="THE NETWORK" title={<>The team changes. The accountability doesn&rsquo;t.</>} testId="network-heading" />
             <Reveal delay={140} as="p" className="mt-6 max-w-md text-[17px] leading-[1.6] text-[#F7F5EE]/78">
               Hi Anzy combines a core strategic layer with a wider network of specialists, creators,
               technologists, producers, media partners, venues and operators. The problem decides the roster.
@@ -438,7 +429,6 @@ const NetworkPreview = ({ show3d }) => {
           </div>
           <div className="lg:col-span-7">
             <div className="relative overflow-hidden rounded-[18px] border border-[#F7F5EE]/12" style={{ aspectRatio: "16/10" }}>
-              <span className="sys-chip absolute left-4 top-4 z-10 text-[#F7F5EE]/50">FIG.02 — NETWORK CONSTELLATION</span>
               <div className="absolute inset-0">
                 {show3d ? (
                   <ThreeSafe fallback={<ConstellationFallback categories={NETWORK_CATEGORIES_HOME.map((c) => c[0] + c.slice(1).toLowerCase())} />}>
@@ -461,7 +451,7 @@ const NetworkPreview = ({ show3d }) => {
 /* ============================= S09 — TRUST ============================= */
 const Trust = () => (
   <section className="container-page section-pad" data-testid="home-trust-section">
-    <SectionHeading kicker="HOW TRUST GETS BUILT / 09" title={<>Creative enough to find another answer.<br />Practical enough to make it work.</>} testId="trust-heading" className="max-w-4xl" />
+    <SectionHeading kicker="HOW TRUST GETS BUILT" title={<>Creative enough to find another answer.<br />Practical enough to make it work.</>} testId="trust-heading" className="max-w-4xl" />
     <ul className="mt-12 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3" data-testid="trust-principles">
       {TRUST_PRINCIPLES.map((p, i) => (
         <Reveal as="li" key={p} delay={(i % 3) * 80} className="group flex items-center gap-4 border-b border-[#232A2A]/12 pb-4">
@@ -498,7 +488,7 @@ const WhoWith = () => (
         <img src="/brand/char-trendsetter.jpg" alt="" loading="lazy" />
       </div>
     </div>
-    <SectionHeading kicker="WHO WE WORK WITH / 10" title="People building things that have to work." testId="who-heading" className="max-w-3xl" />
+    <SectionHeading kicker="WHO WE WORK WITH" title="People building things that have to work." testId="who-heading" className="max-w-3xl" />
     <div className="mt-10 space-y-3" data-testid="who-audience-wall">
       <MarqueeRow items={AUDIENCES.slice(0, 6)} />
       <MarqueeRow items={AUDIENCES.slice(6)} reverse />

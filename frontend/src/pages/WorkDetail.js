@@ -76,7 +76,7 @@ export default function WorkDetail() {
         </Link>
         <Reveal>
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <ProvenanceTag value={cs.provenance} testId="work-detail-provenance" />
+            <ProvenanceTag label={cs.provenance} testId="work-detail-provenance" />
             <span className="sys-chip text-[#232A2A]/50">{cs.client} · {cs.industry} · {cs.year}</span>
           </div>
         </Reveal>

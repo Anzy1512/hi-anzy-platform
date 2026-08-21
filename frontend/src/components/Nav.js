@@ -39,10 +39,8 @@ export const Nav = () => {
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b border-[#232A2A]/12 bg-[#E0D8C1]/88 backdrop-blur-md" data-testid="site-nav">
       <div className="mx-auto flex h-[68px] max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-baseline gap-1.5" data-testid="nav-logo" aria-label="Hi Anzy — home">
-          <span className="font-mono-sys rounded-md bg-[#F19020] px-1.5 py-0.5 text-[13px] font-semibold lowercase text-[#232A2A]">hi</span>
-          <span className="font-display text-[26px] uppercase leading-none tracking-wide text-[#232A2A]">Anzy</span>
-          <span className="sys-chip ml-3 hidden text-[#232A2A]/50 xl:inline">From ABC to ROI</span>
+        <Link to="/" className="flex items-center gap-3" data-testid="nav-logo" aria-label="Hi Anzy — home">
+          <img src="/brand/logo-dark.png" alt="hiAnzy" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" />
         </Link>
 
         {/* Desktop */}

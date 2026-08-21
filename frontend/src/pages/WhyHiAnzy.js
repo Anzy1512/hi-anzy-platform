@@ -38,7 +38,6 @@ export default function WhyHiAnzy() {
               <figure className="cutout-img rounded-[18px]" style={{ aspectRatio: "4/5" }}>
                 <img src="https://images.unsplash.com/flagged/photo-1559487098-6174e343345c?auto=format&fit=crop&w=1200&q=80" alt="Black and white editorial portrait — a person mid-thought" loading="lazy" />
               </figure>
-              <figcaption className="font-mono-sys mt-2 text-[10.5px] text-[#232A2A]/50">FIG.03 — THE PART THAT NOTICES THINGS</figcaption>
             </Reveal>
           </div>
         </div>

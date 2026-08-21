@@ -22,7 +22,7 @@ export const CATEGORIES = [
     num: "01",
     label: "SEE CLEARLY",
     title: "Business Audit & Strategy",
-    system: "SYS.01 / DIAGNOSIS",
+    system: "SYS / DIAGNOSIS",
     copy: "Before spending money on the solution, make sure you diagnosed the right problem.",
     capabilities: ["Business diagnostics", "Market intelligence", "Customer understanding", "Positioning", "Opportunity mapping", "Transformation roadmaps", "Go-to-market strategy", "Operating model improvement"],
     methodStage: "AUDIT",
@@ -32,7 +32,7 @@ export const CATEGORIES = [
     num: "02",
     label: "MAKE SENSE",
     title: "Brand & Experience",
-    system: "SYS.02 / MEANING",
+    system: "SYS / MEANING",
     copy: "People rarely buy what they do not understand. Clarity converts before the CTA does.",
     capabilities: ["Brand strategy", "Naming", "Identity", "Messaging", "Packaging", "UX/UI", "Customer journeys", "Product experience", "Founder positioning"],
     methodStage: "ARCHITECT",
@@ -42,7 +42,7 @@ export const CATEGORIES = [
     num: "03",
     label: "MAKE IT WORK",
     title: "Digital, Technology & Automation",
-    system: "SYS.03 / MACHINERY",
+    system: "SYS / MACHINERY",
     copy: "Technology should remove friction. Not create a new Slack channel about friction.",
     capabilities: ["Websites", "Commerce", "Applications", "Dashboards", "CRM", "Integrations", "Cloud", "AI systems", "Workflow automation", "Internal tools"],
     methodStage: "BUILD",
@@ -52,7 +52,7 @@ export const CATEGORIES = [
     num: "04",
     label: "MAKE IT MOVE",
     title: "Growth, Content & Commerce",
-    system: "SYS.04 / MOMENTUM",
+    system: "SYS / MOMENTUM",
     copy: "Attention is useful. What happens after attention pays the bills.",
     capabilities: ["Content strategy", "Social", "Performance marketing", "SEO", "Funnels", "Lifecycle marketing", "CRO", "Marketplace growth", "Campaigns"],
     methodStage: "SCALE",
@@ -62,7 +62,7 @@ export const CATEGORIES = [
     num: "05",
     label: "MAKE IT TRAVEL",
     title: "Media, Creators & Experiences",
-    system: "SYS.05 / REACH",
+    system: "SYS / REACH",
     copy: "A good idea should travel further than your own feed.",
     capabilities: ["Creators", "PR", "Media", "Events", "Venues", "Production", "Collaborations", "Institutional partnerships", "Experiential campaigns"],
     methodStage: "CONNECT",
@@ -72,7 +72,7 @@ export const CATEGORIES = [
     num: "06",
     label: "MAKE IT LAST",
     title: "Advisory, Security & Scale",
-    system: "SYS.06 / ENDURANCE",
+    system: "SYS / ENDURANCE",
     copy: "Growth is exciting until the weak systems start introducing themselves.",
     capabilities: ["Founder advisory", "Technology advisory", "Security", "Privacy readiness", "Reputation", "Operations", "Customer systems", "Scale planning"],
     methodStage: "SCALE",
@@ -91,7 +91,7 @@ export const METHOD_STAGES = [
 export const WHY_HOW_NOW = [
   { key: "WHY", q: "What are we actually trying to change?", items: ["Ambition", "Customer", "Market", "Position", "The problem behind the problem"] },
   { key: "HOW", q: "What needs to exist for that change to happen?", items: ["Systems", "Technology", "Processes", "People", "Experiences", "Infrastructure"] },
-  { key: "NOW", label: "NOW WHAT?", q: "What deserves to happen first?", items: ["Priorities", "Execution", "Measurement", "Momentum"] },
+  { key: "NOW", q: "What deserves to happen first?", items: ["Priorities", "Execution", "Measurement", "Momentum"] },
 ];
 
 export const SOMETHINGS_OFF = [
@@ -166,6 +166,27 @@ export const CHARACTERS = [
 ];
 
 export const TEAM_QUOTE = "We're just a bunch of curious minds trying to build something that grows with us and maybe, just maybe, leaves a dent in the world. Along the way, we keep each other grounded — and make sure it never gets boring.";
+
+export const CAREER_PRINCIPLES = [
+  { num: "01", title: "Curiosity over credentials", body: "Degrees are nice. Noticing things is nicer." },
+  { num: "02", title: "Writing is thinking", body: "If it cannot be explained in a paragraph, it is not understood yet." },
+  { num: "03", title: "Ownership over activity", body: "Looking busy is not a growth strategy. Internally, either." },
+  { num: "04", title: "Kind and direct", body: "We disagree in the room, commit outside it, and credit loudly." },
+];
+
+export const COLLABORATE_CATEGORIES = [
+  { num: "01", title: "Specialists", body: "Strategists, designers, engineers, automators, analysts. People who are excellent at one thing and honest about the rest." },
+  { num: "02", title: "Creators & Media", body: "Creators, journalists, producers and channels who care what runs under their name." },
+  { num: "03", title: "Venues & Partners", body: "Spaces, institutions and operators who want brand moments that respect the room." },
+];
+
+/** Same provenance tiers shown on /network — reused here so the credit legend stays consistent site-wide. */
+export const CREDIT_LEGEND = [
+  { tag: "HI ANZY DIRECT", text: "Owned and delivered by the Hi Anzy core layer." },
+  { tag: "HI ANZY + COLLABORATOR", text: "Hi Anzy led, specialists executed alongside." },
+  { tag: "COLLABORATOR CREDENTIAL", text: "Independent track record of a network member." },
+  { tag: "NETWORK ACCESS", text: "Relationships we can activate. Not client work." },
+];
 
 /** Subcategories shown inside the Network constellation when a cluster is focused. */
 export const NETWORK_SUBCATS = {

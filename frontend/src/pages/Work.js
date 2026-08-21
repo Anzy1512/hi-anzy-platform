@@ -82,7 +82,7 @@ export default function Work() {
               <Reveal key={cs.slug} delay={(i % 2) * 100}>
                 <Link to={`/work/${cs.slug}`} onClick={() => track("case_opened", { slug: cs.slug, from: "work_index" })} data-testid={`work-index-card-${cs.slug}`} className="case-card group block h-full rounded-[18px] border border-[#232A2A]/15 bg-[#F7F5EE] p-7 sm:p-8">
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <ProvenanceTag value={cs.provenance} />
+                    <ProvenanceTag label={cs.provenance} />
                     <span className="sys-chip text-[#232A2A]/45">{cs.industry} · {cs.year}</span>
                   </div>
                   <h2 className="font-display mt-5 text-[clamp(1.8rem,2.4vw,2.25rem)] leading-[1.02] text-[#232A2A]">{cs.title}</h2>

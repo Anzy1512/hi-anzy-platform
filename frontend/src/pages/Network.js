@@ -41,6 +41,18 @@ export default function Network() {
     if (c) track("network_category_selected", { category: c, from: "network_page" });
   };
 
+  // Deep dive: click a constellation cluster to filter; click the same one again to clear.
+  const selectFromConstellation = (name) => {
+    const next = active === name ? null : name;
+    setActive(next);
+    if (!next) return;
+    track("network_category_selected", { category: next, from: "constellation" });
+    const target = document.getElementById("network-specialists");
+    if (!target) return;
+    if (window.__lenis) window.__lenis.scrollTo(target, { offset: -80 });
+    else target.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div ref={ref} className="pt-[68px]" data-testid="network-page">
       <Seo title="The Hi Anzy Network — Strategists, Creators, Technologists, Operators" description="A consultancy doesn't need to own every skill. It needs to know what the problem demands and who is exceptionally good at solving it." />
@@ -60,11 +72,10 @@ export default function Network() {
           </Reveal>
 
           <div className="relative mt-10 overflow-hidden rounded-[18px] border border-[#F7F5EE]/12" style={{ aspectRatio: "16/8" }}>
-            <span className="sys-chip absolute left-4 top-4 z-10 text-[#F7F5EE]/50">FIG.02 — NETWORK CONSTELLATION</span>
             <div className="absolute inset-0">
               {show3d && categories.length > 0 ? (
                 <Suspense fallback={<ConstellationFallback categories={categories} />}>
-                  <Constellation categories={categories} active={active} />
+                  <Constellation categories={categories} active={active} onSelect={selectFromConstellation} />
                 </Suspense>
               ) : (
                 <ConstellationFallback categories={categories} />
@@ -85,11 +96,11 @@ export default function Network() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+      <section id="network-specialists" className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <div className="mb-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" data-testid="network-legend">
           {LEGEND.map((l) => (
             <div key={l.tag} className="rounded-[14px] border border-[#232A2A]/14 bg-[#F7F5EE]/60 p-4">
-              <ProvenanceTag value={l.tag} />
+              <ProvenanceTag label={l.tag} />
               <p className="mt-2.5 text-[15px] leading-[1.5] text-[#232A2A]/70">{l.text}</p>
             </div>
           ))}
@@ -107,7 +118,7 @@ export default function Network() {
                     <span className="sys-chip shrink-0 text-[#232A2A]/45">{r.category.toUpperCase()}</span>
                   </div>
                   <div className="mt-3">
-                    <ProvenanceTag value={r.relationshipType} />
+                    <ProvenanceTag label={r.relationshipType} />
                   </div>
                   <p className="sys-chip mt-3 text-[#232A2A]/50">{r.geography}</p>
                   <ul className="mt-3 flex flex-wrap gap-1.5">

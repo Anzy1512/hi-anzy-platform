@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
+import "@/App.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { LenisProvider, ScrollToTop } from "@/lib/motion";

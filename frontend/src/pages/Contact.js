@@ -96,7 +96,6 @@ export default function Contact() {
                 <div className="scrap">
                   <img src="/brand/char-walkers.jpg" alt="Two camera-headed figures walking in — halftone collage" loading="lazy" />
                 </div>
-                <figcaption className="font-mono-sys mt-2 text-[12px] text-[#232A2A]/50">FIG.04 — US, ON OUR WAY TO READ YOUR MESSAGE</figcaption>
               </figure>
             </Reveal>
           </div>
