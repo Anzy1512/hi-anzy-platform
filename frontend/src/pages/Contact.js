@@ -88,8 +88,7 @@ export default function Contact() {
               You do not need to know the solution. Tell us what you are building, what feels stuck, what changed,
               what gets delayed, what costs too much, or what opportunity refuses to leave your head.
             </Reveal>
-            <Reveal delay={220} as="p" className="font-mono-sys mt-5 text-[13px] leading-relaxed text-[#232A2A]/55">
-              // Attachments? Mention them in the message and we will ask for a link. Simple systems first.
+            <Reveal delay={220} as="p" className="font-mono-sys mt-5 text-[13px] leading-relaxed text-[#232A2A]/55">Attachments? Mention them in the message and we will ask for a link. Simple systems first.
             </Reveal>
             <Reveal delay={280}>
               <figure className="float-el mt-10 hidden max-w-[250px] lg:block" style={{ "--rot": "-1.5deg" }} data-testid="contact-walkers-art">
@@ -106,7 +105,7 @@ export default function Contact() {
                 <div className="h-[4px] w-24 rounded-full bg-[#F19020]" />
                 <p className="font-display mt-6 text-5xl leading-none text-[#F7F5EE]">Got it.</p>
                 <p className="mt-4 max-w-md text-lg text-[#F7F5EE]/85">A person will read this. Still one of our favourite technologies.</p>
-                <p className="font-mono-sys mt-6 text-[12.5px] text-[#F7F5EE]/45">// Expect a reply from a human, not a sequence.</p>
+                <p className="font-mono-sys mt-6 text-[12.5px] text-[#F7F5EE]/45">Expect a reply from a human, not a sequence.</p>
                 <MagneticButton to="/work" className="btn-orange mt-8" testId="contact-success-work-link">
                   Read some proof meanwhile <ArrowRight size={15} />
                 </MagneticButton>

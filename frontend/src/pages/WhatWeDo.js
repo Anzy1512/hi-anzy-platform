@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Reveal } from "@/components/Reveal";
-import { SectionHeading } from "@/components/SectionHeading";
 import { MagneticButton } from "@/components/MagneticButton";
 import { RouteLine } from "@/components/RouteLine";
 import { useRevealObserver } from "@/lib/motion";
 import { track } from "@/lib/api";
 import { CATEGORIES } from "@/data/content";
+import { CharacterQuote } from "@/components/CharacterQuote";
 
 export default function WhatWeDo() {
   const ref = useRevealObserver();
@@ -31,7 +31,7 @@ export default function WhatWeDo() {
         </Reveal>
       </section>
 
-      <div className="mx-auto max-w-[1280px] space-y-8 px-4 pb-20 sm:px-6 lg:px-8 lg:pb-28">
+      <div className="container-page space-y-8 section-pad-b">
         {CATEGORIES.map((c, i) => (
           <Reveal key={c.num}>
             <article className={`relative grid gap-8 overflow-hidden rounded-[18px] p-7 sm:p-10 lg:grid-cols-12 ${i % 2 === 0 ? "panel-paper" : "panel-dark"}`} data-testid={`wwd-category-${c.num}`}>
@@ -77,6 +77,9 @@ export default function WhatWeDo() {
             </MagneticButton>
           </div>
         </Reveal>
+      </div>
+      <div className="pb-16">
+        <CharacterQuote startIndex={2} />
       </div>
     </div>
   );

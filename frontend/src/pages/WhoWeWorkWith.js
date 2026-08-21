@@ -5,18 +5,19 @@ import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { useRevealObserver } from "@/lib/motion";
 import { AUDIENCES, FILTER_LIST } from "@/data/content";
+import { CharacterQuote } from "@/components/CharacterQuote";
 
 export default function WhoWeWorkWith() {
   const ref = useRevealObserver();
   return (
-    <div ref={ref} className="pt-[68px]" data-testid="who-we-work-with-page">
+    <div ref={ref} className="pt-[84px]" data-testid="who-we-work-with-page">
       <Seo title="Who We Work With — Hi Anzy" description="Founders, founder-led companies, businesses modernising systems, D2C and commerce brands, hospitality and teams entering the next stage of growth." />
-      <section className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHO WE WORK WITH
         </Reveal>
         <Reveal delay={80}>
-          <h1 className="font-display mt-5 max-w-4xl uppercase leading-[0.88] text-[#232A2A] text-6xl sm:text-7xl lg:text-8xl" data-testid="wwww-h1">
+          <h1 className="font-display mt-5 max-w-4xl leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="wwww-h1">
             People building things that have to work<span className="text-[#E54A25]">.</span>
           </h1>
         </Reveal>
@@ -24,13 +25,13 @@ export default function WhoWeWorkWith() {
           {AUDIENCES.map((a, i) => (
             <Reveal key={a} delay={(i % 3) * 70}>
               <div className="cap-tile flex h-full items-center gap-4 rounded-[14px] border border-[#232A2A]/14 bg-[#F7F5EE] p-5">
-                <span className="font-mono-sys text-[11px] text-[#F19020]">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono-sys text-[12.5px] text-[#F19020]">{String(i + 1).padStart(2, "0")}</span>
                 <span className="text-[15px] font-semibold text-[#232A2A]/85">{a}</span>
               </div>
             </Reveal>
           ))}
         </div>
-        <Reveal delay={150} as="p" className="mt-10 max-w-xl text-[15px] leading-relaxed text-[#232A2A]/82">
+        <Reveal delay={150} as="p" className="mt-10 max-w-xl text-[17px] leading-[1.6] text-[#232A2A]/82">
           We especially like people who ask good questions. You do not need every answer.
           <span className="font-semibold"> That is partly why we are here.</span>
         </Reveal>
@@ -40,8 +41,8 @@ export default function WhoWeWorkWith() {
             <p className="mt-3 font-semibold text-[#F7F5EE]">We probably won&rsquo;t be brilliant together if…</p>
             <ul className="mt-4 space-y-2.5">
               {FILTER_LIST.map((f) => (
-                <li key={f} className="flex items-start gap-3 text-[14px] leading-relaxed text-[#F7F5EE]/78">
-                  <span className="font-mono-sys mt-0.5 text-[11px] text-[#E54A25]">✕</span> {f}
+                <li key={f} className="flex items-start gap-3 text-[16.5px] leading-[1.58] text-[#F7F5EE]/78">
+                  <span className="font-mono-sys mt-0.5 text-[12.5px] text-[#E54A25]">✕</span> {f}
                 </li>
               ))}
             </ul>
@@ -53,6 +54,9 @@ export default function WhoWeWorkWith() {
           </MagneticButton>
         </Reveal>
       </section>
+      <div className="pb-16">
+        <CharacterQuote startIndex={5} />
+      </div>
     </div>
   );
 }

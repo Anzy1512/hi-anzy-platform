@@ -1,87 +1,86 @@
-import React, { useRef, useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { prefersReducedMotion } from "@/lib/motion";
 
-/** Animated halftone dot grid driven by a sine wave. */
-const HalftoneGrid = () => {
-  const meshRef = useRef(null);
-  const count = 32;
+/**
+ * HalftoneBackdrop — deck-referenced texture as a minor 3JS motion background.
+ * The brand deck leans on halftone dot collage; this renders the same dot
+ * language as a fixed, near-invisible field behind the page. Dots "breathe"
+ * on a slow travelling wave and crawl a few pixels per second. Ink #232A2A
+ * at 2–5% effective alpha — texture, never noise.
+ */
 
-  const { positions, scales } = useMemo(() => {
-    const pos = [];
-    const scl = [];
-    for (let x = 0; x < count; x++) {
-      for (let y = 0; y < count; y++) {
-        pos.push(
-          (x / (count - 1) - 0.5) * 14,
-          (y / (count - 1) - 0.5) * 14,
-          0
-        );
-        scl.push(0.12);
-      }
-    }
-    return { positions: new Float32Array(pos), scales: new Float32Array(scl) };
-  }, []);
+const VERT = /* glsl */ `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = vec4(position.xy, 0.0, 1.0);
+  }
+`;
 
-  useFrame(({ clock }) => {
-    if (!meshRef.current) return;
-    const t = clock.getElapsedTime();
-    const arr = meshRef.current.geometry.attributes.position.array;
-    const scArr = meshRef.current.geometry.attributes.aScale
-      ? meshRef.current.geometry.attributes.aScale.array
-      : null;
+const FRAG = /* glsl */ `
+  precision mediump float;
+  varying vec2 vUv;
+  uniform float uTime;
+  uniform vec2 uRes;
+  void main() {
+    vec2 px = vUv * uRes;
+    // extremely slow drift — a few px per second, diagonal like the deck scans
+    px += vec2(uTime * 5.0, -uTime * 3.5);
+    float cell = 26.0;
+    vec2 g = mod(px, cell) - cell * 0.5;
+    vec2 id = floor(px / cell);
+    // slow travelling wave modulates dot radius (halftone "breathing")
+    float wave = sin(id.x * 0.32 + uTime * 0.35) * cos(id.y * 0.27 - uTime * 0.28);
+    float r = 1.3 + 1.25 * (0.5 + 0.5 * wave);
+    float d = length(g);
+    float dotMask = 1.0 - smoothstep(r - 0.8, r + 0.8, d);
+    // keep the reading column clean: texture strengthens toward the edges
+    float vign = smoothstep(0.22, 0.95, distance(vUv, vec2(0.5)));
+    float alpha = dotMask * (0.035 + 0.075 * vign);
+    gl_FragColor = vec4(vec3(0.137, 0.165, 0.165), alpha);
+  }
+`;
 
-    for (let i = 0; i < count * count; i++) {
-      const xi = arr[i * 3] / 14;
-      const yi = arr[i * 3 + 1] / 14;
-      const wave = Math.sin((xi + yi) * 5 + t * 0.4) * 0.5 + 0.5;
-      if (scArr) scArr[i] = 0.06 + wave * 0.12;
-    }
-    if (scArr) meshRef.current.geometry.attributes.aScale.needsUpdate = true;
+const HalftoneField = () => {
+  const mat = useRef();
+  const uniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uRes: { value: new THREE.Vector2(1920, 800) },
+    }),
+    []
+  );
+  useFrame((state) => {
+    if (!mat.current) return;
+    mat.current.uniforms.uTime.value = state.clock.elapsedTime;
+    mat.current.uniforms.uRes.value.set(state.size.width, state.size.height);
   });
-
   return (
-    <points ref={meshRef}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-      </bufferGeometry>
-      <pointsMaterial
-        color="#232A2A"
-        size={0.18}
+    <mesh frustumCulled={false}>
+      <planeGeometry args={[2, 2]} />
+      <shaderMaterial
+        ref={mat}
+        vertexShader={VERT}
+        fragmentShader={FRAG}
+        uniforms={uniforms}
         transparent
-        opacity={0.18}
-        sizeAttenuation
+        depthTest={false}
+        depthWrite={false}
       />
-    </points>
+    </mesh>
   );
 };
 
-/** WebGL halftone backdrop: subtle animated dot grid behind the hero. */
-export const HalftoneBackdrop = () => {
-  if (prefersReducedMotion()) return <HalftoneStatic />;
-  return (
-    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-      <Canvas
-        camera={{ position: [0, 0, 8], fov: 60 }}
-        dpr={Math.min(window.devicePixelRatio, 1.5)}
-        gl={{ alpha: true, antialias: false }}
-        style={{ width: "100%", height: "100%" }}
-      >
-        <HalftoneGrid />
-      </Canvas>
-    </div>
-  );
-};
+export const HalftoneBackdrop = () => (
+  <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden="true" data-testid="home-texture-backdrop">
+    <Canvas dpr={1} gl={{ alpha: true, antialias: false, powerPreference: "low-power" }} frameloop="always">
+      <HalftoneField />
+    </Canvas>
+  </div>
+);
 
-/** Static CSS fallback: a radial dot pattern using CSS background. */
+/** Static CSS fallback — same halftone language without motion. */
 export const HalftoneStatic = () => (
-  <div
-    className="pointer-events-none absolute inset-0 z-0 overflow-hidden opacity-[0.07]"
-    aria-hidden="true"
-    style={{
-      backgroundImage: "radial-gradient(circle, #232A2A 1px, transparent 1px)",
-      backgroundSize: "28px 28px",
-    }}
-  />
+  <div className="halftone-static pointer-events-none fixed inset-0 -z-10" aria-hidden="true" data-testid="home-texture-backdrop" />
 );

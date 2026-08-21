@@ -3,7 +3,7 @@ CMS-like content APIs + contact pipeline + analytics events.
 Email notifications are env-driven (RESEND_API_KEY or SMTP_*) and skip
 gracefully when unconfigured — submissions are always stored in MongoDB.
 """
-from fastapi import FastAPI, APIRouter, HTTPException, Request
+from fastapi import FastAPI, APIRouter, HTTPException, Request, Response
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -18,7 +18,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr
 from typing import List, Optional, Dict, Any
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import requests as http_requests
 
 from seed_data import CASE_STUDIES, NETWORK_RESOURCES, INSIGHTS, PORTFOLIO_GROUPS
@@ -266,6 +266,144 @@ async def track_event(evt: AnalyticsEvent):
         "meta": evt.meta or {},
         "createdAt": now_iso(),
     })
+    return {"ok": True}
+
+
+# ── Auth (Emergent managed Google sign-in) ───────────────────────────────────
+# The session-data endpoint is called from the backend only: the one-time
+# session_id is exchanged here for the profile, and the browser only ever
+# receives an httpOnly cookie. Auth is optional — no marketing route is gated.
+
+EMERGENT_SESSION_DATA_URL = "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data"
+SESSION_COOKIE = "session_token"
+SESSION_TTL_DAYS = 7
+# Production defaults to a cross-site-capable cookie; local http dev overrides
+# these in .env because `SameSite=None` is only honoured alongside `Secure`.
+COOKIE_SECURE = os.environ.get("COOKIE_SECURE", "true").strip().lower() == "true"
+COOKIE_SAMESITE = os.environ.get("COOKIE_SAMESITE", "none").strip().lower()
+
+
+def public_user(doc: dict) -> dict:
+    """Only ever expose these fields — never the raw session or Mongo document."""
+    return {
+        "id": doc.get("user_id"),
+        "email": doc.get("email"),
+        "name": doc.get("name"),
+        "picture": doc.get("picture"),
+    }
+
+
+async def session_user(request: Request) -> Optional[dict]:
+    """Resolve the signed-in user: session cookie first, Bearer token as fallback."""
+    token = request.cookies.get(SESSION_COOKIE)
+    if not token:
+        auth_header = request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header[7:].strip()
+    if not token:
+        return None
+
+    sess = await db.user_sessions.find_one({"session_token": token})
+    if not sess:
+        return None
+
+    expires_at = sess.get("expiresAt")
+    if expires_at:
+        try:
+            if datetime.fromisoformat(expires_at) <= datetime.now(timezone.utc):
+                await db.user_sessions.delete_one({"session_token": token})
+                return None
+        except ValueError:
+            logger.warning("Unparseable session expiry: %s", expires_at)
+
+    return await db.users.find_one({"user_id": sess.get("user_id")})
+
+
+@api_router.post("/auth/session")
+async def auth_session(request: Request, response: Response):
+    session_id = request.headers.get("X-Session-ID")
+    if not session_id:
+        raise HTTPException(status_code=400, detail="Missing X-Session-ID header")
+
+    def fetch_profile():
+        return http_requests.get(
+            EMERGENT_SESSION_DATA_URL,
+            headers={"X-Session-ID": session_id},
+            timeout=10,
+        )
+
+    try:
+        provider = await asyncio.to_thread(fetch_profile)
+    except Exception as exc:  # network/timeout — never leak details to the client
+        logger.error("Auth session-data call failed: %s", exc)
+        raise HTTPException(status_code=502, detail="Auth provider unreachable")
+
+    if provider.status_code != 200:
+        raise HTTPException(status_code=401, detail="Invalid or expired session")
+
+    data = provider.json()
+    email = data.get("email")
+    if not email:
+        raise HTTPException(status_code=401, detail="Auth provider returned no email")
+
+    existing = await db.users.find_one({"email": email})
+    if existing:
+        user_id = existing["user_id"]
+        await db.users.update_one(
+            {"user_id": user_id},
+            {"$set": {
+                "name": data.get("name"),
+                "picture": data.get("picture"),
+                "lastLoginAt": now_iso(),
+            }},
+        )
+        user = await db.users.find_one({"user_id": user_id})
+    else:
+        user_id = str(uuid.uuid4())
+        user = {
+            "user_id": user_id,
+            "email": email,
+            "name": data.get("name"),
+            "picture": data.get("picture"),
+            "createdAt": now_iso(),
+            "lastLoginAt": now_iso(),
+        }
+        await db.users.insert_one(user)
+
+    token = data.get("session_token") or str(uuid.uuid4())
+    await db.user_sessions.insert_one({
+        "session_token": token,
+        "user_id": user_id,
+        "createdAt": now_iso(),
+        "expiresAt": (datetime.now(timezone.utc) + timedelta(days=SESSION_TTL_DAYS)).isoformat(),
+    })
+
+    response.set_cookie(
+        key=SESSION_COOKIE,
+        value=token,
+        httponly=True,
+        secure=COOKIE_SECURE,
+        samesite=COOKIE_SAMESITE,
+        max_age=SESSION_TTL_DAYS * 24 * 60 * 60,
+        path="/",
+    )
+    return {"user": public_user(user)}
+
+
+@api_router.get("/auth/me")
+async def auth_me(request: Request):
+    user = await session_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    return public_user(user)
+
+
+@api_router.post("/auth/logout")
+async def auth_logout(request: Request, response: Response):
+    token = request.cookies.get(SESSION_COOKIE)
+    if token:
+        await db.user_sessions.delete_one({"session_token": token})
+    response.delete_cookie(key=SESSION_COOKIE, path="/", samesite=COOKIE_SAMESITE, secure=COOKIE_SECURE)
     return {"ok": True}
 
 

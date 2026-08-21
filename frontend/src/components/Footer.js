@@ -56,9 +56,6 @@ export const Footer = () => {
           data-testid="footer-easter-egg"
           aria-hidden="true"
         >
-          <span className="sys-chip absolute -top-2.5 left-6 bg-[#1D2424] px-2 text-[11px] tracking-[0.18em] text-[#F7F5EE]/40">
-            THE ROUTE
-          </span>
           <span
             className="qmark-node font-mono-sys inline-flex h-8 items-center justify-center rounded-full border border-[#F19020] px-3 text-[12px] tracking-[0.14em] text-[#F19020]"
             style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}

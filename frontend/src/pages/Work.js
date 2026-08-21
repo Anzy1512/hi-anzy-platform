@@ -7,6 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { useRevealObserver } from "@/lib/motion";
 import { getCaseStudies, getCaseStudy, track, API } from "@/lib/api";
+import { PunPop } from "@/components/PunPop";
 import axios from "axios";
 
 const CASE_SECTIONS = [
@@ -79,28 +80,113 @@ export default function Work() {
         {cases && (
           <div className="grid gap-6 lg:grid-cols-2" data-testid="work-case-grid">
             {cases.map((cs, i) => (
-              <Reveal key={cs.slug} delay={(i % 2) * 100}>
-                <Link to={`/work/${cs.slug}`} onClick={() => track("case_opened", { slug: cs.slug, from: "work_index" })} data-testid={`work-index-card-${cs.slug}`} className="case-card group block h-full rounded-[18px] border border-[#232A2A]/15 bg-[#F7F5EE] p-7 sm:p-8">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <ProvenanceTag label={cs.provenance} />
-                    <span className="sys-chip text-[#232A2A]/45">{cs.industry} · {cs.year}</span>
-                  </div>
-                  <h2 className="font-display mt-5 text-[clamp(1.8rem,2.4vw,2.25rem)] leading-[1.02] text-[#232A2A]">{cs.title}</h2>
-                  <p className="sys-chip mt-3 text-[#232A2A]/55">{cs.client}</p>
-                  <p className="mt-4 text-[17px] leading-[1.6] text-[#232A2A]/80">{cs.summary}</p>
-                  <div className="mt-5 grid gap-2 border-t border-[#232A2A]/10 pt-5 sm:grid-cols-2">
-                    <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="font-mono-sys text-[11.5px] text-[#E54A25]">GAP — </span>{cs.gap.slice(0, 100)}…</p>
-                    <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="font-mono-sys text-[11.5px] text-[#F19020]">RESULT — </span>{cs.result.slice(0, 100)}…</p>
-                  </div>
-                  <span className="link-draw mt-5 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#232A2A]">
-                    Full case <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              </Reveal>
+              <React.Fragment key={cs.slug}>
+                <Reveal delay={(i % 2) * 100}>
+                  <Link
+                    to={`/work/${cs.slug}`}
+                    id={`case-${cs.slug}`}
+                    onClick={(e) => { e.preventDefault(); toggleCase(cs); }}
+                    aria-expanded={expanded === cs.slug}
+                    data-testid={`work-index-card-${cs.slug}`}
+                    className={`case-card group block h-full rounded-[18px] border bg-[#F7F5EE] p-7 sm:p-8 ${expanded === cs.slug ? "border-[#F19020]" : "border-[#232A2A]/15"}`}
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <ProvenanceTag value={cs.provenance} />
+                      <span className="sys-chip text-[#232A2A]/45">{cs.industry} · {cs.year}</span>
+                    </div>
+                    <h2 className="font-display mt-5 text-[clamp(1.8rem,2.4vw,2.25rem)] leading-[1.02] text-[#232A2A]">{cs.title}</h2>
+                    <p className="sys-chip mt-3 text-[#232A2A]/55">{cs.client}</p>
+                    <p className="mt-4 text-[17px] leading-[1.6] text-[#232A2A]/80">{cs.summary}</p>
+                    <div className="mt-5 grid gap-2 border-t border-[#232A2A]/10 pt-5 sm:grid-cols-2">
+                      <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="font-mono-sys text-[11.5px] text-[#E54A25]">GAP — </span>{cs.gap.slice(0, 100)}…</p>
+                      <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="font-mono-sys text-[11.5px] text-[#F19020]">RESULT — </span>{cs.result.slice(0, 100)}…</p>
+                    </div>
+                    <span className="link-draw mt-5 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#232A2A]">
+                      {expanded === cs.slug ? "Close case" : "Read the full case"}
+                      <ArrowRight size={14} className={`transition-transform ${expanded === cs.slug ? "rotate-90" : "group-hover:translate-x-1"}`} />
+                    </span>
+                  </Link>
+                </Reveal>
+
+                {/* In-place case story — unfolds beneath the card, no page change */}
+                <AnimatePresence initial={false}>
+                  {expanded === cs.slug && (
+                    <motion.div
+                      key={`${cs.slug}-panel`}
+                      className="lg:col-span-2"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                      style={{ overflow: "hidden" }}
+                      data-testid={`work-expand-panel-${cs.slug}`}
+                    >
+                      <article className="rounded-[18px] border border-[#F19020]/50 bg-[#EFEAD8] p-7 sm:p-9">
+                        <div className="flex flex-wrap items-start justify-between gap-4">
+                          <div className="flex flex-wrap items-center gap-3">
+                            <ProvenanceTag value={cs.provenance} />
+                            <span className="sys-chip text-[#232A2A]/50">{cs.client} · {cs.industry} · {cs.year}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setExpanded(null)}
+                            className="sys-chip inline-flex items-center gap-1.5 rounded-full border border-[#232A2A]/25 px-3 py-1.5 text-[#232A2A]/70 transition-colors hover:border-[#E54A25] hover:text-[#E54A25]"
+                            data-testid={`work-expand-close-${cs.slug}`}
+                          >
+                            CLOSE <X size={13} />
+                          </button>
+                        </div>
+                        <h3 className="font-display mt-4 leading-[0.95] text-[#232A2A] text-[clamp(2rem,3.4vw,3.1rem)]">{cs.title}</h3>
+
+                        {!details[cs.slug] && (
+                          <div className="mt-8 space-y-4">{Array.from({ length: 3 }).map((_, k) => <div key={k} className="panel-paper h-20 animate-pulse rounded-[14px]" />)}</div>
+                        )}
+                        {details[cs.slug] && (
+                          <>
+                            <div className="mt-8 space-y-4">
+                              {CASE_SECTIONS.map((s, k) => (
+                                <section key={s.key} className={`grid gap-3 rounded-[14px] p-5 sm:grid-cols-12 sm:p-6 ${s.key === "result" ? "panel-dark" : "bg-[#F7F5EE]"}`} data-testid={`work-expand-${cs.slug}-${s.key}`}>
+                                  <div className="sm:col-span-3">
+                                    <p className={`sys-chip flex items-center gap-2 ${s.key === "result" ? "text-[#F19020]" : "text-[#232A2A]/55"}`}>
+                                      {s.key === "gap" && <span className="red-bar" />}
+                                      {String(k + 1).padStart(2, "0")} {s.label}
+                                    </p>
+                                  </div>
+                                  <p className={`text-[16.5px] leading-[1.6] sm:col-span-9 ${s.key === "result" ? "text-[#F7F5EE]/88" : "text-[#232A2A]/85"}`}>{details[cs.slug][s.key]}</p>
+                                </section>
+                              ))}
+                            </div>
+                            <div className="mt-6 flex flex-wrap gap-2">
+                              {(details[cs.slug].services || []).map((s) => (
+                                <span key={s} className="sys-chip rounded-full border border-[#F19020]/70 px-3 py-1 text-[#232A2A]/75">{s}</span>
+                              ))}
+                            </div>
+                            {details[cs.slug].metricEvidence && (
+                              <p className="font-mono-sys mt-5 text-[12.5px] leading-relaxed text-[#232A2A]/55">{details[cs.slug].metricEvidence}</p>
+                            )}
+                          </>
+                        )}
+
+                        <div className="mt-8 flex flex-wrap items-center gap-4 border-t border-[#232A2A]/12 pt-6">
+                          <Link to="/contact" className="btn-ink" data-testid={`work-expand-cta-${cs.slug}`} onClick={() => track("cta_primary_click", { cta: "work_expand", slug: cs.slug })}>
+                            Start a Conversation <ArrowRight size={15} />
+                          </Link>
+                          <Link to={`/work/${cs.slug}`} className="link-draw text-[13.5px] font-semibold text-[#232A2A]/70" data-testid={`work-expand-full-link-${cs.slug}`} onClick={() => track("case_opened", { slug: cs.slug, from: "expand_panel" })}>
+                            Open dedicated case page
+                          </Link>
+                        </div>
+                      </article>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
             ))}
           </div>
         )}
         <p className="font-mono-sys mt-8 text-[12.5px] text-[#232A2A]/50">Metrics are only published when the evidence supports them. Everything else we will happily show you in a conversation.</p>
+        <div className="mt-8 flex justify-end pr-[6%]">
+          <PunPop text="Proof beats promise. Every time." rot={2} variant="dark" testId="pun-work" />
+        </div>
 
         {/* ============ THE PORTFOLIO WALL — migrated from the deck ============ */}
         <div className="mt-20" data-testid="work-portfolio-wall">
@@ -138,7 +224,7 @@ export default function Work() {
               ))}
             </div>
           )}
-          <p className="font-mono-sys mt-6 text-[12.5px] text-[#232A2A]/50">// Live links and walk-throughs shared in conversation. Some builds live behind client walls.</p>
+          <p className="font-mono-sys mt-6 text-[12.5px] text-[#232A2A]/50">Live links and walk-throughs shared in conversation. Some builds live behind client walls.</p>
         </div>
       </section>
     </div>

@@ -1,7 +1,16 @@
 import React, { useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, QuadraticBezierLine } from "@react-three/drei";
 import * as THREE from "three";
+
+/* Cluster geometry constants — shared by the scene and the auto-fit solver so
+   the two can never drift apart. */
+const RING_X = 3.4;
+const RING_Y = 2.1;
+const ACTIVE_SCALE = 1.45;
+/* Rough world-space half-width of an Html label, derived from its font metrics
+   (Rajdhani ~0.115 world units per character at the label's authored scale). */
+const labelHalfWidth = (text, perChar, pad) => (String(text).length * perChar + pad) / 2;
 
 /**
  * THE NETWORK CONSTELLATION
@@ -21,7 +30,7 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
   const group = useRef(null);
   const labelRef = useRef(null);
   const angle = (index / total) * Math.PI * 2 - Math.PI / 2;
-  const base = useMemo(() => new THREE.Vector3(Math.cos(angle) * 3.4, Math.sin(angle) * 2.1, 0), [angle]);
+  const base = useMemo(() => new THREE.Vector3(Math.cos(angle) * RING_X, Math.sin(angle) * RING_Y, 0), [angle]);
   const dots = useMemo(() => {
     const rnd = mulberry(index * 97 + 13);
     return Array.from({ length: 5 }, () => [ (rnd() - 0.5) * 1.15, (rnd() - 0.5) * 0.85, (rnd() - 0.5) * 0.6 ]);
@@ -37,6 +46,7 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
     g.position.set(base.x, base.y + Math.sin(t * 0.5 + index) * 0.07, THREE.MathUtils.lerp(g.position.z, tz, 0.08));
     if (labelRef.current) labelRef.current.style.opacity = active ? "1" : anyActive ? "0.3" : "0.85";
     g.children.forEach((c) => {
+      if (c.userData && c.userData.hit) return; // never surface the invisible click target
       if (c.material) c.material.opacity = THREE.MathUtils.lerp(c.material.opacity, active ? 1 : anyActive ? 0.22 : 0.8, 0.08);
     });
   });
@@ -46,6 +56,7 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
       {/* Invisible hit target — lets visitors click a cluster to deep-dive its specialists */}
       {onSelect && (
         <mesh
+          userData={{ hit: true }}
           onClick={(e) => { e.stopPropagation(); onSelect(name); }}
           onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = "pointer"; }}
           onPointerOut={() => { document.body.style.cursor = ""; }}
@@ -56,8 +67,16 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
       )}
       {dots.map((d, i) => (
         <mesh key={i} position={d}>
-          <sphereGeometry args={[i === 0 ? 0.11 : 0.065, 12, 12]} />
-          <meshBasicMaterial color={i === 0 ? "#F19020" : "#F7F5EE"} transparent opacity={0.8} />
+          <sphereGeometry args={[i === 0 ? 0.11 : 0.065, 24, 24]} />
+          <meshStandardMaterial
+            color={i === 0 ? "#F19020" : "#F7F5EE"}
+            emissive={i === 0 ? "#F19020" : "#F7F5EE"}
+            emissiveIntensity={i === 0 ? 0.5 : 0.12}
+            roughness={0.35}
+            metalness={0.3}
+            transparent
+            opacity={0.8}
+          />
         </mesh>
       ))}
       <Html center transform position={[0, 0.62, 0]} scale={0.3} pointerEvents="none" zIndexRange={[2, 0]}>
@@ -73,8 +92,8 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
           <group key={s}>
             <QuadraticBezierLine start={[0, 0, 0]} end={[sx, sy, 0.15]} mid={[sx * 0.5, sy * 0.5 - 0.1, 0.1]} color="#F19020" lineWidth={1} transparent opacity={0.55} />
             <mesh position={[sx, sy, 0.15]}>
-              <sphereGeometry args={[0.045, 10, 10]} />
-              <meshBasicMaterial color="#F19020" />
+              <sphereGeometry args={[0.045, 16, 16]} />
+              <meshStandardMaterial color="#F19020" emissive="#F19020" emissiveIntensity={0.6} roughness={0.4} metalness={0.2} />
             </mesh>
             <Html center transform position={[sx, sy - 0.22, 0.15]} scale={0.24} pointerEvents="none" zIndexRange={[3, 0]}>
               <div style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: "0.08em", color: "#F7F5EE", background: "rgba(29,36,36,0.88)", border: "1px solid rgba(241,144,32,0.45)", borderRadius: 999, padding: "2px 10px", whiteSpace: "nowrap", pointerEvents: "none", animation: "subFadeIn 0.5s ease both", animationDelay: `${j * 70}ms` }}>
@@ -105,8 +124,8 @@ const CenterNode = () => {
   return (
     <group>
       <mesh ref={core}>
-        <sphereGeometry args={[0.34, 24, 24]} />
-        <meshBasicMaterial color="#F19020" />
+        <sphereGeometry args={[0.34, 32, 32]} />
+        <meshStandardMaterial color="#F19020" emissive="#F19020" emissiveIntensity={0.85} roughness={0.25} metalness={0.35} />
       </mesh>
       <mesh ref={ring} rotation={[0.4, 0, 0]}>
         <torusGeometry args={[0.62, 0.015, 8, 48]} />
@@ -126,7 +145,7 @@ const CenterNode = () => {
 /* Ambient dust for the dark constellation chamber */
 const Dust = () => {
   const ref = useRef(null);
-  const { positions, count } = useMemo(() => {
+  const positions = useMemo(() => {
     const n = 70;
     const arr = new Float32Array(n * 3);
     let s = 21;
@@ -136,7 +155,7 @@ const Dust = () => {
       arr[i * 3 + 1] = (rnd() - 0.5) * 6.5;
       arr[i * 3 + 2] = -2 - rnd() * 4;
     }
-    return { positions: arr, count: n };
+    return arr;
   }, []);
   useFrame(({ clock }) => {
     if (!ref.current) return;
@@ -155,10 +174,76 @@ const Dust = () => {
 const SceneInner = ({ categories, active, subs, onSelect }) => {
   const world = useRef(null);
   const activeIndex = categories.indexOf(active);
+  const { viewport } = useThree();
+
+  /**
+   * Auto-fit: measure the real world-space bounds of everything on screen
+   * (clusters, their labels, and the fan of an expanded cluster), then scale
+   * and centre the whole group so it always sits inside the canvas with a
+   * margin. This is what keeps labels from being clipped on narrow frames,
+   * on mobile, and in full screen — at any aspect ratio.
+   */
+  const bounds = useMemo(() => {
+    const n = categories.length || 1;
+    // Seed with the centre node and its "HI ANZY" caption.
+    let minX = -0.9;
+    let maxX = 0.9;
+    let minY = -1.15;
+    let maxY = 0.9;
+
+    categories.forEach((c, i) => {
+      const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const x = Math.cos(a) * RING_X;
+      const y = Math.sin(a) * RING_Y;
+      const isActive = active === c;
+      const s = isActive ? ACTIVE_SCALE : 1;
+
+      const lw = labelHalfWidth(c, 0.115, 0.3) * s;
+      minX = Math.min(minX, x - lw);
+      maxX = Math.max(maxX, x + lw);
+      minY = Math.min(minY, y - 0.55 * s);
+      maxY = Math.max(maxY, y + 0.9 * s);
+
+      if (!isActive) return;
+      const list = (subs && subs[c]) || [];
+      const m = Math.min(list.length, 6);
+      list.slice(0, 6).forEach((sname, j) => {
+        const sa = (j / Math.max(m - 1, 1) - 0.5) * Math.PI * 0.85 + Math.PI / 2;
+        const sx = x + Math.cos(sa) * 1.35 * s;
+        const sy = y + (-Math.sin(sa) * 0.95 - 0.35 - 0.22) * s;
+        const sw = labelHalfWidth(sname, 0.092, 0.55) * s;
+        minX = Math.min(minX, sx - sw);
+        maxX = Math.max(maxX, sx + sw);
+        minY = Math.min(minY, sy - 0.28 * s);
+        maxY = Math.max(maxY, sy + 0.28 * s);
+      });
+    });
+
+    return {
+      cx: (minX + maxX) / 2,
+      cy: (minY + maxY) / 2,
+      w: Math.max(maxX - minX, 0.001),
+      h: Math.max(maxY - minY, 0.001),
+    };
+  }, [categories, active, subs]);
+
   useFrame(({ clock }) => {
-    if (!world.current) return;
+    const w = world.current;
+    if (!w) return;
+
+    const margin = 0.9; // keep ~10% breathing room inside the frame
+    const fit = Math.min(
+      (viewport.width * margin) / bounds.w,
+      (viewport.height * margin) / bounds.h,
+      1.25 // allow a little zoom-in when there is room (full screen readability)
+    );
+    const s = THREE.MathUtils.lerp(w.scale.x, fit, 0.08);
+    w.scale.setScalar(s);
+    w.position.x = THREE.MathUtils.lerp(w.position.x, -bounds.cx * fit, 0.08);
+    w.position.y = THREE.MathUtils.lerp(w.position.y, -bounds.cy * fit, 0.08);
+
     const target = active ? 0 : Math.sin(clock.getElapsedTime() * 0.1) * 0.12;
-    world.current.rotation.y = THREE.MathUtils.lerp(world.current.rotation.y, target, 0.04);
+    w.rotation.y = THREE.MathUtils.lerp(w.rotation.y, target, 0.04);
   });
   const activePos = useMemo(() => {
     if (activeIndex < 0) return null;
@@ -167,6 +252,10 @@ const SceneInner = ({ categories, active, subs, onSelect }) => {
   }, [activeIndex, categories.length]);
   return (
     <group ref={world}>
+      {/* Aesthetic lighting — gives the node spheres real 3D shading */}
+      <ambientLight intensity={0.55} />
+      <pointLight position={[5, 4, 6]} intensity={26} color="#FFD9A8" />
+      <pointLight position={[-6, -3, 4]} intensity={10} color="#8FB6C4" />
       <Dust />
       <CenterNode />
       {categories.map((c, i) => (

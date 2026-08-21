@@ -76,7 +76,7 @@ export default function WorkDetail() {
         </Link>
         <Reveal>
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <ProvenanceTag label={cs.provenance} testId="work-detail-provenance" />
+            <ProvenanceTag value={cs.provenance} testId="work-detail-provenance" />
             <span className="sys-chip text-[#232A2A]/50">{cs.client} · {cs.industry} · {cs.year}</span>
           </div>
         </Reveal>
@@ -109,7 +109,7 @@ export default function WorkDetail() {
           </div>
         </Reveal>
         {cs.metricEvidence && (
-          <p className="font-mono-sys mt-6 text-[12.5px] leading-relaxed text-[#232A2A]/55" data-testid="work-detail-metric-evidence">// {cs.metricEvidence}</p>
+          <p className="font-mono-sys mt-6 text-[12.5px] leading-relaxed text-[#232A2A]/55" data-testid="work-detail-metric-evidence">{cs.metricEvidence}</p>
         )}
 
         <div className="mt-14 flex flex-wrap items-center justify-between gap-6 rounded-[18px] bg-[#D8CFB4]/60 p-7">

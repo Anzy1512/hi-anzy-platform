@@ -1,60 +1,32 @@
 import axios from "axios";
 
-export const API = process.env.REACT_APP_BACKEND_URL
-  ? `${process.env.REACT_APP_BACKEND_URL}/api`
-  : "/api";
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+export const API = `${BACKEND_URL}/api`;
 
-const http = axios.create({ baseURL: API, timeout: 15000 });
+export const getCaseStudies = (featured) =>
+  axios.get(`${API}/case-studies`, { params: featured != null ? { featured } : {} }).then((r) => r.data);
 
-// Backend contract: GET /case-studies?featured=<bool> -> array
-export const getCaseStudies = async (params = {}) => {
-  const query = typeof params === "boolean" ? { featured: params } : params || {};
-  const { data } = await http.get("/case-studies", { params: query });
-  return Array.isArray(data) ? data : [];
-};
+export const getCaseStudy = (slug) => axios.get(`${API}/case-studies/${slug}`).then((r) => r.data);
 
-export const getCaseStudy = async (slug) => {
-  const { data } = await http.get(`/case-studies/${slug}`);
-  return data;
-};
+export const getNetwork = (category) =>
+  axios.get(`${API}/network`, { params: category ? { category } : {} }).then((r) => r.data);
 
-// Backend contract: GET /insights -> array (no server-side category filter),
-// so the category chips on /insights are applied client-side.
-export const getInsights = async (category = null) => {
-  const { data } = await http.get("/insights");
-  const list = Array.isArray(data) ? data : [];
-  return category ? list.filter((p) => p.category === category) : list;
-};
+export const getNetworkCategories = () => axios.get(`${API}/network/categories`).then((r) => r.data.categories);
 
-export const getInsight = async (slug) => {
-  const { data } = await http.get(`/insights/${slug}`);
-  return data;
-};
+export const getInsights = (category) =>
+  axios.get(`${API}/insights`, { params: category ? { category } : {} }).then((r) => r.data);
 
-// Backend contract: GET /network?category=<str> -> array
-export const getNetwork = async (params = {}) => {
-  const query = typeof params === "string" ? { category: params } : params || {};
-  const { data } = await http.get("/network", { params: query });
-  return Array.isArray(data) ? data : [];
-};
+export const getInsight = (slug) => axios.get(`${API}/insights/${slug}`).then((r) => r.data);
 
-// Backend contract: GET /network/categories -> { categories: [...] }
-// Unwrapped here so callers always receive a plain array.
-export const getNetworkCategories = async () => {
-  const { data } = await http.get("/network/categories");
-  if (Array.isArray(data)) return data;
-  return Array.isArray(data?.categories) ? data.categories : [];
-};
+export const submitContact = (payload) => axios.post(`${API}/contact`, payload).then((r) => r.data);
 
-export const submitContact = async (payload) => {
-  const { data } = await http.post("/contact", payload);
-  return data;
-};
-
-export const track = async (name, meta = {}, path = window.location.pathname) => {
+/** Analytics — clear event names, fire-and-forget. GA4/Plausible-ready hook point. */
+export const track = (name, meta = {}) => {
   try {
-    await http.post("/analytics/event", { name, meta, path });
-  } catch {
-    // fire-and-forget — never throw
+    axios.post(`${API}/analytics/event`, { name, meta, path: window.location.pathname }).catch(() => {});
+    if (window.gtag) window.gtag("event", name, meta);
+    if (window.plausible) window.plausible(name, { props: meta });
+  } catch (e) {
+    /* analytics must never break the app */
   }
 };

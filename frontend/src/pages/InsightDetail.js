@@ -43,7 +43,7 @@ export default function InsightDetail() {
 
   if (notFound) {
     return (
-      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-6 pt-[68px]" data-testid="insight-not-found">
+      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-6 pt-[84px]" data-testid="insight-not-found">
         <p className="font-display text-5xl text-[#232A2A]">That note wandered off.</p>
         <MagneticButton to="/insights" className="btn-ink">Back to Insights</MagneticButton>
       </div>
@@ -52,7 +52,7 @@ export default function InsightDetail() {
 
   if (!post) {
     return (
-      <div className="mx-auto max-w-[760px] space-y-6 px-4 pb-24 pt-[120px]">
+      <div className="mx-auto max-w-[760px] space-y-6 px-[var(--page-x)] pb-24 pt-[136px]">
         <div className="panel-paper h-24 animate-pulse" />
         <div className="panel-paper h-[420px] animate-pulse" />
       </div>
@@ -70,9 +70,9 @@ export default function InsightDetail() {
   };
 
   return (
-    <div ref={ref} className="pt-[68px]" data-testid="insight-detail-page">
+    <div ref={ref} className="pt-[84px]" data-testid="insight-detail-page">
       <Seo title={post.seo?.title || `${post.title} — Hi Anzy`} description={post.seo?.description || post.excerpt} jsonLd={jsonLd} />
-      <article className="mx-auto max-w-[780px] px-4 py-14 sm:px-6 lg:py-20">
+      <article className="mx-auto max-w-[780px] px-[var(--page-x)] py-14 lg:py-20">
         <Link to="/insights" className="link-draw sys-chip inline-flex items-center gap-2 text-[#232A2A]/60" data-testid="insight-back">
           <ArrowLeft size={13} /> ALL NOTES
         </Link>
@@ -80,8 +80,8 @@ export default function InsightDetail() {
           <span className="sys-chip rounded-full border border-[#F19020]/70 px-3 py-1 text-[#232A2A]/70">{post.category.toUpperCase()}</span>
           <span className="sys-chip text-[#232A2A]/45">{post.readingTime} READ</span>
         </div>
-        <h1 className="font-display mt-4 leading-[0.92] text-[#232A2A] text-5xl sm:text-6xl" data-testid="insight-title">{post.title}</h1>
-        <p className="mt-5 text-lg leading-relaxed text-[#232A2A]/80">{post.excerpt}</p>
+        <h1 className="font-display mt-4 leading-[0.92] text-[#232A2A] text-[clamp(2.4rem,4.5vw,4rem)]" data-testid="insight-title">{post.title}</h1>
+        <p className="font-editorial mt-5 max-w-[46ch] text-[clamp(1.2rem,1.6vw,1.5rem)] leading-[1.42] text-[#232A2A]/80">{post.excerpt}</p>
         <div className="mt-4 h-[3px] w-16 rounded-full bg-[#F19020]" />
 
         <div className="mt-10 space-y-6" data-testid="insight-body">
@@ -91,10 +91,10 @@ export default function InsightDetail() {
               return (
                 <blockquote key={i} className="panel-dark relative p-6 sm:p-7">
                   <span className="red-bar absolute left-6 top-0 -translate-y-1/2" style={{ width: 28 }} />
-                  <p className="font-display text-2xl leading-snug text-[#F19020]">{b.text}</p>
+                  <p className="font-editorial italic text-[clamp(1.35rem,2vw,1.8rem)] leading-[1.28] text-[#F19020]">{b.text}</p>
                 </blockquote>
               );
-            return <p key={i} className="text-[16px] leading-[1.85] text-[#232A2A]/85">{b.text}</p>;
+            return <p key={i} className="text-[18.5px] leading-[1.65] text-[#232A2A]/85">{b.text}</p>;
           })}
         </div>
 

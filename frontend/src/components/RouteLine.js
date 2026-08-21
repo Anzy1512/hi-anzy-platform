@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/motion";
+import { gsap, prefersReducedMotion } from "@/lib/motion";
 
 /**
  * The signature orange route. An SVG path that draws itself as the user scrolls.

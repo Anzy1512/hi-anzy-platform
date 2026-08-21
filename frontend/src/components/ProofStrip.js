@@ -5,7 +5,7 @@ import { BRAND_REFS, ROTATING_QUOTES } from "@/data/content";
 
 /**
  * PROOF STRIP — fills the band under the hero.
- * Left: rotating brand-voice quotes (Newsreader, human voice).
+ * Left: rotating brand-voice quotes (Figtree, human voice).
  * Right rail below: marquee of campaign / placement / collaboration credits
  * from the original deck, labelled honestly.
  */
@@ -36,7 +36,7 @@ export const ProofStrip = () => {
           <div className="lg:col-span-9">
             <p
               key={idx}
-              className="font-editorial min-h-[2.4em] max-w-[26ch] text-[clamp(1.45rem,2.5vw,2.4rem)] font-medium italic leading-[1.18] text-[#232A2A] transition-all duration-500"
+              className="font-pun min-h-[2.4em] max-w-[26ch] text-[clamp(1.45rem,2.5vw,2.4rem)] font-medium italic leading-[1.18] text-[#232A2A] transition-all duration-500"
               style={{ opacity: leaving ? 0 : 1, transform: leaving ? "translateY(10px)" : "translateY(0)" }}
               data-testid="rotating-quote"
             >
@@ -76,7 +76,7 @@ export const ProofStrip = () => {
               {BRAND_REFS.map((b) => <li key={b}>{b}</li>)}
             </ul>
           </div>
-          <p className="font-mono-sys mt-2 text-[12.5px] tracking-[0.05em] text-[#232A2A]/40">// Credits span Hi Anzy and network collaborations. We label who did what — always.</p>
+          <p className="font-mono-sys mt-2 text-[12.5px] tracking-[0.05em] text-[#232A2A]/40">Credits span Hi Anzy and network collaborations. We label who did what — always.</p>
         </div>
       </Reveal>
     </section>

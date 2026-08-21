@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { Menu, LogIn, LogOut } from "lucide-react";
 import { NAV_LINKS } from "@/data/content";
 import { MagneticButton } from "@/components/MagneticButton";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { track } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
 
 export const Nav = () => {
   const location = useLocation();
+  const { user, loading, login, logout } = useAuth();
   const listRef = useRef(null);
   const [bar, setBar] = useState({ left: 0, width: 0, visible: false });
   const [open, setOpen] = useState(false);
@@ -38,7 +41,7 @@ export const Nav = () => {
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b border-[#232A2A]/12 bg-[#E0D8C1]/88 backdrop-blur-md" data-testid="site-nav">
-      <div className="mx-auto flex h-[68px] max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="container-page flex h-[84px] items-center justify-between">
         <Link to="/" className="flex items-center gap-3" data-testid="nav-logo" aria-label="Hi Anzy — home">
           <img src="/brand/logo-dark.png" alt="hiAnzy" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" />
         </Link>
@@ -52,7 +55,7 @@ export const Nav = () => {
                 to={l.to}
                 end={l.to === "/"}
                 data-testid={`nav-item-${l.label.toLowerCase().replace(/\s+/g, "-")}`}
-                className={({ isActive }) => `relative py-2 text-[13.5px] font-semibold transition-colors ${isActive ? "text-[#232A2A]" : "text-[#232A2A]/64 hover:text-[#232A2A]"}`}
+                className={({ isActive }) => `font-display relative py-2 text-[15.5px] font-semibold tracking-[0.035em] transition-colors ${isActive ? "text-[#232A2A]" : "text-[#232A2A]/64 hover:text-[#232A2A]"}`}
               >
                 {({ isActive }) => <span data-active={isActive}>{l.label}</span>}
               </NavLink>
@@ -62,6 +65,41 @@ export const Nav = () => {
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* Emergent managed Google sign-in */}
+          {!loading && !user && (
+            <button
+              type="button"
+              onClick={login}
+              className="sys-chip hidden items-center gap-1.5 rounded-full border border-[#232A2A]/25 px-3.5 py-2 text-[#232A2A]/75 transition-colors hover:border-[#F19020] hover:text-[#232A2A] sm:inline-flex"
+              data-testid="nav-sign-in-btn"
+            >
+              <LogIn size={13} /> SIGN IN
+            </button>
+          )}
+          {!loading && user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button type="button" className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border-2 border-[#F19020] transition-transform hover:scale-105" data-testid="nav-user-avatar" aria-label="Account menu">
+                  {user.picture ? (
+                    <img src={user.picture} alt={user.name} className="h-full w-full object-cover" referrerPolicy="no-referrer" />
+                  ) : (
+                    <span className="font-display text-sm font-bold text-[#232A2A]">{(user.name || "U").slice(0, 1).toUpperCase()}</span>
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="border-[#232A2A]/15 bg-[#F7F5EE]">
+                <DropdownMenuLabel data-testid="nav-user-name">
+                  <span className="font-display text-[15px] text-[#232A2A]">{user.name}</span>
+                  <p className="font-mono-sys text-[11px] font-normal text-[#232A2A]/55">{user.email}</p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={logout} className="cursor-pointer text-[#E54A25] focus:text-[#E54A25]" data-testid="nav-logout-btn">
+                  <LogOut size={14} /> Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+
           <MagneticButton to="/contact" className="btn-ink hidden sm:inline-flex" hoverText="Good start." testId="nav-say-hi-cta" onClick={() => track("cta_primary_click", { cta: "say_hi_nav" })}>
             Say Hi
           </MagneticButton>
@@ -69,7 +107,7 @@ export const Nav = () => {
           {/* Mobile */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <button className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#232A2A]/25 lg:hidden" aria-label="Open menu" data-testid="nav-mobile-toggle">
+              <button className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-[#232A2A]/25 lg:hidden" aria-label="Open menu" data-testid="nav-mobile-toggle">
                 <Menu size={18} />
               </button>
             </SheetTrigger>
@@ -82,7 +120,7 @@ export const Nav = () => {
                         to={l.to}
                         end={l.to === "/"}
                         data-testid={`nav-mobile-item-${l.label.toLowerCase().replace(/\s+/g, "-")}`}
-                        className={({ isActive }) => `font-display rounded-lg px-3 py-2.5 text-3xl uppercase ${isActive ? "bg-[#232A2A] text-[#F7F5EE]" : "text-[#232A2A]"}`}
+                        className={({ isActive }) => `font-display rounded-lg px-3 py-2.5 text-3xl ${isActive ? "bg-[#232A2A] text-[#F7F5EE]" : "text-[#232A2A]"}`}
                       >
                         {l.label}
                       </NavLink>

@@ -50,13 +50,76 @@ export const LenisProvider = ({ children }) => {
   return children;
 };
 
+/**
+ * Single source of truth for scroll position.
+ *
+ * Lenis interpolates its own scroll value and only then writes it to the
+ * window, so anything reading `window.scrollY` from its own rAF loop lands a
+ * frame behind and drifts out of sync with everything else. Subscribing here
+ * means the progress bar, the hero 3D route and any future scroll-driven work
+ * all read the *same* value on the *same* tick.
+ *
+ * Returns an unsubscribe function.
+ */
+export const subscribeScroll = (cb) => {
+  const nativeLimit = () => Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+  let lenisOff = null;
+  let raf = 0;
+
+  const emitNative = () => {
+    raf = 0;
+    cb(window.scrollY, nativeLimit());
+  };
+  const onNative = () => {
+    if (!raf) raf = requestAnimationFrame(emitNative);
+  };
+
+  // Lenis is created by a parent effect, which runs *after* child effects on
+  // mount — so poll briefly for it instead of assuming it already exists.
+  let tries = 0;
+  const attach = () => {
+    const lenis = window.__lenis;
+    if (lenis) {
+      const handler = ({ scroll, limit }) => cb(scroll, limit || nativeLimit());
+      lenis.on("scroll", handler);
+      lenisOff = () => lenis.off("scroll", handler);
+      cb(lenis.scroll ?? window.scrollY, lenis.limit || nativeLimit());
+      return;
+    }
+    tries += 1;
+    if (tries < 40) setTimeout(attach, 50);
+  };
+  attach();
+
+  window.addEventListener("scroll", onNative, { passive: true });
+  window.addEventListener("resize", onNative);
+  emitNative();
+
+  return () => {
+    if (lenisOff) lenisOff();
+    window.removeEventListener("scroll", onNative);
+    window.removeEventListener("resize", onNative);
+    if (raf) cancelAnimationFrame(raf);
+  };
+};
+
+/** Re-measure after layout changes (route swap, full-screen exit, font load). */
+export const resyncScroll = () => {
+  if (window.__lenis) window.__lenis.resize();
+  ScrollTrigger.refresh();
+};
+
 /** Scroll restoration + ScrollTrigger refresh on route change. */
 export const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
+    // Drive whichever scroller is actually in charge — calling both makes
+    // Lenis and the browser fight over the same frame.
     if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true });
-    window.scrollTo(0, 0);
-    const t = setTimeout(() => ScrollTrigger.refresh(), 250);
+    else window.scrollTo(0, 0);
+    // Lazy routes mount their content after this tick, so the document height
+    // is still stale here — re-measure once it has settled.
+    const t = setTimeout(resyncScroll, 250);
     return () => clearTimeout(t);
   }, [pathname]);
   return null;

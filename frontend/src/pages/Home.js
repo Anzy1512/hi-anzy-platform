@@ -9,6 +9,7 @@ import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { RouteLine } from "@/components/RouteLine";
 import { SystemCoreFallback, ConstellationFallback, ThreeSafe } from "@/components/three/Fallbacks";
 import { HalftoneBackdrop, HalftoneStatic } from "@/components/three/HalftoneBackdrop";
+import { PunRow } from "@/components/PunPop";
 import { ProofStrip } from "@/components/ProofStrip";
 import { useRevealObserver, useReducedMotion, webglAvailable, gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/motion";
 import { getCaseStudies, track } from "@/lib/api";
@@ -99,7 +100,7 @@ const SomethingsOff = () => (
       <div className="lg:col-span-5">
         <SectionHeading kicker="SYS.CHECK" title={<>Something&rsquo;s off<span className="text-[#E54A25]">.</span></>} testId="somethings-off-heading" />
         <Reveal delay={140} as="p" className="font-mono-sys mt-6 max-w-sm text-[13px] leading-relaxed text-[#232A2A]/55">
-          // Symptoms observed in the wild. Names withheld. Patterns, unfortunately, not.
+          Symptoms observed in the wild. Names withheld. Patterns, unfortunately, not.
         </Reveal>
         <Reveal delay={220}>
           <figure className="relative mt-8 hidden max-w-[300px] lg:block" data-parallax="18">
@@ -141,7 +142,7 @@ const WhyHowNow = () => (
         <Reveal key={b.key} delay={i * 120} className={i === 1 ? "lg:mt-10" : i === 2 ? "lg:mt-20" : ""}>
           <div className={`${i === 1 ? "panel-paper" : "panel-dark"} cap-tile h-full p-7 sm:p-8`} data-testid={`why-how-now-panel-${b.key.toLowerCase()}`}>
             <div className="flex items-center justify-between">
-              <span className="font-display text-6xl leading-none text-[#F19020]">{b.label || b.key}</span>
+              <span className="font-display text-6xl leading-none text-[#F19020]">{b.key}</span>
             </div>
             <p className={`font-editorial mt-4 text-[clamp(1.15rem,1.45vw,1.4rem)] font-medium leading-[1.35] ${i === 1 ? "text-[#232A2A]" : "text-[#F7F5EE]"}`}>{b.q}</p>
             <ul className="mt-5 flex flex-wrap gap-2">
@@ -370,7 +371,7 @@ const WorkPreview = () => {
               className="case-card group block w-[340px] shrink-0 rounded-[18px] border border-[#232A2A]/15 bg-[#F7F5EE] p-6 sm:w-[400px]"
             >
               <div className="flex items-center justify-between gap-3">
-                <ProvenanceTag label={cs.provenance} />
+                <ProvenanceTag value={cs.provenance} />
                 <span className="sys-chip text-[#232A2A]/45">{cs.year}</span>
               </div>
               <h3 className="font-display mt-4 text-3xl leading-[0.95] text-[#232A2A]">{cs.title}</h3>
@@ -587,12 +588,42 @@ export default function Home() {
       />
       <Hero show3d={show3d} />
       <ProofStrip />
+      <div className="container-page -mt-4 mb-4">
+        <PunRow
+          testId="pun-home-1"
+          puns={[
+            { text: "Loud is easy. Clear is rare.", rot: 2.5, variant: "orange" },
+            { text: "Complexity is clarity, procrastinating.", rot: -1.8 },
+            { text: "Alignment beats effort.", rot: 1.2, variant: "dark" },
+          ]}
+        />
+      </div>
       <SomethingsOff />
       <WhyHowNow />
+      <div className="container-page -mt-2 mb-6">
+        <PunRow
+          testId="pun-home-2"
+          puns={[
+            { text: "Strategy is spellcheck for ambition.", rot: -2, variant: "dark" },
+            { text: "Opinions are cheap. Systems compound.", rot: 1.6 },
+            { text: "A brand is a promise with receipts.", rot: -1.2, variant: "orange" },
+          ]}
+        />
+      </div>
       <WhatWeDoGrid />
       <MethodSection />
       <Diagnostic />
       <WorkPreview />
+      <div className="container-page -mt-2 mb-6">
+        <PunRow
+          testId="pun-home-3"
+          puns={[
+            { text: "ROI: Return On Intention.", rot: 1.5 },
+            { text: "If it only works when you're watching, it doesn't work.", rot: -2.2, variant: "dark" },
+            { text: "Growth without a system is expensive noise.", rot: 1.9, variant: "orange" },
+          ]}
+        />
+      </div>
       <NetworkPreview show3d={show3d} />
       <Trust />
       <WhoWith />

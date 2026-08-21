@@ -10,7 +10,7 @@ export const SectionHeading = ({ kicker, title, dark = false, className = "", te
       </Reveal>
     )}
     <Reveal as="h2" delay={80} testId={testId}
-      className={`font-display leading-[0.98] text-4xl sm:text-5xl lg:text-[3.4rem] ${dark ? "text-[#F7F5EE]" : "text-[#232A2A]"}`}>
+      className={`font-display leading-[0.95] text-[clamp(2.4rem,5.5vw,5.25rem)] ${dark ? "text-[#F7F5EE]" : "text-[#232A2A]"}`}>
       {title}
     </Reveal>
   </div>

@@ -1,8 +1,8 @@
 import React from "react";
 
-/** Wraps children in a div with the `.reveal` class so useRevealObserver picks it up. */
-export const Reveal = ({ children, className = "", as: Tag = "div", testId, ...props }) => (
-  <Tag className={`reveal ${className}`.trim()} data-testid={testId} {...props}>
+/** Content wrapper that fades/slides in when scrolled into view (see useRevealObserver). */
+export const Reveal = ({ children, className = "", delay = 0, as: Tag = "div", testId }) => (
+  <Tag className={`reveal ${className}`} style={delay ? { transitionDelay: `${delay}ms` } : undefined} data-testid={testId}>
     {children}
   </Tag>
 );

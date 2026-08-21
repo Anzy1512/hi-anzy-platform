@@ -5,64 +5,67 @@ import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { useRevealObserver } from "@/lib/motion";
-import { track } from "@/lib/api";
-import { COLLABORATE_CATEGORIES, CREDIT_LEGEND } from "@/data/content";
+import { CharacterQuote } from "@/components/CharacterQuote";
+
+const ASKS = [
+  { title: "Specialists", body: "Strategists, designers, engineers, automators, analysts. People who are excellent at one thing and honest about the rest." },
+  { title: "Creators & Media", body: "Creators, journalists, producers and channels who care what runs under their name." },
+  { title: "Venues & Partners", body: "Spaces, institutions and operators who want brand moments that respect the room." },
+];
 
 export default function Collaborate() {
   const ref = useRevealObserver();
   return (
-    <div ref={ref} className="pt-[68px]" data-testid="collaborate-page">
-      <Seo title="Collaborate — Join the Hi Anzy Network" description="The Hi Anzy network is assembled per problem, credited honestly and briefed properly. If you are exceptional at something businesses need, we would like to know you exist." />
-      <section className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+    <div ref={ref} className="pt-[84px]" data-testid="collaborate-page">
+      <Seo title="Collaborate — Join the Hi Anzy Network" description="Specialists, creators, media and venues: the Hi Anzy network runs on honest classification and real credit. Introduce yourself." />
+      <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> COLLABORATE
         </Reveal>
         <Reveal delay={80}>
           <h1 className="font-display mt-5 max-w-4xl leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="collaborate-h1">
-            Good problems attract good company.
+            Good problems attract good company<span className="text-[#E54A25]">.</span>
           </h1>
         </Reveal>
-        <Reveal delay={160} as="p" className="mt-7 max-w-[52ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
+        <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
           The Hi Anzy network is assembled per problem, credited honestly and briefed properly. If you are
           exceptional at something businesses need, we would like to know you exist.
         </Reveal>
-
-        <div className="mt-14 grid gap-5 sm:grid-cols-3">
-          {COLLABORATE_CATEGORIES.map((c, i) => (
-            <Reveal key={c.num} delay={i * 90}>
-              <div className="cap-tile panel-paper h-full p-7" data-testid={`collaborate-category-${c.num}`}>
-                <span className="font-mono-sys text-[11px] text-[#F19020]">{c.num}</span>
-                <h2 className="font-display mt-2 text-3xl text-[#232A2A]">{c.title}</h2>
-                <p className="mt-3 text-[15px] leading-relaxed text-[#232A2A]/78">{c.body}</p>
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          {ASKS.map((a, i) => (
+            <Reveal key={a.title} delay={i * 100}>
+              <div className="cap-tile panel-paper h-full p-7">
+                <p className="font-mono-sys text-[12.5px] text-[#F19020]">{String(i + 1).padStart(2, "0")}</p>
+                <h2 className="font-display mt-2 text-3xl text-[#232A2A]">{a.title}</h2>
+                <p className="mt-3 text-[16.5px] leading-[1.58] text-[#232A2A]/78">{a.body}</p>
               </div>
             </Reveal>
           ))}
         </div>
-
-        <Reveal delay={280}>
-          <div className="panel-dark mt-10 p-7 sm:p-9" data-testid="collaborate-credit-legend">
-            <p className="sys-chip flex items-center gap-2 text-[#F19020]"><span className="red-bar" /> HOW CREDIT WORKS HERE</p>
-            <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-[#F7F5EE]/85">
+        <Reveal delay={150}>
+          <div className="panel-dark mt-10 max-w-3xl p-7 sm:p-9">
+            <p className="sys-chip text-[#F19020]">HOW CREDIT WORKS HERE</p>
+            <p className="mt-3 text-[17px] leading-[1.6] text-[#F7F5EE]/85">
               Every relationship is classified truthfully, in public:
             </p>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {CREDIT_LEGEND.map((l) => (
-                <div key={l.tag} className="rounded-[14px] border border-[#F7F5EE]/15 p-4">
-                  <ProvenanceTag label={l.tag} />
-                  <p className="mt-2.5 text-[13.5px] leading-[1.5] text-[#F7F5EE]/70">{l.text}</p>
-                </div>
-              ))}
+            <div className="mt-4 flex flex-wrap gap-2">
+              <ProvenanceTag value="HI ANZY DIRECT" dark />
+              <ProvenanceTag value="HI ANZY + COLLABORATOR" />
+              <ProvenanceTag value="COLLABORATOR CREDENTIAL" />
+              <ProvenanceTag value="NETWORK ACCESS" />
             </div>
-            <p className="font-mono-sys mt-5 text-[11px] text-[#F7F5EE]/45">// Your work stays your work. We just make sure the world knows who did what.</p>
+            <p className="font-mono-sys mt-4 text-[12.5px] text-[#F7F5EE]/45">Your work stays your work. We just make sure the world knows who did what.</p>
           </div>
         </Reveal>
-
-        <Reveal delay={340} className="mt-12">
-          <MagneticButton to="/contact" className="btn-ink" hoverText="Meet the minds." testId="collaborate-cta" onClick={() => track("cta_primary_click", { cta: "collaborate_bottom" })}>
+        <Reveal delay={200} className="mt-12">
+          <MagneticButton to="/contact" className="btn-ink" hoverText="Meet the minds." testId="collaborate-cta">
             Introduce Yourself <ArrowRight size={15} />
           </MagneticButton>
         </Reveal>
       </section>
+      <div className="pb-16">
+        <CharacterQuote startIndex={4} />
+      </div>
     </div>
   );
 }

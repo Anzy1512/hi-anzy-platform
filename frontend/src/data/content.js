@@ -167,27 +167,6 @@ export const CHARACTERS = [
 
 export const TEAM_QUOTE = "We're just a bunch of curious minds trying to build something that grows with us and maybe, just maybe, leaves a dent in the world. Along the way, we keep each other grounded — and make sure it never gets boring.";
 
-export const CAREER_PRINCIPLES = [
-  { num: "01", title: "Curiosity over credentials", body: "Degrees are nice. Noticing things is nicer." },
-  { num: "02", title: "Writing is thinking", body: "If it cannot be explained in a paragraph, it is not understood yet." },
-  { num: "03", title: "Ownership over activity", body: "Looking busy is not a growth strategy. Internally, either." },
-  { num: "04", title: "Kind and direct", body: "We disagree in the room, commit outside it, and credit loudly." },
-];
-
-export const COLLABORATE_CATEGORIES = [
-  { num: "01", title: "Specialists", body: "Strategists, designers, engineers, automators, analysts. People who are excellent at one thing and honest about the rest." },
-  { num: "02", title: "Creators & Media", body: "Creators, journalists, producers and channels who care what runs under their name." },
-  { num: "03", title: "Venues & Partners", body: "Spaces, institutions and operators who want brand moments that respect the room." },
-];
-
-/** Same provenance tiers shown on /network — reused here so the credit legend stays consistent site-wide. */
-export const CREDIT_LEGEND = [
-  { tag: "HI ANZY DIRECT", text: "Owned and delivered by the Hi Anzy core layer." },
-  { tag: "HI ANZY + COLLABORATOR", text: "Hi Anzy led, specialists executed alongside." },
-  { tag: "COLLABORATOR CREDENTIAL", text: "Independent track record of a network member." },
-  { tag: "NETWORK ACCESS", text: "Relationships we can activate. Not client work." },
-];
-
 /** Subcategories shown inside the Network constellation when a cluster is focused. */
 export const NETWORK_SUBCATS = {
   Strategy: ["Diagnostics", "Positioning", "Roadmaps", "Go-to-market", "Pricing"],

@@ -1,7 +1,8 @@
 import React, { useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import * as THREE from "three";
+import { subscribeScroll } from "@/lib/motion";
 
 /**
  * THE ANZY SYSTEM CORE
@@ -149,7 +150,7 @@ const Deco = () => {
 /* Ambient drifting particles — analog dust in the system chamber */
 const Particles = () => {
   const ref = useRef(null);
-  const { positions, count } = useMemo(() => {
+  const positions = useMemo(() => {
     const n = 46;
     const arr = new Float32Array(n * 3);
     let s = 7;
@@ -159,7 +160,7 @@ const Particles = () => {
       arr[i * 3 + 1] = (rnd() - 0.5) * 6.4;
       arr[i * 3 + 2] = -1.2 - rnd() * 3.2;
     }
-    return { positions: arr, count: n };
+    return arr;
   }, []);
   useFrame(({ clock }) => {
     if (!ref.current) return;
@@ -209,11 +210,50 @@ const PulseDot = ({ progressRef }) => {
   );
 };
 
+/* World-space bounds of the resolved system, including the widest node label
+   ("OPERATIONS"), the route's lead-in point and the ROI chip. Keeping this as
+   data means the auto-fit below never has to guess. */
+const CONTENT = (() => {
+  let minX = -2.9;
+  let maxX = 2.3;
+  let minY = -2.9;
+  let maxY = 2.6;
+  const consider = (x, y, halfW, halfH) => {
+    minX = Math.min(minX, x - halfW);
+    maxX = Math.max(maxX, x + halfW);
+    minY = Math.min(minY, y - halfH);
+    maxY = Math.max(maxY, y + halfH);
+  };
+  NODE_DEFS.forEach((d) => {
+    // card is 1.12 wide; a long label can overhang it
+    const halfW = Math.max(0.56, (d.label.length * 0.155 + 0.2) / 2);
+    consider(d.scatter[0], d.scatter[1], halfW, 0.3);
+    consider(d.resolved[0], d.resolved[1], halfW, 0.3);
+  });
+  consider(ROI_POS[0], ROI_POS[1], 0.62, 0.42);
+  return { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, w: maxX - minX, h: maxY - minY };
+})();
+
 const SceneInner = ({ progressRef, pointerRef }) => {
   const world = useRef(null);
+  const { viewport } = useThree();
   useFrame(() => {
     const w = world.current;
     if (!w) return;
+
+    // Auto-fit so no node card or label is ever clipped by the frame,
+    // whatever the panel's aspect ratio is (desktop, tablet, mobile).
+    const margin = 0.92;
+    const fit = Math.min(
+      (viewport.width * margin) / CONTENT.w,
+      (viewport.height * margin) / CONTENT.h,
+      1
+    );
+    const s = THREE.MathUtils.lerp(w.scale.x, fit, 0.1);
+    w.scale.setScalar(s);
+    w.position.x = THREE.MathUtils.lerp(w.position.x, -CONTENT.cx * fit, 0.1);
+    w.position.y = THREE.MathUtils.lerp(w.position.y, -CONTENT.cy * fit, 0.1);
+
     w.rotation.y = THREE.MathUtils.lerp(w.rotation.y, pointerRef.current.x * 0.09, 0.06);
     w.rotation.x = THREE.MathUtils.lerp(w.rotation.x, -pointerRef.current.y * 0.05, 0.06);
   });
@@ -241,8 +281,14 @@ const SystemCore = () => {
   React.useEffect(() => {
     let raf;
     const startTime = performance.now();
+    // Scroll position comes from the shared, Lenis-synced source so the route
+    // animation advances on the same value as the top progress bar.
+    const scrollRef = { current: window.scrollY };
+    const unsubscribe = subscribeScroll((scroll) => {
+      scrollRef.current = scroll;
+    });
     const update = () => {
-      const scrollP = clamp01(window.scrollY / (window.innerHeight * 1.15));
+      const scrollP = clamp01(scrollRef.current / (window.innerHeight * 1.15));
       const intro = clamp01((performance.now() - startTime) / 3000) * 0.16;
       introRef.current = intro;
       progressRef.current = Math.max(intro, scrollP);
@@ -255,6 +301,7 @@ const SystemCore = () => {
     window.addEventListener("pointermove", onPointer, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
+      unsubscribe();
       window.removeEventListener("pointermove", onPointer);
     };
   }, []);
