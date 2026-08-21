@@ -208,8 +208,14 @@ async def network_categories():
 
 
 @api_router.get("/insights")
-async def list_insights():
-    cursor = db.insights.find({"published": True}, {"_id": 0, "body": 0}).sort("_id", -1)
+async def list_insights(category: Optional[str] = None):
+    """The front end has always sent ?category= from the filter chips; the
+    parameter was never read, so every chip returned the full list and the
+    filter looked broken. Mirrors the /network contract."""
+    query: Dict[str, Any] = {"published": True}
+    if category:
+        query["category"] = category
+    cursor = db.insights.find(query, {"_id": 0, "body": 0}).sort("_id", -1)
     return await cursor.to_list(length=50)
 
 

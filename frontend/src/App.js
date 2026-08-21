@@ -15,6 +15,7 @@ const HowWeWork = lazy(() => import("@/pages/HowWeWork"));
 const Work = lazy(() => import("@/pages/Work"));
 const WorkDetail = lazy(() => import("@/pages/WorkDetail"));
 const Network = lazy(() => import("@/pages/Network"));
+const Discipline = lazy(() => import("@/pages/Discipline"));
 const WhyHiAnzy = lazy(() => import("@/pages/WhyHiAnzy"));
 const Insights = lazy(() => import("@/pages/Insights"));
 const InsightDetail = lazy(() => import("@/pages/InsightDetail"));
@@ -53,6 +54,7 @@ const Shell = () => {
             <Route path="/work" element={<Work />} />
             <Route path="/work/:slug" element={<WorkDetail />} />
             <Route path="/network" element={<Network />} />
+            <Route path="/network/:slug" element={<Discipline />} />
             <Route path="/why-hi-anzy" element={<WhyHiAnzy />} />
             <Route path="/insights" element={<Insights />} />
             <Route path="/insights/:slug" element={<InsightDetail />} />

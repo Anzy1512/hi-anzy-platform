@@ -1,6 +1,8 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { createPortal } from "react-dom";
-import { Maximize2, Minimize2 } from "lucide-react";
+import { Maximize2, Minimize2, ArrowRight } from "lucide-react";
+import { DISCIPLINES } from "@/data/disciplines";
 import { Seo } from "@/components/Seo";
 import { Reveal } from "@/components/Reveal";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
@@ -212,6 +214,43 @@ export default function Network() {
               </button>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── The sixteen disciplines, each explained on its own page ─────── */}
+      <section className="container-page section-pad" data-testid="network-disciplines">
+        <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
+          <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> THE DISCIPLINES, EXPLAINED
+        </Reveal>
+        <Reveal delay={70}>
+          <h2 className="font-display mt-4 max-w-3xl leading-[1.0] text-[#232A2A] text-[clamp(2rem,3.6vw,3.2rem)]">
+            Sixteen disciplines. One question each.
+          </h2>
+        </Reveal>
+        <Reveal delay={130} as="p" className="mt-4 max-w-[62ch] text-[17px] leading-[1.6] text-[#232A2A]/80">
+          You do not need to know what to call it. Read the line that sounds like your Tuesday and follow it —
+          each one explains what the work actually is, and how you would know you need it.
+        </Reveal>
+
+        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-testid="discipline-grid">
+          {DISCIPLINES.map((d, i) => (
+            <Reveal key={d.slug} delay={(i % 3) * 70}>
+              <Link
+                to={`/network/${d.slug}`}
+                onClick={() => track("discipline_opened", { discipline: d.slug, from: "network" })}
+                data-testid={`discipline-card-${d.slug}`}
+                className="cap-tile group flex h-full flex-col rounded-[16px] border border-[#232A2A]/15 bg-[#F7F5EE] p-6 transition-colors hover:border-[#F19020]"
+              >
+                <span className="sys-chip text-[#232A2A]/50">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-display mt-1.5 text-[26px] leading-none text-[#232A2A]">{d.name}</span>
+                <span className="mt-3 text-[15.5px] leading-[1.55] text-[#232A2A]/80">{d.hook}</span>
+                <span className="link-draw mt-auto inline-flex items-center gap-1.5 pt-5 text-[13.5px] font-semibold text-[#232A2A]">
+                  What this actually means
+                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                </span>
+              </Link>
+            </Reveal>
+          ))}
         </div>
       </section>
 
