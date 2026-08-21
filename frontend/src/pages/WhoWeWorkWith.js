@@ -6,6 +6,7 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { useRevealObserver } from "@/lib/motion";
 import { AUDIENCES, FILTER_LIST } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
+import { NextSteps } from "@/components/NextSteps";
 
 export default function WhoWeWorkWith() {
   const ref = useRevealObserver();
@@ -57,6 +58,7 @@ export default function WhoWeWorkWith() {
       <div className="pb-16">
         <CharacterQuote startIndex={5} />
       </div>
+      <NextSteps from="/who-we-work-with" />
     </div>
   );
 }

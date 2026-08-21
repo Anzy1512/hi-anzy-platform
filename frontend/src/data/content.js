@@ -214,3 +214,127 @@ export const PROVENANCE_STYLES = {
   NETWORK: { cls: "bg-transparent text-[#232A2A] border border-dashed border-[#232A2A]/40", bar: false },
   "NETWORK ACCESS": { cls: "bg-transparent text-[#232A2A] border border-dashed border-[#232A2A]/40", bar: false },
 };
+
+
+/* ── Engagement model ────────────────────────────────────────────────────────
+   Work is grouped by development stage rather than sold as a flat menu, so the
+   sequence is the default. Stage keys line up with METHOD_STAGES above. */
+export const PACKAGES = [
+  {
+    key: "diagnose",
+    stage: "01",
+    name: "Clarity Diagnostic",
+    tagline: "Name the problem before you fund the fix.",
+    forWho: "Something is clearly off, but the reports disagree about what.",
+    timeline: "2–4 weeks",
+    pricing: "Fixed scope, fixed price",
+    includes: [
+      "Business, brand and technology audit",
+      "Customer journey walk-through, end to end",
+      "Data and reporting sanity check",
+      "Prioritised blueprint with named owners",
+    ],
+    outcome: "A named problem, a sequenced plan, and a decision you can defend to a board.",
+    nextStage: "define",
+  },
+  {
+    key: "define",
+    stage: "02",
+    name: "Positioning & Story",
+    tagline: "Decide what you are, in language people repeat.",
+    forWho: "The problem is named; the market still hears something vague.",
+    timeline: "3–5 weeks",
+    pricing: "Fixed scope",
+    includes: [
+      "Positioning and category decision",
+      "Messaging hierarchy and proof points",
+      "Naming, identity direction and tone of voice",
+      "Offer architecture and pricing narrative",
+    ],
+    outcome: "A story your sales team, your site and your investors all tell the same way.",
+    nextStage: "build",
+  },
+  {
+    key: "build",
+    stage: "03",
+    name: "Brand Operating System",
+    tagline: "Make the decision real, in public.",
+    forWho: "The thinking is settled and the machinery does not exist yet.",
+    timeline: "6–12 weeks",
+    pricing: "Scoped from the blueprint",
+    includes: [
+      "Website or commerce build",
+      "Design system and content templates",
+      "CRM, analytics and automation wiring",
+      "Launch assets and internal handover",
+    ],
+    outcome: "A system that ships work without a meeting about how to ship work.",
+    nextStage: "connect",
+  },
+  {
+    key: "connect",
+    stage: "04",
+    name: "Network Activation",
+    tagline: "Bring in the specialists the problem actually needs.",
+    forWho: "The machinery runs; the right people and channels are not wired to it.",
+    timeline: "Per engagement",
+    pricing: "Retainer or per project",
+    includes: [
+      "Specialist, creator and media matching",
+      "Production and campaign management",
+      "Partner and venue access",
+      "Single accountable point of contact",
+    ],
+    outcome: "A team that changes shape per problem, with accountability that does not.",
+    nextStage: "scale",
+  },
+  {
+    key: "scale",
+    stage: "05",
+    name: "Growth & Measurement",
+    tagline: "Keep what works. Retire what only looks productive.",
+    forWho: "It works, and now it needs to compound instead of plateau.",
+    timeline: "Ongoing, quarterly reviews",
+    pricing: "Monthly retainer",
+    includes: [
+      "Performance, SEO and answer-engine visibility",
+      "Content engine and editorial calendar",
+      "Conversion and funnel iteration",
+      "Quarterly systems review",
+    ],
+    outcome: "Momentum you can measure, and a written reason for every thing you stop doing.",
+    nextStage: null,
+  },
+];
+
+/* Recurring stage pairings. These exist because these are the combinations
+   businesses actually arrive needing — not because bundling looks tidy. */
+export const COMBOS = [
+  {
+    key: "reset",
+    name: "The Reset",
+    stages: ["diagnose", "define"],
+    tagline: "Diagnosis plus positioning, in one run.",
+    forWho: "Founder-led businesses that have outgrown the story they launched with.",
+    timeline: "5–8 weeks",
+    highlight: false,
+  },
+  {
+    key: "launchpad",
+    name: "Launchpad",
+    stages: ["define", "build"],
+    tagline: "Decide it and build it, without a handover gap.",
+    forWho: "New products, new markets, or a rebrand that has to ship on a date.",
+    timeline: "9–16 weeks",
+    highlight: true,
+  },
+  {
+    key: "operating-system",
+    name: "Full Operating System",
+    stages: ["diagnose", "define", "build", "connect", "scale"],
+    tagline: "The whole arc, sequenced and owned end to end.",
+    forWho: "Multi-channel groups where several parts contradict each other.",
+    timeline: "6–12 months",
+    highlight: false,
+  },
+];

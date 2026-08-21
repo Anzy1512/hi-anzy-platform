@@ -9,6 +9,7 @@ import { useRevealObserver } from "@/lib/motion";
 import { track } from "@/lib/api";
 import { CATEGORIES } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
+import { Packages } from "@/components/Packages";
 
 export default function WhatWeDo() {
   const ref = useRevealObserver();
@@ -44,7 +45,7 @@ export default function WhatWeDo() {
                 <h2 className={`font-display mt-4 text-[clamp(2.1rem,3.3vw,3.5rem)] leading-[0.98] ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F7F5EE]"}`}>{c.label}</h2>
                 <p className={`font-editorial mt-2 text-[clamp(1.2rem,1.5vw,1.5rem)] font-medium ${i % 2 === 0 ? "text-[#232A2A]/65" : "text-[#F7F5EE]/65"}`}>{c.title}</p>
                 <p className={`mt-4 text-[17px] leading-[1.6] ${i % 2 === 0 ? "text-[#232A2A]/80" : "text-[#F7F5EE]/80"}`}>{c.copy}</p>
-                <p className={`mt-4 text-[16.5px] leading-[1.58] ${i % 2 === 0 ? "text-[#232A2A]/70" : "text-[#F7F5EE]/70"}`}><span className="font-mono-sys text-[12px] tracking-widest text-[#E54A25]">Why it matters — </span>{c.why}</p>
+                <p className={`mt-4 text-[16.5px] leading-[1.58] ${i % 2 === 0 ? "text-[#232A2A]/70" : "text-[#F7F5EE]/70"}`}><span className={`font-mono-sys text-[12.5px] font-bold tracking-widest ${i % 2 === 0 ? "text-[#A8351A]" : "text-[#FF7A52]"}`}>Why it matters — </span>{c.why}</p>
               </div>
               <div className="relative lg:col-span-7">
                 <p className={`sys-chip ${i % 2 === 0 ? "text-[#232A2A]/45" : "text-[#F7F5EE]/45"}`}>CAPABILITIES</p>
@@ -78,6 +79,7 @@ export default function WhatWeDo() {
           </div>
         </Reveal>
       </div>
+      <Packages />
       <div className="pb-16">
         <CharacterQuote startIndex={2} />
       </div>

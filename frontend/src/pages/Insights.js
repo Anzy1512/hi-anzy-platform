@@ -7,6 +7,7 @@ import { useRevealObserver } from "@/lib/motion";
 import { getInsights } from "@/lib/api";
 import { INSIGHT_CATEGORIES } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
+import { NextSteps } from "@/components/NextSteps";
 
 export default function Insights() {
   const ref = useRevealObserver();
@@ -73,6 +74,7 @@ export default function Insights() {
       <div className="pb-16">
         <CharacterQuote startIndex={1} />
       </div>
+      <NextSteps from="/insights" />
     </div>
   );
 }

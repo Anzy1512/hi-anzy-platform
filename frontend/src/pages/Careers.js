@@ -5,6 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { useRevealObserver } from "@/lib/motion";
 import { CharacterQuote } from "@/components/CharacterQuote";
+import { NextSteps } from "@/components/NextSteps";
 
 const VALUES = [
   { t: "Curiosity over credentials", b: "Degrees are nice. Noticing things is nicer." },
@@ -52,6 +53,7 @@ export default function Careers() {
       <div className="pb-16">
         <CharacterQuote startIndex={2} />
       </div>
+      <NextSteps from="/careers" />
     </div>
   );
 }

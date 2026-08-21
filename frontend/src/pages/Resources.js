@@ -6,6 +6,7 @@ import { Reveal } from "@/components/Reveal";
 import { useRevealObserver } from "@/lib/motion";
 import { track } from "@/lib/api";
 import { CharacterQuote } from "@/components/CharacterQuote";
+import { NextSteps } from "@/components/NextSteps";
 
 const RESOURCES = [
   { t: "The Busy-ness Test", b: "A one-page exercise: map every recurring activity to the decision it serves. Watch the calendar lose weight.", tag: "WORKSHEET" },
@@ -70,6 +71,7 @@ export default function Resources() {
       <div className="pb-16">
         <CharacterQuote startIndex={3} />
       </div>
+      <NextSteps from="/resources" />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { NextSteps } from "@/components/NextSteps";
 import { useRevealObserver } from "@/lib/motion";
 import { submitContact, track } from "@/lib/api";
 
@@ -182,6 +183,7 @@ export default function Contact() {
           </div>
         </div>
       </section>
+      <NextSteps from="/contact" />
     </div>
   );
 }

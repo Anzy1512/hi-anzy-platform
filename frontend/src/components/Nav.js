@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/s
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { track } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { subscribeScroll, isDarkUnderNav } from "@/lib/motion";
 
 export const Nav = () => {
   const location = useLocation();
@@ -14,6 +15,30 @@ export const Nav = () => {
   const listRef = useRef(null);
   const [bar, setBar] = useState({ left: 0, width: 0, visible: false });
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [onDark, setOnDark] = useState(false);
+
+  // Header contrast: read the surface actually painted under the bar so the
+  // labels never sit on a same-shade backdrop.
+  useEffect(() => {
+    let frame = 0;
+    const evaluate = (scroll) => {
+      setScrolled(scroll > 8);
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        setOnDark(isDarkUnderNav(84));
+      });
+    };
+    const unsubscribe = subscribeScroll(evaluate);
+    // Re-check once the route's content has painted.
+    const settle = setTimeout(() => setOnDark(isDarkUnderNav(84)), 400);
+    return () => {
+      unsubscribe();
+      clearTimeout(settle);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [location.pathname]);
 
   const positionBar = () => {
     const list = listRef.current;
@@ -40,10 +65,17 @@ export const Nav = () => {
   }, [location.pathname]);
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 border-b border-[#232A2A]/12 bg-[#E0D8C1]/88 backdrop-blur-md" data-testid="site-nav">
+    <header
+      className={`nav-shell fixed top-0 inset-x-0 z-50 ${scrolled ? "nav-shell--scrolled" : ""} ${onDark ? "nav-shell--dark" : ""}`}
+      data-testid="site-nav"
+      data-nav-theme={onDark ? "dark" : "light"}
+    >
       <div className="container-page flex h-[84px] items-center justify-between">
         <Link to="/" className="flex items-center gap-3" data-testid="nav-logo" aria-label="Hi Anzy — home">
-          <img src="/brand/logo-dark.png" alt="hiAnzy" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" />
+          <span className="nav-logo-stack">
+            <img src="/brand/logo-dark.png" alt="hiAnzy" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" style={{ opacity: onDark ? 0 : 1 }} />
+            <img src="/brand/logo-light.png" alt="" aria-hidden="true" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" style={{ opacity: onDark ? 1 : 0 }} />
+          </span>
         </Link>
 
         {/* Desktop */}
@@ -55,7 +87,7 @@ export const Nav = () => {
                 to={l.to}
                 end={l.to === "/"}
                 data-testid={`nav-item-${l.label.toLowerCase().replace(/\s+/g, "-")}`}
-                className={({ isActive }) => `font-display relative py-2 text-[15.5px] font-semibold tracking-[0.035em] transition-colors ${isActive ? "text-[#232A2A]" : "text-[#232A2A]/64 hover:text-[#232A2A]"}`}
+                className="nav-link font-display relative py-2 text-[15.5px] font-semibold tracking-[0.035em]"
               >
                 {({ isActive }) => <span data-active={isActive}>{l.label}</span>}
               </NavLink>
@@ -70,7 +102,7 @@ export const Nav = () => {
             <button
               type="button"
               onClick={login}
-              className="sys-chip hidden items-center gap-1.5 rounded-full border border-[#232A2A]/25 px-3.5 py-2 text-[#232A2A]/75 transition-colors hover:border-[#F19020] hover:text-[#232A2A] sm:inline-flex"
+              className="nav-chip sys-chip hidden items-center gap-1.5 rounded-full border px-3.5 py-2 sm:inline-flex"
               data-testid="nav-sign-in-btn"
             >
               <LogIn size={13} /> SIGN IN
@@ -100,14 +132,14 @@ export const Nav = () => {
             </DropdownMenu>
           )}
 
-          <MagneticButton to="/contact" className="btn-ink hidden sm:inline-flex" hoverText="Good start." testId="nav-say-hi-cta" onClick={() => track("cta_primary_click", { cta: "say_hi_nav" })}>
+          <MagneticButton to="/contact" className="btn-ink nav-cta hidden sm:inline-flex" hoverText="Good start." testId="nav-say-hi-cta" onClick={() => track("cta_primary_click", { cta: "say_hi_nav" })}>
             Say Hi
           </MagneticButton>
 
           {/* Mobile */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <button className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-[#232A2A]/25 lg:hidden" aria-label="Open menu" data-testid="nav-mobile-toggle">
+              <button className="nav-chip inline-flex h-11 w-11 items-center justify-center rounded-lg border lg:hidden" aria-label="Open menu" data-testid="nav-mobile-toggle">
                 <Menu size={18} />
               </button>
             </SheetTrigger>

@@ -9,6 +9,7 @@ import { useRevealObserver, useReducedMotion, webglAvailable, resyncScroll } fro
 import { getNetwork, getNetworkCategories, track } from "@/lib/api";
 import { NETWORK_SUBCATS } from "@/data/content";
 import { PunPop } from "@/components/PunPop";
+import { NextSteps } from "@/components/NextSteps";
 
 const Constellation = lazy(() => import("@/components/three/Constellation"));
 
@@ -258,6 +259,7 @@ export default function Network() {
           <PunPop text="It's not who you know. It's who you can activate." rot={-1.5} variant="orange" testId="pun-network" />
         </div>
       </section>
+      <NextSteps from="/network" />
     </div>
   );
 }

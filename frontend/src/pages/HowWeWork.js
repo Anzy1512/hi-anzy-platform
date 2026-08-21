@@ -8,6 +8,7 @@ import { useRevealObserver } from "@/lib/motion";
 import { track } from "@/lib/api";
 import { METHOD_STAGES } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
+import { NextSteps } from "@/components/NextSteps";
 
 export default function HowWeWork() {
   const ref = useRevealObserver();
@@ -75,6 +76,7 @@ export default function HowWeWork() {
       <div className="pb-16">
         <CharacterQuote startIndex={0} />
       </div>
+      <NextSteps from="/how-we-work" />
     </div>
   );
 }

@@ -6,6 +6,10 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { useRevealObserver } from "@/lib/motion";
 import { getInsight, getInsights, track } from "@/lib/api";
 
+/** Stable anchor ids for headings, so sections are directly linkable. */
+const slugifyHeading = (text = "") =>
+  String(text).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
 export default function InsightDetail() {
   const { slug } = useParams();
   const ref = useRevealObserver();
@@ -59,15 +63,45 @@ export default function InsightDetail() {
     );
   }
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
-    description: post.excerpt,
-    articleSection: post.category,
-    author: { "@type": "Organization", name: "Hi Anzy" },
-    publisher: { "@type": "Organization", name: "Hi Anzy" },
-  };
+  // Structured data. Answer-engines and rich results read these directly, so
+  // every FAQ block on the page is also published as a machine-readable Q&A.
+  const faqPairs = (post.body || [])
+    .filter((b) => b.type === "faq")
+    .flatMap((b) => b.items || []);
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: post.title,
+      description: post.excerpt,
+      articleSection: post.category,
+      keywords: (post.tags || []).join(", ") || undefined,
+      wordCount: (post.body || []).reduce((n, b) => n + (b.text ? b.text.split(/\s+/).length : 0), 0),
+      author: { "@type": "Organization", name: "Hi Anzy" },
+      publisher: { "@type": "Organization", name: "Hi Anzy" },
+      mainEntityOfPage: { "@type": "WebPage", "@id": `/insights/${post.slug}` },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Insights", item: "/insights" },
+        { "@type": "ListItem", position: 2, name: post.title, item: `/insights/${post.slug}` },
+      ],
+    },
+    ...(faqPairs.length
+      ? [{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqPairs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }]
+      : []),
+  ];
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="insight-detail-page">
@@ -86,7 +120,13 @@ export default function InsightDetail() {
 
         <div className="mt-10 space-y-6" data-testid="insight-body">
           {(post.body || []).map((b, i) => {
-            if (b.type === "h2") return <h2 key={i} className="font-display pt-4 text-3xl text-[#232A2A]">{b.text}</h2>;
+            if (b.type === "h2")
+              return (
+                <h2 key={i} id={slugifyHeading(b.text)} className="font-display scroll-mt-[110px] pt-4 text-3xl text-[#232A2A]">
+                  {b.text}
+                </h2>
+              );
+
             if (b.type === "quote")
               return (
                 <blockquote key={i} className="panel-dark relative p-6 sm:p-7">
@@ -94,6 +134,43 @@ export default function InsightDetail() {
                   <p className="font-editorial italic text-[clamp(1.35rem,2vw,1.8rem)] leading-[1.28] text-[#F19020]">{b.text}</p>
                 </blockquote>
               );
+
+            // Short, quotable answer — the block an answer-engine lifts first.
+            if (b.type === "takeaway")
+              return (
+                <div key={i} className="rounded-[16px] border-l-[3px] border-[#F19020] bg-[#F7F5EE] p-6 shadow-[0_10px_26px_rgba(35,42,42,0.06)]" data-testid="insight-takeaway">
+                  <p className="sys-chip text-[#232A2A]/50">THE SHORT ANSWER</p>
+                  <p className="mt-2.5 text-[18.5px] font-medium leading-[1.55] text-[#232A2A]">{b.text}</p>
+                </div>
+              );
+
+            if (b.type === "list")
+              return (
+                <ul key={i} className="space-y-3" data-testid="insight-list">
+                  {(b.items || []).map((item, k) => (
+                    <li key={k} className="flex gap-3 text-[18.5px] leading-[1.65] text-[#232A2A]/85">
+                      <span className="mt-[11px] h-[6px] w-[6px] shrink-0 rounded-full bg-[#F19020]" aria-hidden="true" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              );
+
+            if (b.type === "faq")
+              return (
+                <section key={i} className="space-y-3" data-testid="insight-faq" aria-label="Frequently asked questions">
+                  {(b.items || []).map((f, k) => (
+                    <details key={k} className="faq-item group rounded-[14px] border border-[#232A2A]/15 bg-[#F7F5EE] p-5 sm:p-6">
+                      <summary className="flex cursor-pointer items-start justify-between gap-4 text-[17.5px] font-semibold leading-[1.4] text-[#232A2A] marker:content-['']">
+                        {f.q}
+                        <span className="faq-plus mt-1 shrink-0 text-[#F19020]" aria-hidden="true">+</span>
+                      </summary>
+                      <p className="mt-3 text-[17px] leading-[1.65] text-[#232A2A]/80">{f.a}</p>
+                    </details>
+                  ))}
+                </section>
+              );
+
             return <p key={i} className="text-[18.5px] leading-[1.65] text-[#232A2A]/85">{b.text}</p>;
           })}
         </div>

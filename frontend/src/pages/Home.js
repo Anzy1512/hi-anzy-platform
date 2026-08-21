@@ -10,6 +10,7 @@ import { RouteLine } from "@/components/RouteLine";
 import { SystemCoreFallback, ConstellationFallback, ThreeSafe } from "@/components/three/Fallbacks";
 import { HalftoneBackdrop, HalftoneStatic } from "@/components/three/HalftoneBackdrop";
 import { PunRow } from "@/components/PunPop";
+import { SectionConnector } from "@/components/SectionConnector";
 import { ProofStrip } from "@/components/ProofStrip";
 import { useRevealObserver, useReducedMotion, webglAvailable, gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/motion";
 import { getCaseStudies, track } from "@/lib/api";
@@ -599,6 +600,7 @@ export default function Home() {
         />
       </div>
       <SomethingsOff />
+      <SectionConnector variant="right" label="SYMPTOM → QUESTION" testId="connector-symptom-question" />
       <WhyHowNow />
       <div className="container-page -mt-2 mb-6">
         <PunRow
@@ -611,8 +613,10 @@ export default function Home() {
         />
       </div>
       <WhatWeDoGrid />
+      <SectionConnector variant="left" label="CAPABILITY → METHOD" testId="connector-capability-method" />
       <MethodSection />
       <Diagnostic />
+      <SectionConnector variant="centre" label="METHOD → PROOF" testId="connector-method-proof" />
       <WorkPreview />
       <div className="container-page -mt-2 mb-6">
         <PunRow

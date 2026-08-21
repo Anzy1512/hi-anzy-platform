@@ -40,7 +40,12 @@ export const CharacterQuote = ({ startIndex = 0, testId = "character-quote-strip
         )}
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(6px)", transition: "opacity 0.3s ease, transform 0.3s ease" }}>
           <p className="font-pun text-[clamp(1.05rem,1.35vw,1.3rem)] italic leading-[1.4] text-[#232A2A]/85">“{line.quote}”</p>
-          <p className="sys-chip mt-2 text-[#F19020]">— {line.who.toUpperCase()}</p>
+          {/* Orange stays as the decorative dash; the name itself needs ink to
+              clear AA on the paper ground — orange on paper is only 1.7:1. */}
+          <p className="sys-chip mt-2 text-[#232A2A]/75">
+            <span className="text-[#F19020]" aria-hidden="true">— </span>
+            {line.who.toUpperCase()}
+          </p>
         </div>
       </div>
     </div>

@@ -409,22 +409,31 @@ async def auth_logout(request: Request, response: Response):
 
 # ── Seed ─────────────────────────────────────────────────────────────────────
 
+async def upsert_all(collection, docs: List[dict], key: str) -> int:
+    """Idempotent seed, per document.
+
+    An all-or-nothing `count == 0` guard means new editorial content is never
+    picked up once a collection exists. Upserting on the natural key keeps
+    seeding safe to re-run while still publishing additions and edits.
+    """
+    written = 0
+    for doc in docs:
+        result = await collection.update_one({key: doc[key]}, {"$set": doc}, upsert=True)
+        if result.upserted_id is not None or result.modified_count:
+            written += 1
+    return written
+
+
 async def seed():
-    if await db.case_studies.count_documents({}) == 0:
-        await db.case_studies.insert_many(CASE_STUDIES)
-        logger.info(f"Seeded {len(CASE_STUDIES)} case studies")
-
-    if await db.network_resources.count_documents({}) == 0:
-        await db.network_resources.insert_many(NETWORK_RESOURCES)
-        logger.info(f"Seeded {len(NETWORK_RESOURCES)} network resources")
-
-    if await db.insights.count_documents({}) == 0:
-        await db.insights.insert_many(INSIGHTS)
-        logger.info(f"Seeded {len(INSIGHTS)} insights")
-
-    if await db.portfolio_groups.count_documents({}) == 0:
-        await db.portfolio_groups.insert_many(PORTFOLIO_GROUPS)
-        logger.info(f"Seeded {len(PORTFOLIO_GROUPS)} portfolio groups")
+    for collection, docs, key, label in (
+        (db.case_studies, CASE_STUDIES, "slug", "case studies"),
+        (db.network_resources, NETWORK_RESOURCES, "slug", "network resources"),
+        (db.insights, INSIGHTS, "slug", "insights"),
+        (db.portfolio_groups, PORTFOLIO_GROUPS, "category", "portfolio groups"),
+    ):
+        written = await upsert_all(collection, docs, key)
+        if written:
+            logger.info("Seeded/updated %s %s", written, label)
 
 
 # ── Lifecycle ─────────────────────────────────────────────────────────────────

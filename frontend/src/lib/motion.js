@@ -103,6 +103,41 @@ export const subscribeScroll = (cb) => {
   };
 };
 
+/**
+ * Is the strip directly beneath the fixed header a dark surface?
+ *
+ * Sampling what is actually painted is more reliable than tagging every dark
+ * section by hand — new sections get correct header contrast for free, and it
+ * cannot drift out of step with the markup.
+ */
+export const isDarkUnderNav = (navHeight = 84) => {
+  if (typeof document === "undefined" || !document.elementsFromPoint) return false;
+  const y = navHeight + 6;
+  const xs = [window.innerWidth * 0.25, window.innerWidth * 0.5, window.innerWidth * 0.75];
+  let dark = 0;
+  let seen = 0;
+
+  xs.forEach((x) => {
+    const stack = document.elementsFromPoint(x, y) || [];
+    for (const el of stack) {
+      if (el.closest("header") || el.tagName === "HTML") continue;
+      const bg = getComputedStyle(el).backgroundColor;
+      const parts = bg.match(/[\d.]+/g);
+      if (!parts || parts.length < 3) continue;
+      const alpha = parts.length > 3 ? parseFloat(parts[3]) : 1;
+      if (alpha < 0.5) continue; // see-through: keep looking underneath
+      const [r, g, b] = parts.map(Number);
+      // Rec. 709 luma — matches how the eye weights the channels.
+      const luma = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      seen += 1;
+      if (luma < 0.5) dark += 1;
+      break;
+    }
+  });
+
+  return seen > 0 && dark * 2 > seen;
+};
+
 /** Re-measure after layout changes (route swap, full-screen exit, font load). */
 export const resyncScroll = () => {
   if (window.__lenis) window.__lenis.resize();

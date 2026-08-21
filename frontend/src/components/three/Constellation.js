@@ -29,6 +29,9 @@ const mulberry = (seed) => () => {
 const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect }) => {
   const group = useRef(null);
   const labelRef = useRef(null);
+  // Hover lives in a ref, not state — a re-render per pointer move would stall
+  // the whole scene, and the frame loop reads it anyway.
+  const hovered = useRef(false);
   const angle = (index / total) * Math.PI * 2 - Math.PI / 2;
   const base = useMemo(() => new THREE.Vector3(Math.cos(angle) * RING_X, Math.sin(angle) * RING_Y, 0), [angle]);
   const dots = useMemo(() => {
@@ -40,14 +43,26 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
     const g = group.current;
     if (!g) return;
     const t = clock.getElapsedTime();
-    const targetScale = active ? 1.45 : anyActive ? 0.72 : 1;
+    const isHover = hovered.current && !active;
+    // Hover leans the cluster forward and brightens it, so the scene answers the
+    // pointer before you commit to a click.
+    const targetScale = active ? 1.45 : isHover ? 1.2 : anyActive ? 0.72 : 1;
     g.scale.setScalar(THREE.MathUtils.lerp(g.scale.x, targetScale, 0.08));
-    const tz = active ? 1.1 : 0;
+    const tz = active ? 1.1 : isHover ? 0.45 : 0;
     g.position.set(base.x, base.y + Math.sin(t * 0.5 + index) * 0.07, THREE.MathUtils.lerp(g.position.z, tz, 0.08));
-    if (labelRef.current) labelRef.current.style.opacity = active ? "1" : anyActive ? "0.3" : "0.85";
+    if (labelRef.current) {
+      labelRef.current.style.opacity = active || isHover ? "1" : anyActive ? "0.3" : "0.85";
+      labelRef.current.style.letterSpacing = isHover || active ? "0.22em" : "0.16em";
+    }
+    const targetOpacity = active ? 1 : isHover ? 1 : anyActive ? 0.22 : 0.8;
     g.children.forEach((c) => {
       if (c.userData && c.userData.hit) return; // never surface the invisible click target
-      if (c.material) c.material.opacity = THREE.MathUtils.lerp(c.material.opacity, active ? 1 : anyActive ? 0.22 : 0.8, 0.08);
+      if (!c.material) return;
+      c.material.opacity = THREE.MathUtils.lerp(c.material.opacity, targetOpacity, 0.08);
+      if (c.material.emissiveIntensity !== undefined) {
+        const glow = active ? 0.85 : isHover ? 0.7 : c.material.color && c.material.color.getHex() === 0xf19020 ? 0.5 : 0.12;
+        c.material.emissiveIntensity = THREE.MathUtils.lerp(c.material.emissiveIntensity, glow, 0.1);
+      }
     });
   });
 
@@ -58,8 +73,8 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
         <mesh
           userData={{ hit: true }}
           onClick={(e) => { e.stopPropagation(); onSelect(name); }}
-          onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = "pointer"; }}
-          onPointerOut={() => { document.body.style.cursor = ""; }}
+          onPointerOver={(e) => { e.stopPropagation(); hovered.current = true; document.body.style.cursor = "pointer"; }}
+          onPointerOut={() => { hovered.current = false; document.body.style.cursor = ""; }}
         >
           <sphereGeometry args={[0.75, 8, 8]} />
           <meshBasicMaterial transparent opacity={0} depthWrite={false} />

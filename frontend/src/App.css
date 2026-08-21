@@ -418,6 +418,187 @@ html {
   mix-blend-mode: overlay;
 }
 
+/* ---------- Nav shell ----------
+   The header floats over both paper and charcoal sections, so its colours are
+   driven by tokens and swapped by a class. Everything cross-fades together,
+   which keeps the text legible instead of sinking into a same-shade backdrop. */
+.nav-shell {
+  --nav-bg: rgba(224, 216, 193, 0.72);
+  --nav-fg: #232A2A;
+  /* 0.80 keeps idle links above WCAG AA (4.5:1) at 15.5px — do not lighten */
+  --nav-fg-dim: rgba(35, 42, 42, 0.80);
+  --nav-border: rgba(35, 42, 42, 0.10);
+  --nav-chip-border: rgba(35, 42, 42, 0.25);
+
+  background-color: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  backdrop-filter: blur(10px) saturate(1.15);
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  transition:
+    background-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Lifted + more opaque once the page is no longer at the top, so content
+   scrolling underneath never bleeds through the labels. */
+.nav-shell--scrolled {
+  --nav-bg: rgba(224, 216, 193, 0.95);
+  --nav-border: rgba(35, 42, 42, 0.16);
+  box-shadow: 0 10px 30px rgba(35, 42, 42, 0.10);
+}
+
+/* Over a charcoal section the whole header inverts. */
+.nav-shell--dark {
+  --nav-bg: rgba(29, 36, 36, 0.78);
+  --nav-fg: #F7F5EE;
+  --nav-fg-dim: rgba(247, 245, 238, 0.78);
+  --nav-border: rgba(247, 245, 238, 0.14);
+  --nav-chip-border: rgba(247, 245, 238, 0.28);
+}
+.nav-shell--dark.nav-shell--scrolled {
+  --nav-bg: rgba(29, 36, 36, 0.96);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.34);
+}
+
+.nav-link {
+  color: var(--nav-fg-dim);
+  transition: color 0.35s ease;
+}
+.nav-link:hover {
+  color: var(--nav-fg);
+}
+/* the active flag lives on the inner span, so it needs its own colour rule */
+.nav-link [data-active="true"] {
+  color: var(--nav-fg);
+  transition: color 0.35s ease;
+}
+
+.nav-chip {
+  color: var(--nav-fg-dim);
+  border-color: var(--nav-chip-border);
+  transition: color 0.35s ease, border-color 0.35s ease;
+}
+.nav-chip:hover {
+  color: var(--nav-fg);
+  border-color: var(--orange);
+}
+
+/* Primary CTA flips to paper-on-ink when the shell goes dark. */
+.nav-cta {
+  transition: background-color 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-shell--dark .nav-cta {
+  background: var(--white-d);
+  color: var(--ink);
+}
+
+/* Cross-fade the two wordmark lockups instead of hard-swapping the src. */
+.nav-logo-stack {
+  position: relative;
+  display: inline-block;
+}
+.nav-logo-stack img {
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-logo-stack img + img {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- Readability floor ----------
+   Metadata chips and mono annotations were rendering at 2.6–3.4:1 on the paper
+   ground — below WCAG AA at 12–13px. These raise the tint floor without
+   flattening the hierarchy: chips stay quieter than body copy, they just stay
+   readable. Attribute selectors give (0,2,0) specificity, which beats the
+   Tailwind colour utility (0,1,0) without needing !important. */
+.sys-chip[class*="[#232A2A]/35"],
+.sys-chip[class*="[#232A2A]/40"],
+.sys-chip[class*="[#232A2A]/42"],
+.sys-chip[class*="[#232A2A]/45"],
+.sys-chip[class*="[#232A2A]/50"],
+.sys-chip[class*="[#232A2A]/55"],
+.font-mono-sys[class*="[#232A2A]/40"],
+.font-mono-sys[class*="[#232A2A]/45"],
+.font-mono-sys[class*="[#232A2A]/50"],
+.font-mono-sys[class*="[#232A2A]/55"] {
+  color: rgba(35, 42, 42, 0.74);
+}
+
+.sys-chip[class*="[#F7F5EE]/35"],
+.sys-chip[class*="[#F7F5EE]/40"],
+.sys-chip[class*="[#F7F5EE]/45"],
+.sys-chip[class*="[#F7F5EE]/50"],
+.sys-chip[class*="[#F7F5EE]/55"],
+.font-mono-sys[class*="[#F7F5EE]/40"],
+.font-mono-sys[class*="[#F7F5EE]/45"],
+.font-mono-sys[class*="[#F7F5EE]/50"],
+.font-mono-sys[class*="[#F7F5EE]/55"] {
+  color: rgba(247, 245, 238, 0.82);
+}
+
+/* Copy that sits over the halftone texture or a live canvas gets a whisper of
+   shadow — enough to lift it off a busy ground, not enough to look embossed. */
+.on-texture {
+  text-shadow: 0 1px 2px rgba(35, 42, 42, 0.10), 0 0 18px rgba(224, 216, 193, 0.55);
+}
+.on-texture-dark {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45), 0 0 22px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Section connector ----------
+   Depth via CSS 3D rather than another WebGL context. The stage is tilted away
+   from the reader so the route reads as travelling *through* the page. */
+.section-connector {
+  perspective: 900px;
+  perspective-origin: 50% 40%;
+  pointer-events: none;
+  /* The perspective projection is wider than the layout box — the near edge of
+     the tilted plane flares outward — so clip it or the page gains a horizontal
+     scrollbar on wide viewports. */
+  overflow: hidden;
+}
+.section-connector-stage {
+  position: relative;
+  height: 100%;
+  transform: rotateX(34deg) scaleY(1.12);
+  transform-origin: 50% 0%;
+  opacity: 0.85;
+}
+.section-connector-label {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%) rotateX(-34deg);
+  color: rgba(35, 42, 42, 0.66);
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .section-connector-stage {
+    transform: none;
+    opacity: 0.5;
+  }
+}
+
+/* ---------- FAQ disclosure ---------- */
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary { list-style: none; }
+.faq-item {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.faq-item:hover { border-color: rgba(241, 144, 32, 0.55); }
+.faq-item[open] {
+  border-color: rgba(241, 144, 32, 0.7);
+  box-shadow: 0 10px 26px rgba(35, 42, 42, 0.07);
+}
+.faq-plus {
+  font-family: var(--font-system);
+  font-size: 22px;
+  line-height: 1;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.faq-item[open] .faq-plus { transform: rotate(45deg); }
+
 /* ---------- Nav route underline ---------- */
 .nav-route-bar {
   position: absolute;

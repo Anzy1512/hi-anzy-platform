@@ -6,6 +6,7 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { useRevealObserver } from "@/lib/motion";
 import { CharacterQuote } from "@/components/CharacterQuote";
+import { NextSteps } from "@/components/NextSteps";
 
 const ASKS = [
   { title: "Specialists", body: "Strategists, designers, engineers, automators, analysts. People who are excellent at one thing and honest about the rest." },
@@ -66,6 +67,7 @@ export default function Collaborate() {
       <div className="pb-16">
         <CharacterQuote startIndex={4} />
       </div>
+      <NextSteps from="/collaborate" />
     </div>
   );
 }

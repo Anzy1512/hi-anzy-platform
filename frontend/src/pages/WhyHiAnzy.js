@@ -8,6 +8,7 @@ import { useRevealObserver } from "@/lib/motion";
 import { track } from "@/lib/api";
 import { CHARACTERS, TEAM_QUOTE } from "@/data/content";
 import { PunPop } from "@/components/PunPop";
+import { NextSteps } from "@/components/NextSteps";
 
 export default function WhyHiAnzy() {
   const ref = useRevealObserver();
@@ -31,7 +32,9 @@ export default function WhyHiAnzy() {
               from verses to stories, from stories to stages, from stages to brands, to technology, to whole
               businesses. The medium kept changing. The instinct never did.
             </Reveal>
-            <Reveal delay={220} as="p" className="font-accent mt-6 text-[clamp(1.5rem,2.4vw,2.2rem)] text-[#F19020]">
+            {/* Deepened from raw brand orange — at this size on paper the
+                original read 1.7:1. Still the accent, now legible. */}
+            <Reveal delay={220} as="p" className="font-accent mt-6 text-[clamp(1.5rem,2.4vw,2.2rem)] text-[#A85A12]">
               See differently. Make thoughtfully.
             </Reveal>
           </div>
@@ -140,6 +143,7 @@ export default function WhyHiAnzy() {
           </div>
         </div>
       </section>
+      <NextSteps from="/why-hi-anzy" />
     </div>
   );
 }
