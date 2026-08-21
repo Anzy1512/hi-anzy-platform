@@ -1,8 +1,22 @@
+/**
+ * Tailwind's default opacity scale is coarse (…70, 75, 80, 90…), and the colour
+ * modifier `text-[#F7F5EE]/78` resolves against it. An off-scale value emits no
+ * rule at all — the class silently does nothing and the element falls back to
+ * inherited colour, which on a charcoal panel meant ink-on-ink at 1.08:1.
+ *
+ * A full 0–100 scale removes that failure mode entirely. Tailwind only emits
+ * the values actually used, so this costs nothing in the bundle.
+ */
+const fullOpacityScale = Object.fromEntries(
+  Array.from({ length: 101 }, (_, i) => [String(i), String(i / 100)])
+);
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      opacity: fullOpacityScale,
       colors: {
         paper: "#E0D8C1",
         ink: "#232A2A",

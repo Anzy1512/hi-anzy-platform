@@ -6,7 +6,7 @@ export const ProvenanceTag = ({ value, dark = false, testId }) => {
   return (
     <span
       data-testid={testId || "provenance-tag"}
-      className={`sys-chip inline-flex items-center gap-1.5 rounded-full px-3 py-1 ${dark && (value === "HI ANZY" || value === "HI ANZY DIRECT") ? "bg-[#F7F5EE] text-[#232A2A]" : s.cls}`}
+      className={`prov-tag sys-chip inline-flex items-center gap-1.5 rounded-full px-3 py-1 ${dark && (value === "HI ANZY" || value === "HI ANZY DIRECT") ? "bg-[#F7F5EE] text-[#232A2A]" : s.cls}`}
     >
       {s.bar && <span className="red-bar" style={{ width: 8 }} />}
       {value}

@@ -94,7 +94,7 @@ export default function WhyHiAnzy() {
                 <h2 className="font-display mt-2 text-5xl text-[#232A2A]">Compass + Engine</h2>
                 <p className="mt-5 text-[17px] leading-[1.6] text-[#232A2A]/82">
                   The compass finds direction. The engine creates movement. Direction without movement is theory.
-                  Movement without direction is <span className="font-semibold text-[#E54A25]">expensive</span>.
+                  Movement without direction is <span className="accent-signal-text font-semibold">expensive</span>.
                   Every engagement carries both — which is why the strategy deck and the shipped system come from
                   the same accountable place.
                 </p>
@@ -105,7 +105,7 @@ export default function WhyHiAnzy() {
           <Reveal>
             <div className="flex flex-wrap items-center justify-between gap-6 rounded-[18px] bg-[#D8CFB4]/60 p-8">
               <p className="font-display max-w-xl text-3xl leading-tight text-[#232A2A] sm:text-4xl">
-                Complexity is common. <span className="text-[#F19020]">Clarity is engineered.</span>
+                Complexity is common. <span className="accent-orange-text">Clarity is engineered.</span>
               </p>
               <MagneticButton to="/contact" className="btn-ink" hoverText="Good start." testId="why-cta" onClick={() => track("cta_primary_click", { cta: "why_hi_anzy" })}>
                 Say Hi <ArrowRight size={15} />

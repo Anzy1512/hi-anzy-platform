@@ -65,7 +65,7 @@ export default function HowWeWork() {
         <Reveal>
           <div className="relative mt-16 flex flex-wrap items-center justify-between gap-6 rounded-[18px] bg-[#D8CFB4]/60 p-8">
             <p className="font-display text-3xl text-[#232A2A] sm:text-5xl" data-testid="hww-closing">
-              Less ceremony. <span className="text-[#F19020]">More consequence.</span>
+              Less ceremony. <span className="accent-orange-text">More consequence.</span>
             </p>
             <MagneticButton to="/contact" className="btn-ink" hoverText="Good start." testId="hww-cta" onClick={() => track("cta_primary_click", { cta: "how_we_work_bottom" })}>
               Start a Conversation <ArrowRight size={15} />

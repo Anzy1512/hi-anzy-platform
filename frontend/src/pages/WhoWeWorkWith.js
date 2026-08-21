@@ -38,7 +38,7 @@ export default function WhoWeWorkWith() {
         </Reveal>
         <Reveal delay={200}>
           <div className="panel-dark mt-10 max-w-2xl p-7 sm:p-9">
-            <p className="sys-chip flex items-center gap-2 text-[#E54A25]"><span className="red-bar" /> SMALL FILTER</p>
+            <p className="accent-signal-on-dark sys-chip flex items-center gap-2 font-bold"><span className="red-bar" /> SMALL FILTER</p>
             <p className="mt-3 font-semibold text-[#F7F5EE]">We probably won&rsquo;t be brilliant together if…</p>
             <ul className="mt-4 space-y-2.5">
               {FILTER_LIST.map((f) => (

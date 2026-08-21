@@ -99,7 +99,7 @@ export default function Work() {
                     <p className="mt-4 text-[17px] leading-[1.6] text-[#232A2A]/80">{cs.summary}</p>
                     <div className="mt-5 grid gap-2 border-t border-[#232A2A]/10 pt-5 sm:grid-cols-2">
                       <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="font-mono-sys text-[11.5px] text-[#E54A25]">GAP — </span>{cs.gap.slice(0, 100)}…</p>
-                      <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="font-mono-sys text-[11.5px] text-[#F19020]">RESULT — </span>{cs.result.slice(0, 100)}…</p>
+                      <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="accent-orange-text font-mono-sys text-[11.5px] font-bold">RESULT — </span>{cs.result.slice(0, 100)}…</p>
                     </div>
                     <span className="link-draw mt-5 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#232A2A]">
                       {expanded === cs.slug ? "Close case" : "Read the full case"}
@@ -212,7 +212,7 @@ export default function Work() {
                   <article className={`h-full rounded-[18px] p-6 sm:p-7 ${gi % 3 === 0 ? "panel-dark" : "panel-paper"}`} data-testid={`portfolio-group-${g.slug}`}>
                     <div className="flex items-center justify-between gap-3">
                       <h3 className={`font-display text-[clamp(1.5rem,2.2vw,2rem)] leading-none ${gi % 3 === 0 ? "text-[#F7F5EE]" : "text-[#232A2A]"}`}>{g.category}</h3>
-                      <span className={`sys-chip rounded-full border px-3 py-1 ${gi % 3 === 0 ? "border-[#F19020]/60 text-[#F19020]" : "border-[#232A2A]/25 text-[#232A2A]/60"}`}>{g.items.length} PROJECTS</span>
+                      <span className={`sys-chip rounded-full border px-3 py-1 ${gi % 3 === 0 ? "border-[#F19020]/60 text-[#F19020]" : "border-[#232A2A]/25 text-[#232A2A]/74"}`}>{g.items.length} PROJECTS</span>
                     </div>
                     <ul className="mt-4 flex flex-wrap gap-2">
                       {g.items.map((it) => {

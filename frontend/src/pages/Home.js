@@ -69,7 +69,7 @@ const Hero = ({ show3d }) => {
             </MagneticButton>
           </Reveal>
           <Reveal delay={320} as="p" className="font-accent mt-6 text-[17px] text-[#232A2A]/70" testId="hero-microcopy">
-            Bring the brief. Or bring the problem. <span className="text-[#F19020]">We can start with either.</span>
+            Bring the brief. Or bring the problem. <span className="accent-orange-text font-semibold">We can start with either.</span>
           </Reveal>
         </div>
 
@@ -380,7 +380,7 @@ const WorkPreview = () => {
               <p className="sys-chip mt-2 text-[#232A2A]/50">{cs.client} · {cs.industry}</p>
               <div className="mt-4 space-y-2.5 border-t border-[#232A2A]/10 pt-4">
                 <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="font-mono-sys text-[11.5px] text-[#E54A25]">GAP — </span>{cs.gap.slice(0, 110)}…</p>
-                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="font-mono-sys text-[11.5px] text-[#F19020]">RESULT — </span>{cs.result.slice(0, 110)}…</p>
+                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="accent-orange-text font-mono-sys text-[11.5px] font-bold">RESULT — </span>{cs.result.slice(0, 110)}…</p>
               </div>
               <span className="link-draw mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#232A2A]">
                 Read the thinking <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
@@ -508,7 +508,7 @@ const WhoWith = () => (
     </Reveal>
     <Reveal delay={220}>
       <div className="panel-paper mt-10 max-w-2xl p-6 sm:p-8" data-testid="who-filter-panel">
-        <p className="sys-chip flex items-center gap-2 text-[#E54A25]">
+        <p className="accent-signal-text sys-chip flex items-center gap-2 font-bold">
           <span className="red-bar" /> SMALL FILTER
         </p>
         <p className="mt-3 font-semibold text-[#232A2A]">We probably won&rsquo;t be brilliant together if…</p>

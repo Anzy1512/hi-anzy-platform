@@ -506,6 +506,39 @@ html {
   inset: 0;
 }
 
+/* ---------- Accent colours as text ----------
+   Brand orange on the paper ground is 1.7:1 and signal red is 2.8:1 — neither
+   is readable as body or label text however large you set it. These are the
+   text-safe deepenings; the raw brand values stay for fills, rules and icons,
+   and on charcoal where they pass comfortably. */
+:root {
+  --orange-on-paper: #8A4E0B;
+  --signal-on-paper: #A8351A;
+}
+.accent-orange-text { color: var(--orange-on-paper); }
+.accent-signal-text { color: var(--signal-on-paper); }
+
+/* The mirror image: on charcoal the raw brand values are too dark, so the
+   accents lighten instead of deepen. Same idea, opposite direction. */
+:root {
+  --orange-on-dark: #FFA94D;
+  --signal-on-dark: #FF7A52;
+}
+.accent-orange-on-dark { color: var(--orange-on-dark); }
+.accent-signal-on-dark { color: var(--signal-on-dark); }
+
+/* Provenance chips were authored for the paper ground. The transparent and
+   translucent variants inherit ink, so on a charcoal panel they rendered at
+   ~1.06:1 — present in the DOM, invisible on screen. Variants that carry their
+   own solid background are left alone. */
+.panel-dark .prov-tag[class*="bg-transparent"],
+.panel-dark .prov-tag[class*="bg-[#F19020]/15"],
+.bg-\[\#1D2424\] .prov-tag[class*="bg-transparent"],
+.bg-\[\#1D2424\] .prov-tag[class*="bg-[#F19020]/15"] {
+  color: rgba(247, 245, 238, 0.92);
+  border-color: rgba(247, 245, 238, 0.45);
+}
+
 /* ---------- Readability floor ----------
    Metadata chips and mono annotations were rendering at 2.6–3.4:1 on the paper
    ground — below WCAG AA at 12–13px. These raise the tint floor without

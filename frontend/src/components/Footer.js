@@ -100,7 +100,7 @@ export const Footer = () => {
           <div>
             <p className="sys-chip mb-4 text-[#F7F5EE]/45">Start</p>
             <Link to="/contact" className="btn-orange" data-testid="footer-say-hi-cta">Say Hi</Link>
-            <p className="font-mono-sys mt-4 text-[12.5px] leading-relaxed text-[#F7F5EE]/40">Bring the brief. Or bring the problem. We can start with either.</p>
+            <p className="font-mono-sys mt-4 text-[12.5px] leading-relaxed text-[#F7F5EE]/62">Bring the brief. Or bring the problem. We can start with either.</p>
           </div>
         </div>
 
@@ -108,7 +108,7 @@ export const Footer = () => {
           <p className="font-display text-[22px] tracking-wide" data-testid="footer-bottom-line">
             From ABC to ROI. <span className="text-[#F7F5EE]/50">© Hi Anzy.</span>
           </p>
-          <p className="font-mono-sys text-[12.5px] text-[#F7F5EE]/38" data-testid="footer-small-line">Built with strategy, curiosity and far too many browser tabs.</p>
+          <p className="font-mono-sys text-[12.5px] text-[#F7F5EE]/62" data-testid="footer-small-line">Built with strategy, curiosity and far too many browser tabs.</p>
         </div>
       </div>
     </footer>
