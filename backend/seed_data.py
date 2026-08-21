@@ -475,14 +475,14 @@ PORTFOLIO_GROUPS = [
             {"name": "Primo Customs", "url": "http://www.primocustoms.co.in/"},
             {"name": "Tasavur", "url": "https://tasavur.com/"},
             {"name": "DGbog", "url": "http://www.dgbog.com/"},
-            {"name": "Ekdanta Taxi", "url": "http://www.ekadantataxi.in/"},
+            {"name": "Ekdanta Taxi"},
             {"name": "Cure It Herb", "url": "http://www.cureitherb.com/"},
             {"name": "Mall of Tastes", "url": "http://www.malloftastes.com/"},
         ]},
     {"category": "E-Commerce", "slug": "e-commerce", "items": [
             {"name": "Auto Parts Sooq", "url": "https://autopartssooq.com/"},
             {"name": "Asha Cart", "url": "https://ashacart.in/"},
-            {"name": "Havora Store", "url": "https://havora.store/products/sparkle-scraper"},
+            {"name": "Havora Store"},
             {"name": "Mud Patch (commerce + design)", "url": "https://www.mud-patch.com/"},
         ]},
     {"category": "Motion Graphics", "slug": "motion-graphics", "items": [

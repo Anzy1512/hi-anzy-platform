@@ -146,18 +146,29 @@ export const Nav = () => {
             <SheetContent side="right" className="w-[300px] border-l border-[#232A2A]/15 bg-[#E0D8C1] p-0">
               <nav aria-label="Mobile" className="flex h-full flex-col justify-between p-6 pt-14">
                 <div className="flex flex-col gap-1">
-                  {NAV_LINKS.map((l) => (
-                    <SheetClose asChild key={l.to}>
-                      <NavLink
-                        to={l.to}
-                        end={l.to === "/"}
-                        data-testid={`nav-mobile-item-${l.label.toLowerCase().replace(/\s+/g, "-")}`}
-                        className={({ isActive }) => `font-display rounded-lg px-3 py-2.5 text-3xl ${isActive ? "bg-[#232A2A] text-[#F7F5EE]" : "text-[#232A2A]"}`}
-                      >
-                        {l.label}
-                      </NavLink>
-                    </SheetClose>
-                  ))}
+                  {NAV_LINKS.map((l) => {
+                    // Radix's asChild clones props onto the child through Slot,
+                    // which stringifies a function className straight into the
+                    // class attribute — the literal source text ends up in the
+                    // DOM and both style branches apply at once. Resolve the
+                    // active state here and hand Slot a plain string.
+                    const isActive =
+                      l.to === "/" ? location.pathname === "/" : location.pathname.startsWith(l.to);
+                    return (
+                      <SheetClose asChild key={l.to}>
+                        <Link
+                          to={l.to}
+                          aria-current={isActive ? "page" : undefined}
+                          data-testid={`nav-mobile-item-${l.label.toLowerCase().replace(/\s+/g, "-")}`}
+                          className={`font-display rounded-lg px-3 py-2.5 text-3xl transition-colors ${
+                            isActive ? "bg-[#232A2A] text-[#F7F5EE]" : "text-[#232A2A] hover:bg-[#232A2A]/8"
+                          }`}
+                        >
+                          {l.label}
+                        </Link>
+                      </SheetClose>
+                    );
+                  })}
                 </div>
                 <div className="space-y-3">
                   <SheetClose asChild>

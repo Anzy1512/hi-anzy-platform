@@ -30,7 +30,20 @@ mongo_url = os.environ["MONGO_URL"]
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ["DB_NAME"]]
 
-app = FastAPI(title="Hi Anzy API")
+# ── Environment posture ──────────────────────────────────────────────────────
+# Anything not explicitly "development" is treated as production, so a missing
+# or misspelled env var fails closed rather than exposing the schema.
+ENVIRONMENT = os.environ.get("ENVIRONMENT", "production").strip().lower()
+IS_PRODUCTION = ENVIRONMENT not in {"development", "dev", "local"}
+
+# Interactive docs describe every route and model — useful locally, an
+# invitation to enumerate the API in production.
+app = FastAPI(
+    title="Hi Anzy API",
+    docs_url=None if IS_PRODUCTION else "/docs",
+    redoc_url=None if IS_PRODUCTION else "/redoc",
+    openapi_url=None if IS_PRODUCTION else "/openapi.json",
+)
 api_router = APIRouter(prefix="/api")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -253,8 +266,34 @@ async def create_contact(payload: ContactCreate, request: Request):
 
 
 @api_router.get("/contact-submissions")
-async def list_contact_submissions():
-    cursor = db.contact_submissions.find({}, {"_id": 0}).sort("createdAt", -1)
+async def list_contact_submissions(request: Request):
+    """Admin-only. Every row is personal data — name, email, phone, IP.
+
+    This was previously world-readable, which made the whole enquiry pipeline a
+    public dataset the moment anyone submitted the form. Access now requires a
+    valid session belonging to an address on ADMIN_EMAILS, and the caller's IP
+    is never returned.
+    """
+    user = await session_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    admins = {
+        e.strip().lower()
+        for e in os.environ.get("ADMIN_EMAILS", "").split(",")
+        if e.strip()
+    }
+    if not admins:
+        logger.error("ADMIN_EMAILS is unset — refusing access to contact submissions.")
+        raise HTTPException(status_code=403, detail="Admin access is not configured")
+
+    if (user.get("email") or "").lower() not in admins:
+        logger.warning("Rejected contact-submission access for %s", user.get("email"))
+        raise HTTPException(status_code=403, detail="Not authorised")
+
+    # Drop the stored IP from the response — it is kept for abuse handling, not
+    # for routine reading.
+    cursor = db.contact_submissions.find({}, {"_id": 0, "ip": 0}).sort("createdAt", -1)
     return await cursor.to_list(length=200)
 
 
@@ -453,13 +492,63 @@ async def shutdown_db_client():
 
 app.include_router(api_router)
 
-cors_origins = os.environ.get("CORS_ORIGINS", "*")
-origins = [o.strip() for o in cors_origins.split(",")]
+
+@app.middleware("http")
+async def security_headers(request: Request, call_next):
+    """Baseline hardening headers.
+
+    The API returns JSON, but a browser that is tricked into rendering a
+    response as HTML/script is the usual route to trouble — nosniff and
+    DENY-framing shut that down cheaply.
+    """
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+    response.headers["Cross-Origin-Resource-Policy"] = "same-site"
+    # Never advertise the server software.
+    response.headers["Server"] = "hi-anzy"
+    if IS_PRODUCTION:
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
+
+
+# ── CORS ─────────────────────────────────────────────────────────────────────
+# Credentialed CORS and a wildcard origin must never be combined: Starlette
+# echoes the caller's Origin back, so *any* site could ride a signed-in
+# visitor's session cookie. Origins are therefore an explicit allowlist, and a
+# wildcard is refused outright whenever credentials are enabled.
+raw_origins = os.environ.get("CORS_ORIGINS", "").strip()
+origins = [o.strip() for o in raw_origins.split(",") if o.strip()]
+
+DEV_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+]
+
+if "*" in origins:
+    logger.error(
+        "CORS_ORIGINS contains '*' while credentials are enabled — refusing the "
+        "wildcard and falling back to the local development allowlist. Set "
+        "CORS_ORIGINS to your real front-end origin(s)."
+    )
+    origins = [o for o in origins if o != "*"]
+
+if not origins:
+    if IS_PRODUCTION:
+        # Fail closed: no origin allowlist means no cross-origin browser access.
+        logger.error("CORS_ORIGINS is unset in production — cross-origin requests will be denied.")
+    else:
+        origins = DEV_ORIGINS
 
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
     allow_origins=origins,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "X-Session-ID"],
+    max_age=600,
 )
