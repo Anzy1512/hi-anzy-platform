@@ -11,6 +11,7 @@ import { SystemCoreFallback, ConstellationFallback, ThreeSafe } from "@/componen
 import { HalftoneBackdrop, HalftoneStatic } from "@/components/three/HalftoneBackdrop";
 import { PunRow } from "@/components/PunPop";
 import { SectionConnector } from "@/components/SectionConnector";
+import { PinnedSequence } from "@/components/PinnedSequence";
 import { ProofStrip } from "@/components/ProofStrip";
 import { useRevealObserver, useReducedMotion, webglAvailable, gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/motion";
 import { getCaseStudies, track } from "@/lib/api";
@@ -615,6 +616,12 @@ export default function Home() {
       <WhatWeDoGrid />
       <SectionConnector variant="left" label="CAPABILITY → METHOD" testId="connector-capability-method" />
       <MethodSection />
+      <PinnedSequence
+        kicker="THE SEQUENCE"
+        title={<>One system, five moves.<br />In this order, on purpose.</>}
+        testId="home-pinned-method"
+        steps={METHOD_STAGES.map((s) => ({ label: s.label, title: s.title, body: s.body }))}
+      />
       <Diagnostic />
       <SectionConnector variant="centre" label="METHOD → PROOF" testId="connector-method-proof" />
       <WorkPreview />

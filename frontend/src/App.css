@@ -580,6 +580,38 @@ html {
   }
 }
 
+/* ---------- Displacement dissolve ---------- */
+.dissolve-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.dissolve-wrap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* the filter lives in the flow but must never occupy space */
+.dissolve-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dissolve-wrap img {
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ---------- Pinned sequence ---------- */
+.pinned-sequence {
+  /* A pinned section is lifted out of flow by ScrollTrigger; isolating it keeps
+     the halftone backdrop and progress bar from being repainted every frame. */
+  isolation: isolate;
+}
+
 /* ---------- FAQ disclosure ---------- */
 .faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary { list-style: none; }

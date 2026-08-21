@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Seo } from "@/components/Seo";
 import { Reveal } from "@/components/Reveal";
@@ -215,9 +215,35 @@ export default function Work() {
                       <span className={`sys-chip rounded-full border px-3 py-1 ${gi % 3 === 0 ? "border-[#F19020]/60 text-[#F19020]" : "border-[#232A2A]/25 text-[#232A2A]/60"}`}>{g.items.length} PROJECTS</span>
                     </div>
                     <ul className="mt-4 flex flex-wrap gap-2">
-                      {g.items.map((it) => (
-                        <li key={it} className={`sys-chip rounded-full border px-3 py-1.5 transition-colors ${gi % 3 === 0 ? "border-[#F7F5EE]/25 text-[#F7F5EE]/80 hover:border-[#F19020]" : "border-[#232A2A]/25 text-[#232A2A]/75 hover:border-[#F19020]"}`}>{it}</li>
-                      ))}
+                      {g.items.map((it) => {
+                        // Items carry a deck link where one exists; the rest stay
+                        // as plain chips rather than dead anchors.
+                        const item = typeof it === "string" ? { name: it } : it;
+                        const dark = gi % 3 === 0;
+                        const chip = `sys-chip rounded-full border px-3 py-1.5 transition-colors ${
+                          dark
+                            ? "border-[#F7F5EE]/25 text-[#F7F5EE]/80 hover:border-[#F19020]"
+                            : "border-[#232A2A]/25 text-[#232A2A]/75 hover:border-[#F19020]"
+                        }`;
+                        if (!item.url) {
+                          return <li key={item.name} className={chip}>{item.name}</li>;
+                        }
+                        return (
+                          <li key={item.name}>
+                            <a
+                              href={item.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => track("portfolio_item_opened", { group: g.slug, item: item.name })}
+                              data-testid={`portfolio-link-${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                              className={`${chip} inline-flex items-center gap-1.5 ${dark ? "hover:text-[#F19020]" : "hover:text-[#232A2A]"}`}
+                            >
+                              {item.name}
+                              <ArrowUpRight size={12} aria-hidden="true" />
+                            </a>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </article>
                 </Reveal>

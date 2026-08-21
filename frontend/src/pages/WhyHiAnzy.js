@@ -9,6 +9,7 @@ import { track } from "@/lib/api";
 import { CHARACTERS, TEAM_QUOTE } from "@/data/content";
 import { PunPop } from "@/components/PunPop";
 import { NextSteps } from "@/components/NextSteps";
+import { DissolveImage } from "@/components/DissolveImage";
 
 export default function WhyHiAnzy() {
   const ref = useRevealObserver();
@@ -40,6 +41,9 @@ export default function WhyHiAnzy() {
           </div>
           <div className="lg:col-span-5">
             <Reveal delay={200}>
+              {/* Left plain on purpose: this sits above the fold, and a
+                  scroll-scrubbed reveal there would either never play or delay
+                  the first thing the reader sees. */}
               <figure className="cutout-img rounded-[18px]" style={{ aspectRatio: "4/5" }}>
                   <img src="https://images.unsplash.com/flagged/photo-1559487098-6174e343345c?auto=format&fit=crop&w=1200&q=80" alt="Black and white editorial portrait — a person mid-thought" loading="lazy" />
                 </figure>
@@ -128,8 +132,18 @@ export default function WhyHiAnzy() {
               {CHARACTERS.map((c, i) => (
                 <Reveal key={c.name} delay={i * 80}>
                   <figure className="char-card scrap float-el" style={{ "--rot": `${(i % 2 === 0 ? -1 : 1) * (0.8 + (i % 3) * 0.5)}deg`, animationDelay: `${i * 0.45}s` }} data-testid={`character-${c.name.toLowerCase().replace(/\s+/g, "-")}`}>
+                    {/* Well below the fold, so the grain actually has room to
+                        resolve as you scroll into the parade. */}
                     <div style={{ aspectRatio: "3/4" }}>
-                      <img src={c.img} alt={`${c.name} — halftone collage figure`} loading="lazy" />
+                      <DissolveImage
+                        src={c.img}
+                        alt={`${c.name} — halftone collage figure`}
+                        className="h-full w-full"
+                        maxScale={70}
+                        start="top 92%"
+                        end="top 55%"
+                        testId={`character-dissolve-${i}`}
+                      />
                     </div>
                     <figcaption className="border-t-[3px] border-[#F19020] bg-[#232A2A] p-3">
                       <p className="font-display text-[17px] leading-none text-[#F7F5EE]">{c.name}</p>
