@@ -15,14 +15,14 @@ export default function WhatWeDo() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="what-we-do-page">
-      <Seo title="What We Do — Hi Anzy" description="Business audit and strategy, brand and experience, technology and automation, growth, media and creators, advisory and scale — run as one connected system." />
+      <Seo title="What We Do — hiAnzy" description="Business audit and strategy, brand and experience, technology and automation, growth, media and creators, advisory and scale — run as one connected system." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHAT WE DO
         </Reveal>
         <Reveal delay={80}>
           <h1 className="font-display mt-5 max-w-4xl leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="what-we-do-h1">
-            What does Hi Anzy actually do<span className="text-[#E54A25]">?</span>
+            What does hiAnzy actually do<span className="text-[#E54A25]">?</span>
           </h1>
         </Reveal>
         <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
@@ -81,7 +81,7 @@ export default function WhatWeDo() {
       </div>
       <Packages />
       <div className="pb-16">
-        <CharacterQuote startIndex={2} />
+        <CharacterQuote />
       </div>
     </div>
   );

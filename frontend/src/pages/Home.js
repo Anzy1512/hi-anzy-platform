@@ -57,7 +57,7 @@ const Hero = ({ show3d }) => {
           <Reveal delay={160}>
             <p className="font-editorial mt-7 max-w-[46ch] text-[clamp(1.15rem,1.55vw,1.5rem)] leading-[1.45] text-[#232A2A]/85" data-testid="hero-body">
               Strategy. Brand. Technology. Growth. Operations. They look like separate departments until you
-              realise they are all working on the same business. Hi Anzy finds what is disconnected, figures out
+              realise they are all working on the same business. hiAnzy finds what is disconnected, figures out
               what belongs together and builds the system around it.
             </p>
           </Reveal>
@@ -255,7 +255,7 @@ const MethodSection = () => {
     <section className="bg-[#D8CFB4]/60 section-pad" data-testid="home-method-section">
       <div className="container-page">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading kicker="THE HI ANZY METHOD" title={<>See it. Shape it. Build it.<br />Bring it together. Make it grow.</>} testId="method-heading" className="max-w-3xl" />
+          <SectionHeading kicker={<>THE <span className="brand-mark">hiAnzy</span> METHOD</>} title={<>See it. Shape it. Build it.<br />Bring it together. Make it grow.</>} testId="method-heading" className="max-w-3xl" />
           <Reveal delay={150}>
             <MagneticButton to="/how-we-work" className="btn-paper" testId="method-cta" onClick={() => track("method_explored", { from: "home_method" })}>
               See the Method <ArrowRight size={15} />
@@ -311,7 +311,7 @@ const Diagnostic = () => (
             Maybe you don&rsquo;t need <em>what you think</em> you need.
           </Reveal>
           <Reveal delay={140} as="p" className="mt-6 max-w-lg text-[17px] leading-[1.6] text-[#F7F5EE]/80">
-            You might not need a rebrand. Or a new CRM. Or AI, whatever the conference said. The Hi Anzy
+            You might not need a rebrand. Or a new CRM. Or AI, whatever the conference said. The hiAnzy
             Business Systems Diagnostic looks at the whole machine before recommending a part.
           </Reveal>
           <Reveal delay={200} className="mt-8 flex flex-wrap items-center gap-4">
@@ -417,7 +417,7 @@ const NetworkPreview = ({ show3d }) => {
           <div className="lg:col-span-5">
             <SectionHeading dark kicker="THE NETWORK" title={<>The team changes. The accountability doesn&rsquo;t.</>} testId="network-heading" />
             <Reveal delay={140} as="p" className="mt-6 max-w-md text-[17px] leading-[1.6] text-[#F7F5EE]/78">
-              Hi Anzy combines a core strategic layer with a wider network of specialists, creators,
+              hiAnzy combines a core strategic layer with a wider network of specialists, creators,
               technologists, producers, media partners, venues and operators. The problem decides the roster.
             </Reveal>
             <div className="mt-7 flex flex-wrap gap-2" data-testid="network-category-chips">
@@ -620,8 +620,8 @@ export default function Home() {
       {/* Deck-referenced halftone texture — minor 3JS motion backdrop */}
       {show3d ? <HalftoneBackdrop /> : <HalftoneStatic />}
       <Seo
-        title="Hi Anzy — We Build Brand Operating Systems"
-        description="Hi Anzy is a Business Systems & Transformation Consultancy. We find what is disconnected in your business, figure out what belongs together and build the system around it. From ABC to ROI."
+        title="hiAnzy — We Build Brand Operating Systems"
+        description="hiAnzy is a Business Systems & Transformation Consultancy. We find what is disconnected in your business, figure out what belongs together and build the system around it. From ABC to ROI."
       />
       <Hero show3d={show3d} />
       <ProofStrip />

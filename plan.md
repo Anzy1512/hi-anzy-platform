@@ -1,7 +1,7 @@
 # plan.md (Updated)
 
 ## 1) Objectives
-- Ship a production-quality, multi-page **Hi Anzy** website (React + FastAPI + MongoDB) that clearly positions Hi Anzy as a **Business Systems & Transformation Consultancy**.
+- Ship a production-quality, multi-page **hiAnzy** website (React + FastAPI + MongoDB) that clearly positions hiAnzy as a **Business Systems & Transformation Consultancy**.
 - Preserve the deck’s **Analog Intelligence** visual DNA in the web: paper canvas, charcoal panels, orange routing-line system, red interventions, B&W cut-out/halftone imagery, editorial asymmetry.
 - Deliver purposeful 3D moments with **WebGL fallbacks** and **reduced-motion equivalents**.
 - Implement real content plumbing: CMS-like Mongo collections + APIs, contact submissions stored + **optional** email notifications (Resend/SMTP env-driven).
@@ -28,8 +28,8 @@
 
 **User stories (Phase 1)**
 1. As a visitor, I want my contact message to reliably submit so I’m not wondering if anyone received it.
-2. As Hi Anzy, I want every submission stored in MongoDB so nothing gets lost.
-3. As Hi Anzy, I want email notifications when configured so the team can respond fast.
+2. As hiAnzy, I want every submission stored in MongoDB so nothing gets lost.
+3. As hiAnzy, I want email notifications when configured so the team can respond fast.
 4. As a visitor, I want clear, accessible error messages when I miss required fields.
 5. As a visitor, I want the form to reject obvious bot submissions without punishing real humans.
 
@@ -70,7 +70,7 @@
    - Network Constellation: charcoal scene, clustered categories, focus interaction
    - Fallbacks: static diagram + accessible category list when WebGL fails/reduced-motion
 6. Secondary pages
-   - What We Do / How We Work / Why Hi Anzy / Work (+detail) / Network / Insights (+detail) / Contact
+   - What We Do / How We Work / Why hiAnzy / Work (+detail) / Network / Insights (+detail) / Contact
    - Additional editorial pages: Who We Work With, Collaborate, Careers, Resources
 7. Contact page E2E
    - Frontend validation + backend submission + success state
@@ -81,11 +81,11 @@
 - Site delivered end-to-end; content APIs and pages operational.
 
 **User stories (Phase 2)**
-1. As a visitor, I want to understand quickly what Hi Anzy is (consultancy) and what they build (operating systems).
+1. As a visitor, I want to understand quickly what hiAnzy is (consultancy) and what they build (operating systems).
 2. As a visitor, I want the homepage 3D to explain “connection → system → ROI” without blocking reading.
 3. As a visitor, I want to explore What We Do by outcomes instead of a giant service list.
 4. As a visitor, I want to see Work with business context (Situation/GAP/Move/Result) so I can trust the thinking.
-5. As a visitor, I want to contact Hi Anzy with a clear form and get a human confirmation state.
+5. As a visitor, I want to contact hiAnzy with a clear form and get a human confirmation state.
 
 ---
 
@@ -114,7 +114,7 @@ This phase incorporates user-requested refinements without breaking approved str
      - Two-column hero layout
      - “Network at a glance” stats panel driven from available data
    - Added character motion surface area:
-     - “Architects” character parade on Why Hi Anzy (6 character cutouts)
+     - “Architects” character parade on Why hiAnzy (6 character cutouts)
 6. Minor 3D texture enhancement (Home)
    - Added deck-referenced halftone dot texture as a **subtle 3JS motion backdrop** (`HalftoneBackdrop`), with static CSS fallback
 7. Critical motion-system correctness fix
@@ -130,7 +130,7 @@ This phase incorporates user-requested refinements without breaking approved str
 **User stories (Phase 3)**
 1. As a visitor, I want reduced-motion mode to keep the site fully understandable without complex animation.
 2. As a visitor, I want the typography to clearly separate “systems voice” from “human voice,” while staying fully sans in body reading.
-3. As Hi Anzy, I want deck-authentic logo/texture language present so the brand feels consistent.
+3. As hiAnzy, I want deck-authentic logo/texture language present so the brand feels consistent.
 4. As a visitor, I want credibility and proof signals to be visible without needing to open every page.
 5. As a visitor, I want Work and Portfolio content to appear reliably (never hidden due to motion/reveal timing).
 
@@ -147,8 +147,8 @@ These are explicitly out of scope unless approved.
 
 **User stories (Phase 4)**
 1. As a visitor, I want to attach a brief file so I don’t have to paste everything into a textarea.
-2. As Hi Anzy, I want to review submissions in a simple internal list so nothing is missed.
-3. As Hi Anzy, I want to add new insights/work/network entries without code changes.
+2. As hiAnzy, I want to review submissions in a simple internal list so nothing is missed.
+3. As hiAnzy, I want to add new insights/work/network entries without code changes.
 4. As a visitor, I want the site to remain usable even if WebGL is disabled.
 
 ## 3) Next Actions

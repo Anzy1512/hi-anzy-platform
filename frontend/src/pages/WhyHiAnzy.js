@@ -15,12 +15,12 @@ export default function WhyHiAnzy() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="why-hi-anzy-page">
-      <Seo title="Why Hi Anzy — The Name, The Instinct, The Work" description="Anzy began as a signature under poems. It grew into a way of seeing businesses: see differently, make thoughtfully." />
+      <Seo title="Why hiAnzy — The Name, The Instinct, The Work" description="Anzy began as a signature under poems. It grew into a way of seeing businesses: see differently, make thoughtfully." />
       <section className="container-page section-pad">
         <div className="grid items-start gap-12 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
-              <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHY HI ANZY
+              <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHY <span className="brand-mark">hiAnzy</span>
             </Reveal>
             <Reveal delay={80}>
               <h1 className="font-display mt-5 leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="why-h1">

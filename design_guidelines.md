@@ -1,6 +1,6 @@
 {
   "brand": {
-    "name": "Hi Anzy",
+    "name": "hiAnzy",
     "visual_territory": "ANALOG INTELLIGENCE — editorial magazine × strategy notebook × operating system × spatial computation",
     "voice": {
       "attributes": [
@@ -369,7 +369,7 @@
     "network_constellation": {
       "requirements": [
         "Dark charcoal section.",
-        "Hi Anzy central node; discipline clusters.",
+        "hiAnzy central node; discipline clusters.",
         "Category selection expands cluster; orange route connects.",
         "Keyboard-accessible category list controls the scene; scene is not the only way to access info."
       ],

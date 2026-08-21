@@ -37,7 +37,9 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "check:opacity": "node scripts/check-opacity-scale.js",
+    "prebuild": "node scripts/check-opacity-scale.js"
   },
   "eslintConfig": {
     "extends": [

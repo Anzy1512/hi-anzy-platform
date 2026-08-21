@@ -18,7 +18,7 @@ export default function Collaborate() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="collaborate-page">
-      <Seo title="Collaborate — Join the Hi Anzy Network" description="Specialists, creators, media and venues: the Hi Anzy network runs on honest classification and real credit. Introduce yourself." />
+      <Seo title="Collaborate — Join the hiAnzy Network" description="Specialists, creators, media and venues: the hiAnzy network runs on honest classification and real credit. Introduce yourself." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> COLLABORATE
@@ -29,7 +29,7 @@ export default function Collaborate() {
           </h1>
         </Reveal>
         <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
-          The Hi Anzy network is assembled per problem, credited honestly and briefed properly. If you are
+          The hiAnzy network is assembled per problem, credited honestly and briefed properly. If you are
           exceptional at something businesses need, we would like to know you exist.
         </Reveal>
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
@@ -65,7 +65,7 @@ export default function Collaborate() {
         </Reveal>
       </section>
       <div className="pb-16">
-        <CharacterQuote startIndex={4} />
+        <CharacterQuote />
       </div>
       <NextSteps from="/collaborate" />
     </div>

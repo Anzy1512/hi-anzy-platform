@@ -1,6 +1,6 @@
-"""Hi Anzy seed content.
+"""hiAnzy seed content.
 Sample case studies follow the CMS schema so real content can replace them.
-Network resources are migrated from the original Hi Anzy brand deck and
+Network resources are migrated from the original hiAnzy brand deck and
 classified truthfully. Only publicStatus == "public" items are served.
 No follower counts are hard-coded anywhere.
 """
@@ -60,7 +60,7 @@ CASE_STUDIES = [
         "gap": "No single view of the guest. Marketing couldn't tell regulars from first-timers. Events were sold out and understaffed at the same time, in the same building.",
         "insight": "This wasn't a technology shortage. It was a technology surplus with no architecture. Adding another tool would have made it worse.",
         "decision": "Consolidate before automating. One reservation layer, one guest record, one events pipeline — then automate the handovers between them.",
-        "build": "Systems audit, platform consolidation, a unified guest data layer, automated event-to-staffing workflows, and dashboards the venue managers actually asked for. Integration engineering delivered with a specialist technology partner from the Hi Anzy network.",
+        "build": "Systems audit, platform consolidation, a unified guest data layer, automated event-to-staffing workflows, and dashboards the venue managers actually asked for. Integration engineering delivered with a specialist technology partner from the hiAnzy network.",
         "result": "Head office stopped reconciling spreadsheets. Venue managers see tonight's picture before tonight happens. Guest communication now recognises the guest.",
         "next": "A loyalty layer, now that there is finally one record of who is being loyal.",
         "services": ["Systems audit", "Platform consolidation", "Data architecture", "Workflow automation", "Dashboards"],
@@ -80,7 +80,7 @@ CASE_STUDIES = [
         "situation": "A new device, a festival-season deadline, and a launch plan that lived in six different vendors' inboxes. Everyone was doing their job. Nobody was doing the same job.",
         "gap": "No connective tissue. Creator content, on-ground experiences, PR moments and retail timing were scheduled independently — which is a polite way of saying they were colliding.",
         "insight": "Reach can be purchased. Relevance has to be designed. The launch didn't need more vendors; it needed one operating picture.",
-        "decision": "Hi Anzy took the coordination layer: one calendar, one narrative, one accountability structure. Specialists from the network handled what specialists handle.",
+        "decision": "hiAnzy took the coordination layer: one calendar, one narrative, one accountability structure. Specialists from the network handled what specialists handle.",
         "build": "Launch architecture, creator collaborations coordinated through the network, venue activations across clubs and campus properties, media placements timed to retail availability, and a war-room cadence that kept all of it honest.",
         "result": "The launch read as one story across feeds, floors and press — because it was one story, run on one system.",
         "next": "A repeatable launch playbook the brand now runs for every product cycle.",
@@ -97,7 +97,7 @@ CASE_STUDIES = [
         "industry": "Professional Services",
         "year": "2024",
         "provenance": "COLLABORATOR WORK",
-        "summary": "An internal-tools build by a technologist in the Hi Anzy network. Classified accordingly.",
+        "summary": "An internal-tools build by a technologist in the hiAnzy network. Classified accordingly.",
         "situation": "Leadership commissioned a company dashboard. Six months later it was accurate, comprehensive and opened roughly never.",
         "gap": "The dashboard answered questions nobody was asking, on a schedule nobody worked to. Reporting was designed around data availability, not around decisions.",
         "insight": "Good systems start from the decision and work backwards. If a number doesn't change what somebody does on Monday, it is decoration.",
@@ -107,19 +107,19 @@ CASE_STUDIES = [
         "next": "Extending the same decision-first approach to client reporting.",
         "services": ["Internal tools", "Data architecture", "Workflow automation"],
         "metrics": None,
-        "metricEvidence": "Delivered independently by a network collaborator; shown here as network credential, not Hi Anzy client work.",
+        "metricEvidence": "Delivered independently by a network collaborator; shown here as network credential, not hiAnzy client work.",
         "featured": False,
         "published": True,
     },
 ]
 
 NETWORK_RESOURCES = [
-    # Hi Anzy Core Studios
-    {"name": "Hi Anzy Strategy Desk", "slug": "hi-anzy-strategy-desk", "category": "Strategy", "relationshipType": "HI ANZY DIRECT", "geography": "India / Remote", "capabilities": ["Business diagnostics", "Positioning", "Transformation roadmaps", "Go-to-market"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "The core layer. This is where accountability lives."},
-    {"name": "Hi Anzy Brand Studio", "slug": "hi-anzy-brand-studio", "category": "Brand", "relationshipType": "HI ANZY DIRECT", "geography": "India / Remote", "capabilities": ["Brand strategy", "Identity", "Messaging", "Founder positioning"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "Clarity first. Aesthetics follow instructions."},
-    {"name": "Hi Anzy Systems & Web Studio", "slug": "hi-anzy-systems-web-studio", "category": "Technology", "relationshipType": "HI ANZY DIRECT", "geography": "India / Remote", "capabilities": ["Websites", "Commerce", "Applications", "Integrations", "CRM"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "Builds what the strategy promised."},
-    {"name": "Hi Anzy Automation Lab", "slug": "hi-anzy-automation-lab", "category": "Automation", "relationshipType": "HI ANZY DIRECT", "geography": "India / Remote", "capabilities": ["Workflow automation", "n8n / Zapier systems", "Internal tools", "Ops handovers"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "Removes friction. Doesn't create a new channel about friction."},
-    {"name": "Hi Anzy AI Practice", "slug": "hi-anzy-ai-practice", "category": "AI", "relationshipType": "HI ANZY DIRECT", "geography": "India / Remote", "capabilities": ["AI systems design", "Assistant & agent builds", "AI-readiness audits"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "AI is not the strategy. The business outcome is."},
+    # hiAnzy Core Studios
+    {"name": "hiAnzy Strategy Desk", "slug": "hi-anzy-strategy-desk", "category": "Strategy", "relationshipType": "HI ANZY DIRECT", "geography": "India / Remote", "capabilities": ["Business diagnostics", "Positioning", "Transformation roadmaps", "Go-to-market"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "The core layer. This is where accountability lives."},
+    {"name": "hiAnzy Brand Studio", "slug": "hi-anzy-brand-studio", "category": "Brand", "relationshipType": "HI ANZY DIRECT", "geography": "India / Remote", "capabilities": ["Brand strategy", "Identity", "Messaging", "Founder positioning"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "Clarity first. Aesthetics follow instructions."},
+    {"name": "hiAnzy Systems & Web Studio", "slug": "hi-anzy-systems-web-studio", "category": "Technology", "relationshipType": "HI ANZY DIRECT", "geography": "India / Remote", "capabilities": ["Websites", "Commerce", "Applications", "Integrations", "CRM"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "Builds what the strategy promised."},
+    {"name": "hiAnzy Automation Lab", "slug": "hi-anzy-automation-lab", "category": "Automation", "relationshipType": "HI ANZY DIRECT", "geography": "India / Remote", "capabilities": ["Workflow automation", "n8n / Zapier systems", "Internal tools", "Ops handovers"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "Removes friction. Doesn't create a new channel about friction."},
+    {"name": "hiAnzy AI Practice", "slug": "hi-anzy-ai-practice", "category": "AI", "relationshipType": "HI ANZY DIRECT", "geography": "India / Remote", "capabilities": ["AI systems design", "Assistant & agent builds", "AI-readiness audits"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "AI is not the strategy. The business outcome is."},
     # Collaborator Collectives
     {"name": "Design Collective", "slug": "design-collective", "category": "Design", "relationshipType": "HI ANZY + COLLABORATOR", "geography": "India / Remote", "capabilities": ["UX/UI", "Packaging", "Motion", "Design systems"], "featured": True, "publicStatus": "public", "lastVerified": "2025-Q3", "portfolioUrl": None, "note": "Senior designers assembled per problem, briefed by the strategy desk."},
     {"name": "Performance Media Pod", "slug": "performance-media-pod", "category": "Performance", "relationshipType": "HI ANZY + COLLABORATOR", "geography": "India", "capabilities": ["Paid media", "SEO", "Funnels", "CRO", "Marketplace growth"], "featured": False, "publicStatus": "public", "lastVerified": "2025-Q4", "portfolioUrl": None, "note": "Spends money like it's theirs. Reports like it's yours."},
@@ -189,7 +189,7 @@ INSIGHTS = [
         "readingTime": "6 min",
         "published": True,
         "seo": {
-            "title": "Looking Busy Is Not a Growth Strategy — Hi Anzy",
+            "title": "Looking Busy Is Not a Growth Strategy — hiAnzy",
             "description": "How to tell the difference between activity and progress in your business, and what a systems diagnostic actually looks for.",
         },
         "body": [
@@ -212,7 +212,7 @@ INSIGHTS = [
         "readingTime": "5 min",
         "published": True,
         "seo": {
-            "title": "The Invoice Should Not Be the Strategy — Hi Anzy",
+            "title": "The Invoice Should Not Be the Strategy — hiAnzy",
             "description": "Why vendor recommendations so often match vendor rate cards, and how to buy diagnosis before prescription.",
         },
         "body": [
@@ -234,7 +234,7 @@ INSIGHTS = [
         "readingTime": "5 min",
         "published": True,
         "seo": {
-            "title": "Clarity Converts Before the CTA Does — Hi Anzy",
+            "title": "Clarity Converts Before the CTA Does — hiAnzy",
             "description": "Why most conversion problems are comprehension problems, and how positioning work quietly does the selling.",
         },
         "body": [
@@ -256,7 +256,7 @@ INSIGHTS = [
         "readingTime": "5 min",
         "published": True,
         "seo": {
-            "title": "AI Is Not the Strategy — Hi Anzy",
+            "title": "AI Is Not the Strategy — hiAnzy",
             "description": "A practical way to decide where AI belongs in your business, and where it is expensive theatre.",
         },
         "body": [
@@ -278,7 +278,7 @@ INSIGHTS = [
         "readingTime": "5 min",
         "published": True,
         "seo": {
-            "title": "A Better Funnel Cannot Rescue a Confused Offer — Hi Anzy",
+            "title": "A Better Funnel Cannot Rescue a Confused Offer — hiAnzy",
             "description": "Why funnel optimisation fails when the offer is unclear, and the order of operations that actually moves revenue.",
         },
         "body": [
@@ -299,7 +299,7 @@ INSIGHTS = [
         "readingTime": "4 min",
         "published": True,
         "seo": {
-            "title": "The Problem Behind the Problem — Hi Anzy",
+            "title": "The Problem Behind the Problem — hiAnzy",
             "description": "Field notes on why the first brief is usually a symptom, and how good questions find the actual gap.",
         },
         "body": [
@@ -321,7 +321,7 @@ INSIGHTS = [
         "published": True,
         "tags": ["business systems", "consulting", "transformation", "operating model"],
         "seo": {
-            "title": "What Does a Business Systems Consultancy Do? — Hi Anzy",
+            "title": "What Does a Business Systems Consultancy Do? — hiAnzy",
             "description": "A business systems consultancy diagnoses why the parts of your company work against each other, then rebuilds them as one operating system. Here is what that involves.",
         },
         "body": [
@@ -357,7 +357,7 @@ INSIGHTS = [
         "published": True,
         "tags": ["briefing", "scoping", "project management", "consulting"],
         "seo": {
-            "title": "How to Write a Project Brief When the Problem Is Unclear — Hi Anzy",
+            "title": "How to Write a Project Brief When the Problem Is Unclear — hiAnzy",
             "description": "You do not need a finished brief to start. Bring symptoms, numbers and constraints, and let the diagnosis define the deliverable.",
         },
         "body": [
@@ -389,7 +389,7 @@ INSIGHTS = [
         "published": True,
         "tags": ["SEO", "AEO", "GEO", "structured data", "content strategy", "AI search"],
         "seo": {
-            "title": "SEO for AI Answer Engines: How to Get Cited — Hi Anzy",
+            "title": "SEO for AI Answer Engines: How to Get Cited — hiAnzy",
             "description": "Answer engine optimisation in practice: lead with the answer, structure for extraction, publish real schema, and keep the writing worth reading.",
         },
         "body": [
@@ -427,7 +427,7 @@ INSIGHTS = [
         "published": True,
         "tags": ["packages", "engagement model", "product development", "scoping"],
         "seo": {
-            "title": "Why Hi Anzy Packages Services by Stage — Hi Anzy",
+            "title": "Why hiAnzy Packages Services by Stage — hiAnzy",
             "description": "Services sold as a menu let you buy in the wrong order. Packaging by development stage makes sequence the default rather than an accident.",
         },
         "body": [

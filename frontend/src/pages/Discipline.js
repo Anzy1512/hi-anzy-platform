@@ -6,6 +6,7 @@ import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { NextSteps } from "@/components/NextSteps";
+import { PopIllustration } from "@/components/PopIllustration";
 import { useRevealObserver } from "@/lib/motion";
 import { getNetwork, track } from "@/lib/api";
 import { DISCIPLINE_BY_SLUG, DISCIPLINES } from "@/data/disciplines";
@@ -53,10 +54,10 @@ export default function Discipline() {
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      name: `${d.name} — Hi Anzy`,
+      name: `${d.name} — hiAnzy`,
       serviceType: d.name,
       description: d.lede,
-      provider: { "@type": "Organization", name: "Hi Anzy" },
+      provider: { "@type": "Organization", name: "hiAnzy" },
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: `${d.name} capabilities`,
@@ -76,7 +77,7 @@ export default function Discipline() {
   return (
     <div ref={ref} className="pt-[84px]" data-testid={`discipline-page-${d.slug}`}>
       <Seo
-        title={`${d.name} — Hi Anzy Network`}
+        title={`${d.name} — hiAnzy Network`}
         description={d.lede}
         jsonLd={jsonLd}
       />
@@ -137,6 +138,15 @@ export default function Discipline() {
                 </p>
               </div>
             </Reveal>
+            <div className="mt-6 flex justify-end">
+              <PopIllustration
+                src="/brand/pop-bulb-armchair.png"
+                width={170}
+                rotate={-2}
+                drift={18}
+                testId="pop-discipline"
+              />
+            </div>
           </div>
         </div>
       </section>

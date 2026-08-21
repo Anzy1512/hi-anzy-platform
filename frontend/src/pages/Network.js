@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { Maximize2, Minimize2, ArrowRight } from "lucide-react";
 import { DISCIPLINES } from "@/data/disciplines";
+import { PopIllustration } from "@/components/PopIllustration";
 import { Seo } from "@/components/Seo";
 import { Reveal } from "@/components/Reveal";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
@@ -16,8 +17,8 @@ import { NextSteps } from "@/components/NextSteps";
 const Constellation = lazy(() => import("@/components/three/Constellation"));
 
 const LEGEND = [
-  { tag: "HI ANZY DIRECT", text: "Owned and delivered by the Hi Anzy core layer." },
-  { tag: "HI ANZY + COLLABORATOR", text: "Hi Anzy led, specialists executed alongside." },
+  { tag: "HI ANZY DIRECT", text: "Owned and delivered by the hiAnzy core layer." },
+  { tag: "HI ANZY + COLLABORATOR", text: "hiAnzy led, specialists executed alongside." },
   { tag: "COLLABORATOR CREDENTIAL", text: "Independent track record of a network member." },
   { tag: "NETWORK ACCESS", text: "Relationships we can activate. Not client work." },
 ];
@@ -91,7 +92,7 @@ export default function Network() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="network-page">
-      <Seo title="The Hi Anzy Network — Strategists, Creators, Technologists, Operators" description="A consultancy doesn't need to own every skill. It needs to know what the problem demands and who is exceptionally good at solving it." />
+      <Seo title="The hiAnzy Network — Strategists, Creators, Technologists, Operators" description="A consultancy doesn't need to own every skill. It needs to know what the problem demands and who is exceptionally good at solving it." />
       <section className="bg-[#1D2424] pb-14 pt-16 lg:pt-24">
         <div className="container-page">
           <div className="grid items-end gap-10 lg:grid-cols-12">
@@ -101,7 +102,7 @@ export default function Network() {
               </Reveal>
               <Reveal delay={80}>
                 <h1 className="font-display mt-5 leading-[0.92] text-[#F7F5EE] text-[clamp(3rem,6.8vw,6rem)]" data-testid="network-h1">
-                  The Hi Anzy Network
+                  The hiAnzy Network
                 </h1>
               </Reveal>
               <Reveal delay={160} as="p" className="mt-6 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#F7F5EE]/85">
@@ -172,7 +173,7 @@ export default function Network() {
               >
                 <Minimize2 size={13} /> EXIT
               </button>
-              <span className="sys-chip absolute left-5 top-5 z-20 text-[#F7F5EE]/50">THE HI ANZY NETWORK — CONSTELLATION</span>
+              <span className="sys-chip absolute left-5 top-5 z-20 text-[#F7F5EE]/50">THE <span className="brand-mark">hiAnzy</span> NETWORK — CONSTELLATION</span>
               <div className="absolute inset-0">
                 {show3d && categories.length > 0 ? (
                   <ThreeSafe fallback={<ConstellationFallback categories={categories} />}>
@@ -227,10 +228,20 @@ export default function Network() {
             Sixteen disciplines. One question each.
           </h2>
         </Reveal>
-        <Reveal delay={130} as="p" className="mt-4 max-w-[62ch] text-[17px] leading-[1.6] text-[#232A2A]/80">
-          You do not need to know what to call it. Read the line that sounds like your Tuesday and follow it —
-          each one explains what the work actually is, and how you would know you need it.
-        </Reveal>
+        <div className="flex items-end justify-between gap-10">
+          <Reveal delay={130} as="p" className="mt-4 max-w-[62ch] text-[17px] leading-[1.6] text-[#232A2A]/80">
+            You do not need to know what to call it. Read the line that sounds like your Tuesday and follow it —
+            each one explains what the work actually is, and how you would know you need it.
+          </Reveal>
+          <PopIllustration
+            src="/brand/pop-camera-duo.png"
+            width={165}
+            rotate={2}
+            drift={20}
+            className="-mb-8 shrink-0"
+            testId="pop-network"
+          />
+        </div>
 
         <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-testid="discipline-grid">
           {DISCIPLINES.map((d, i) => (
@@ -292,7 +303,7 @@ export default function Network() {
           </div>
         )}
         <p className="font-mono-sys mt-8 max-w-2xl text-[12.5px] leading-relaxed text-[#232A2A]/55">
-          A network relationship is not the same thing as Hi Anzy-delivered client work — which is why every card says which one it is.
+          A network relationship is not the same thing as hiAnzy-delivered client work — which is why every card says which one it is.
         </p>
         <div className="mt-8 flex justify-end pr-[8%]">
           <PunPop text="It's not who you know. It's who you can activate." rot={-1.5} variant="orange" testId="pun-network" />

@@ -4,11 +4,19 @@
  * rule at all — the class silently does nothing and the element falls back to
  * inherited colour, which on a charcoal panel meant ink-on-ink at 1.08:1.
  *
- * A full 0–100 scale removes that failure mode entirely. Tailwind only emits
- * the values actually used, so this costs nothing in the bundle.
+ * The fix is to declare every step this codebase uses. Listing them explicitly
+ * rather than generating 0–100 keeps the theme small and makes the intent
+ * readable — if you add a new tint, add it here or it will silently no-op.
  */
-const fullOpacityScale = Object.fromEntries(
-  Array.from({ length: 101 }, (_, i) => [String(i), String(i / 100)])
+const OPACITY_STEPS = [
+  // Tailwind's defaults
+  0, 5, 10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90, 95, 100,
+  // plus every off-scale value this codebase actually uses
+  2, 3, 4, 8, 12, 14, 15, 35, 45, 55, 62, 65, 72, 74, 78, 82, 85, 88,
+];
+
+const opacityScale = Object.fromEntries(
+  OPACITY_STEPS.sort((a, b) => a - b).map((n) => [String(n), String(n / 100)])
 );
 
 /** @type {import('tailwindcss').Config} */
@@ -16,7 +24,7 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      opacity: fullOpacityScale,
+      opacity: opacityScale,
       colors: {
         paper: "#E0D8C1",
         ink: "#232A2A",

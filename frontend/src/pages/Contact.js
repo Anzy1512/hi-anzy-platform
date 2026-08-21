@@ -7,6 +7,7 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { NextSteps } from "@/components/NextSteps";
+import { PopIllustration } from "@/components/PopIllustration";
 import { useRevealObserver } from "@/lib/motion";
 import { submitContact, track } from "@/lib/api";
 
@@ -73,7 +74,7 @@ export default function Contact() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="contact-page">
-      <Seo title="Say Hi — Hi Anzy" description="Tell us what you are building, what feels stuck, what changed, or what opportunity refuses to leave your head. A person will read it." />
+      <Seo title="Say Hi — hiAnzy" description="Tell us what you are building, what feels stuck, what changed, or what opportunity refuses to leave your head. A person will read it." />
       <section className="container-page section-pad">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
@@ -172,7 +173,16 @@ export default function Contact() {
                     <input id="cf-org" tabIndex={-1} autoComplete="off" value={form.orgField} onChange={(e) => setForm((f) => ({ ...f, orgField: e.target.value }))} />
                   </div>
                 </div>
-                <div className="mt-8 flex flex-wrap items-center gap-5">
+                <div className="relative mt-8 flex flex-wrap items-center gap-5">
+                  <PopIllustration
+                    src="/brand/pop-white-flag.png"
+                    width={120}
+                    rotate={3}
+                    drift={14}
+                    halo={false}
+                    className="absolute -top-14 right-0"
+                    testId="pop-contact"
+                  />
                   <MagneticButton type="submit" className="btn-ink" testId="contact-form-submit-button">
                     {submitting ? "Sending…" : "Send It"} <ArrowRight size={15} />
                   </MagneticButton>

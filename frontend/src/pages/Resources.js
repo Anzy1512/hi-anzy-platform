@@ -18,7 +18,7 @@ export default function Resources() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="resources-page">
-      <Seo title="Resources — Hi Anzy" description="Worksheets and checklists from the Hi Anzy diagnostic practice, plus the privacy and terms fine print in humane language." />
+      <Seo title="Resources — hiAnzy" description="Worksheets and checklists from the hiAnzy diagnostic practice, plus the privacy and terms fine print in humane language." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> RESOURCES
@@ -60,7 +60,7 @@ export default function Resources() {
               <p className="sys-chip text-[#232A2A]/55">TERMS</p>
               <h2 className="font-display mt-2 text-3xl text-[#232A2A]">The fine print, humane.</h2>
               <p className="mt-4 text-[16.5px] leading-[1.58] text-[#232A2A]/78">
-                Content on this site is Hi Anzy&rsquo;s unless credited otherwise — and network work is always
+                Content on this site is hiAnzy&rsquo;s unless credited otherwise — and network work is always
                 credited otherwise. Case narratives are shared with client consent. Nothing here is formal advice
                 until we have actually looked at your business; every engagement gets its own written scope.
               </p>
@@ -69,7 +69,7 @@ export default function Resources() {
         </div>
       </section>
       <div className="pb-16">
-        <CharacterQuote startIndex={3} />
+        <CharacterQuote />
       </div>
       <NextSteps from="/resources" />
     </div>

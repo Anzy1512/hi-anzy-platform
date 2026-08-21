@@ -21,7 +21,7 @@ export default function Insights() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="insights-page">
-      <Seo title="Notes From the Work — Hi Anzy Insights" description="Business systems, brand clarity, technology without theatre and growth with receipts. Useful first. Search engine second." />
+      <Seo title="Notes From the Work — hiAnzy Insights" description="Business systems, brand clarity, technology without theatre and growth with receipts. Useful first. Search engine second." />
       <section className="container-page section-pad relative">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> INSIGHTS
@@ -72,7 +72,7 @@ export default function Insights() {
         )}
       </section>
       <div className="pb-16">
-        <CharacterQuote startIndex={1} />
+        <CharacterQuote />
       </div>
       <NextSteps from="/insights" />
     </div>

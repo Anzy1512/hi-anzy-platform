@@ -62,7 +62,7 @@ export const ProofStrip = () => {
       {/* Brand reference marquee */}
       <Reveal delay={120}>
         <div className="mt-6" data-testid="brand-ref-marquee">
-          <p className="sys-chip text-[#232A2A]/45">CAMPAIGN, PLACEMENT & COLLABORATION CREDITS — HI ANZY & NETWORK</p>
+          <p className="sys-chip text-[#232A2A]/45">CAMPAIGN, PLACEMENT &amp; COLLABORATION CREDITS — <span className="brand-mark">hiAnzy</span> &amp; NETWORK</p>
           <div className="relative mt-3 overflow-hidden border-y border-[#232A2A]/12 py-3.5">
             <div className="marquee-track items-center gap-x-8" aria-hidden="true" style={{ animationDuration: "44s" }}>
               {[...BRAND_REFS, ...BRAND_REFS].map((b, i) => (
@@ -76,7 +76,7 @@ export const ProofStrip = () => {
               {BRAND_REFS.map((b) => <li key={b}>{b}</li>)}
             </ul>
           </div>
-          <p className="font-mono-sys mt-2 text-[12.5px] tracking-[0.05em] text-[#232A2A]/40">Credits span Hi Anzy and network collaborations. We label who did what — always.</p>
+          <p className="font-mono-sys mt-2 text-[12.5px] tracking-[0.05em] text-[#232A2A]/40">Credits span hiAnzy and network collaborations. We label who did what — always.</p>
         </div>
       </Reveal>
     </section>

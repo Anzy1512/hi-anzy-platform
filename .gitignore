@@ -80,3 +80,5 @@ chainlit.md
 
 # local dev server log
 .devserver.log
+.dev.log
+.build.log

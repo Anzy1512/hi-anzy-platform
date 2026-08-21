@@ -1,4 +1,4 @@
-"""Hi Anzy — FastAPI backend.
+"""hiAnzy — FastAPI backend.
 CMS-like content APIs + contact pipeline + analytics events.
 Email notifications are env-driven (RESEND_API_KEY or SMTP_*) and skip
 gracefully when unconfigured — submissions are always stored in MongoDB.
@@ -39,7 +39,7 @@ IS_PRODUCTION = ENVIRONMENT not in {"development", "dev", "local"}
 # Interactive docs describe every route and model — useful locally, an
 # invitation to enumerate the API in production.
 app = FastAPI(
-    title="Hi Anzy API",
+    title="hiAnzy API",
     docs_url=None if IS_PRODUCTION else "/docs",
     redoc_url=None if IS_PRODUCTION else "/redoc",
     openapi_url=None if IS_PRODUCTION else "/openapi.json",
@@ -157,7 +157,7 @@ def rate_limited(ip: str) -> bool:
 
 @api_router.get("/")
 async def root():
-    return {"service": "Hi Anzy API", "status": "ok"}
+    return {"service": "hiAnzy API", "status": "ok"}
 
 
 @api_router.get("/health")
@@ -486,7 +486,7 @@ async def seed():
 @app.on_event("startup")
 async def on_startup():
     await seed()
-    logger.info("Hi Anzy API started")
+    logger.info("hiAnzy API started")
 
 
 @app.on_event("shutdown")

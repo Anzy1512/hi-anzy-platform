@@ -14,7 +14,7 @@ const labelHalfWidth = (text, perChar, pad) => (String(text).length * perChar + 
 
 /**
  * THE NETWORK CONSTELLATION
- * Hi Anzy central; discipline clusters orbit. Selecting a category expands
+ * hiAnzy central; discipline clusters orbit. Selecting a category expands
  * its cluster and routes it to the centre. Controlled entirely from the
  * accessible DOM category list — the scene is never the only source of info.
  */
@@ -151,7 +151,7 @@ const CenterNode = () => {
         <meshBasicMaterial color="#F7F5EE" transparent opacity={0.28} />
       </mesh>
       <Html center transform position={[0, -0.85, 0]} scale={0.34} pointerEvents="none" zIndexRange={[2, 0]}>
-        <div style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: 17, fontWeight: 700, letterSpacing: "0.2em", color: "#F19020", whiteSpace: "nowrap", pointerEvents: "none" }}>HI ANZY</div>
+        <div style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: 17, fontWeight: 700, letterSpacing: "0.2em", color: "#F19020", whiteSpace: "nowrap", pointerEvents: "none" }}>hiAnzy</div>
       </Html>
     </group>
   );
@@ -200,7 +200,7 @@ const SceneInner = ({ categories, active, subs, onSelect }) => {
    */
   const bounds = useMemo(() => {
     const n = categories.length || 1;
-    // Seed with the centre node and its "HI ANZY" caption.
+    // Seed with the centre node and its "hiAnzy" caption.
     let minX = -0.9;
     let maxX = 0.9;
     let minY = -1.15;

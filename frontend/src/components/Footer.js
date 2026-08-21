@@ -106,7 +106,7 @@ export const Footer = () => {
 
         <div className="mt-12 flex flex-col gap-2 border-t border-[#F7F5EE]/12 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-display text-[22px] tracking-wide" data-testid="footer-bottom-line">
-            From ABC to ROI. <span className="text-[#F7F5EE]/50">© Hi Anzy.</span>
+            From ABC to ROI. <span className="text-[#F7F5EE]/50">© hiAnzy.</span>
           </p>
           <p className="font-mono-sys text-[12.5px] text-[#F7F5EE]/62" data-testid="footer-small-line">Built with strategy, curiosity and far too many browser tabs.</p>
         </div>

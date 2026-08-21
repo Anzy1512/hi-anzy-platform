@@ -1,4 +1,4 @@
-"""Hi Anzy Backend API Tests
+"""hiAnzy Backend API Tests
 Tests all endpoints as specified in the review request.
 """
 import requests
@@ -269,7 +269,7 @@ class HiAnzyAPITester:
 
 def main():
     print("=" * 60)
-    print("Hi Anzy Backend API Test Suite")
+    print("hiAnzy Backend API Test Suite")
     print("=" * 60)
     
     tester = HiAnzyAPITester()

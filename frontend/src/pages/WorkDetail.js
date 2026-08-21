@@ -60,7 +60,7 @@ export default function WorkDetail() {
   }
 
   const jsonLd = [
-    { "@context": "https://schema.org", "@type": "Article", headline: cs.title, about: cs.industry, author: { "@type": "Organization", name: "Hi Anzy" } },
+    { "@context": "https://schema.org", "@type": "Article", headline: cs.title, about: cs.industry, author: { "@type": "Organization", name: "hiAnzy" } },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
       { "@type": "ListItem", position: 1, name: "Work", item: "/work" },
       { "@type": "ListItem", position: 2, name: cs.title, item: `/work/${cs.slug}` },
@@ -69,7 +69,7 @@ export default function WorkDetail() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="work-detail-page">
-      <Seo title={`${cs.title} — Hi Anzy Work`} description={cs.summary} jsonLd={jsonLd} />
+      <Seo title={`${cs.title} — hiAnzy Work`} description={cs.summary} jsonLd={jsonLd} />
       <article className="mx-auto max-w-[980px] px-[var(--page-x)] py-14 lg:py-20">
         <Link to="/work" className="link-draw sys-chip inline-flex items-center gap-2 text-[#232A2A]/60" data-testid="work-detail-back">
           <ArrowLeft size={13} /> ALL WORK

@@ -53,7 +53,7 @@ export default function Work() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="work-page">
-      <Seo title="Work — Hi Anzy" description="Case studies with business context: situation, gap, insight, decision, build, result, and what happened next." />
+      <Seo title="Work — hiAnzy" description="Case studies with business context: situation, gap, insight, decision, build, result, and what happened next." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WORK
@@ -200,7 +200,7 @@ export default function Work() {
               </Reveal>
             </div>
             <Reveal delay={140} as="p" className="font-editorial max-w-[38ch] text-[17px] italic leading-[1.5] text-[#232A2A]/70">
-              Brand decks, packaging, web builds, commerce, motion, audio, social and film — delivered by Hi Anzy and collaborator studios in the network. Credited honestly, as always.
+              Brand decks, packaging, web builds, commerce, motion, audio, social and film — delivered by hiAnzy and collaborator studios in the network. Credited honestly, as always.
             </Reveal>
           </div>
 

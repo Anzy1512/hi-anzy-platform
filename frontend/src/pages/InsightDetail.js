@@ -78,8 +78,8 @@ export default function InsightDetail() {
       articleSection: post.category,
       keywords: (post.tags || []).join(", ") || undefined,
       wordCount: (post.body || []).reduce((n, b) => n + (b.text ? b.text.split(/\s+/).length : 0), 0),
-      author: { "@type": "Organization", name: "Hi Anzy" },
-      publisher: { "@type": "Organization", name: "Hi Anzy" },
+      author: { "@type": "Organization", name: "hiAnzy" },
+      publisher: { "@type": "Organization", name: "hiAnzy" },
       mainEntityOfPage: { "@type": "WebPage", "@id": `/insights/${post.slug}` },
     },
     {
@@ -105,7 +105,7 @@ export default function InsightDetail() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="insight-detail-page">
-      <Seo title={post.seo?.title || `${post.title} — Hi Anzy`} description={post.seo?.description || post.excerpt} jsonLd={jsonLd} />
+      <Seo title={post.seo?.title || `${post.title} — hiAnzy`} description={post.seo?.description || post.excerpt} jsonLd={jsonLd} />
       <article className="mx-auto max-w-[780px] px-[var(--page-x)] py-14 lg:py-20">
         <Link to="/insights" className="link-draw sys-chip inline-flex items-center gap-2 text-[#232A2A]/60" data-testid="insight-back">
           <ArrowLeft size={13} /> ALL NOTES

@@ -9,12 +9,13 @@ import { track } from "@/lib/api";
 import { METHOD_STAGES } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
 import { NextSteps } from "@/components/NextSteps";
+import { PopIllustration } from "@/components/PopIllustration";
 
 export default function HowWeWork() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="how-we-work-page">
-      <Seo title="How We Work — Hi Anzy" description="The Hi Anzy operating model: Audit, Architect, Build, Connect, Scale. Less ceremony. More consequence." />
+      <Seo title="How We Work — hiAnzy" description="The hiAnzy operating model: Audit, Architect, Build, Connect, Scale. Less ceremony. More consequence." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> HOW WE WORK
@@ -64,6 +65,15 @@ export default function HowWeWork() {
 
         <Reveal>
           <div className="relative mt-16 flex flex-wrap items-center justify-between gap-6 rounded-[18px] bg-[#D8CFB4]/60 p-8">
+            <PopIllustration
+              src="/brand/pop-clock-watch.png"
+              width={150}
+              rotate={-2.5}
+              drift={18}
+              halo={false}
+              className="absolute -top-24 right-10 xl:right-16"
+              testId="pop-how-we-work"
+            />
             <p className="font-display text-3xl text-[#232A2A] sm:text-5xl" data-testid="hww-closing">
               Less ceremony. <span className="accent-orange-text">More consequence.</span>
             </p>
@@ -74,7 +84,7 @@ export default function HowWeWork() {
         </Reveal>
       </section>
       <div className="pb-16">
-        <CharacterQuote startIndex={0} />
+        <CharacterQuote />
       </div>
       <NextSteps from="/how-we-work" />
     </div>

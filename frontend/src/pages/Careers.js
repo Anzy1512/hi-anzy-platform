@@ -18,7 +18,7 @@ export default function Careers() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="careers-page">
-      <Seo title="Careers — Hi Anzy" description="We hire slowly and deliberately. If you notice things other people miss, introduce yourself anyway." />
+      <Seo title="Careers — hiAnzy" description="We hire slowly and deliberately. If you notice things other people miss, introduce yourself anyway." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> CAREERS
@@ -51,7 +51,7 @@ export default function Careers() {
         </Reveal>
       </section>
       <div className="pb-16">
-        <CharacterQuote startIndex={2} />
+        <CharacterQuote />
       </div>
       <NextSteps from="/careers" />
     </div>

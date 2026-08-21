@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 const ORG_JSONLD = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: "Hi Anzy",
+  name: "hiAnzy",
   description: "Business Systems & Transformation Consultancy. We build brand operating systems. From ABC to ROI.",
   slogan: "From ABC to ROI",
   knowsAbout: ["Business Systems Consulting", "Business Transformation", "Business Audit", "Brand Strategy", "Digital Transformation", "AI Automation Consulting", "E-commerce Consulting", "Growth Strategy", "Technology Advisory"],

@@ -49,9 +49,9 @@ export const SystemCoreFallback = () => (
 
 export const ConstellationFallback = ({ categories = [] }) => (
   <div className="flex h-full w-full items-center justify-center p-6" data-testid="network-constellation-fallback">
-    <svg viewBox="0 0 100 60" className="h-full max-h-[360px] w-full" role="img" aria-label="Diagram: Hi Anzy at the centre of a specialist network">
+    <svg viewBox="0 0 100 60" className="h-full max-h-[360px] w-full" role="img" aria-label="Diagram: hiAnzy at the centre of a specialist network">
       <circle cx="50" cy="30" r="5" fill="#F19020" />
-      <text x="50" y="31.5" textAnchor="middle" fontSize="3" fontFamily="'Rajdhani', sans-serif" fill="#232A2A" fontWeight="700">HI ANZY</text>
+      <text x="50" y="31.5" textAnchor="middle" fontSize="3" fontFamily="'Rajdhani', sans-serif" fill="#232A2A" fontWeight="700">hiAnzy</text>
       {categories.slice(0, 12).map((c, i) => {
         const a = (i / Math.min(categories.length, 12)) * Math.PI * 2;
         const x = 50 + Math.cos(a) * 34;
