@@ -77,3 +77,6 @@ next-env.d.ts
 chainlit.md
 .chainlit
 .ipynb_checkpoints/
+
+# local dev server log
+.devserver.log
