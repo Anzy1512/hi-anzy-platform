@@ -551,10 +551,14 @@ html {
 .sys-chip[class*="[#232A2A]/45"],
 .sys-chip[class*="[#232A2A]/50"],
 .sys-chip[class*="[#232A2A]/55"],
+.sys-chip[class*="[#232A2A]/60"],
+.sys-chip[class*="[#232A2A]/65"],
 .font-mono-sys[class*="[#232A2A]/40"],
 .font-mono-sys[class*="[#232A2A]/45"],
 .font-mono-sys[class*="[#232A2A]/50"],
-.font-mono-sys[class*="[#232A2A]/55"] {
+.font-mono-sys[class*="[#232A2A]/55"],
+.font-mono-sys[class*="[#232A2A]/60"],
+.font-mono-sys[class*="[#232A2A]/65"] {
   color: rgba(35, 42, 42, 0.74);
 }
 
@@ -563,10 +567,13 @@ html {
 .sys-chip[class*="[#F7F5EE]/45"],
 .sys-chip[class*="[#F7F5EE]/50"],
 .sys-chip[class*="[#F7F5EE]/55"],
+.sys-chip[class*="[#F7F5EE]/60"],
+.sys-chip[class*="[#F7F5EE]/65"],
 .font-mono-sys[class*="[#F7F5EE]/40"],
 .font-mono-sys[class*="[#F7F5EE]/45"],
 .font-mono-sys[class*="[#F7F5EE]/50"],
-.font-mono-sys[class*="[#F7F5EE]/55"] {
+.font-mono-sys[class*="[#F7F5EE]/55"],
+.font-mono-sys[class*="[#F7F5EE]/60"] {
   color: rgba(247, 245, 238, 0.82);
 }
 
@@ -603,7 +610,7 @@ html {
   left: 50%;
   bottom: 8%;
   transform: translateX(-50%) rotateX(-34deg);
-  color: rgba(35, 42, 42, 0.66);
+  color: rgba(35, 42, 42, 0.76);
   white-space: nowrap;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -611,6 +618,53 @@ html {
     transform: none;
     opacity: 0.5;
   }
+}
+
+/* ---------- Pop illustrations ----------
+   The deck's collage figures. A halftone halo sits behind each one so the
+   cut-out reads as placed rather than pasted, and the idle float keeps it from
+   looking like a stuck image. Decorative only — never carries information. */
+.pop-illustration {
+  position: relative;
+  pointer-events: none;
+  user-select: none;
+}
+/* one node per motion layer — drift, entrance, float — so they cannot
+   overwrite each other's transform */
+.pop-illustration-lift {
+  display: block;
+}
+.pop-illustration-figure {
+  position: relative;
+  display: block;
+  animation: pop-float 7.5s ease-in-out infinite;
+}
+.pop-illustration-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  /* lift the mid-greys so the figures sit on paper without looking washed out */
+  filter: contrast(1.06) saturate(0);
+}
+.pop-illustration-halo {
+  position: absolute;
+  inset: 6% -12% 14% -12%;
+  z-index: 0;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(241, 144, 32, 0.20) 0%, rgba(241, 144, 32, 0.07) 45%, transparent 70%),
+    radial-gradient(circle at 30% 70%, rgba(35, 42, 42, 0.08) 0%, transparent 60%);
+}
+
+@keyframes pop-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-9px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pop-illustration-figure { animation: none; }
 }
 
 /* ---------- Displacement dissolve ---------- */

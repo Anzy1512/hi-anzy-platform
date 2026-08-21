@@ -12,6 +12,7 @@ import { HalftoneBackdrop, HalftoneStatic } from "@/components/three/HalftoneBac
 import { PunRow } from "@/components/PunPop";
 import { SectionConnector } from "@/components/SectionConnector";
 import { PinnedSequence } from "@/components/PinnedSequence";
+import { PopIllustration } from "@/components/PopIllustration";
 import { ProofStrip } from "@/components/ProofStrip";
 import { useRevealObserver, useReducedMotion, webglAvailable, gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/motion";
 import { getCaseStudies, track } from "@/lib/api";
@@ -137,7 +138,19 @@ const SomethingsOff = () => (
 /* ========================== S03 — WHY / HOW / NOW ========================== */
 const WhyHowNow = () => (
   <section className="container-page section-pad" data-testid="home-why-how-now-section">
-    <SectionHeading kicker="THE QUESTIONS" title="Three questions. Surprisingly useful." testId="why-how-now-heading" />
+    {/* Heading sat alone across the full width; the figure takes the empty
+        right-hand third rather than leaving it as dead paper. */}
+    <div className="flex items-end justify-between gap-10">
+      <SectionHeading kicker="THE QUESTIONS" title="Three questions. Surprisingly useful." testId="why-how-now-heading" />
+      <PopIllustration
+        src="/brand/pop-cube-thinker.png"
+        width={200}
+        rotate={-3.5}
+        drift={24}
+        className="-mb-6 shrink-0"
+        testId="pop-questions"
+      />
+    </div>
     <div className="relative mt-12 grid gap-6 lg:grid-cols-3">
       <RouteLine d="M0,30 C 25,5 40,55 55,30 C 70,8 85,50 100,25" viewBox="0 0 100 60" strokeWidth={2.4} className="pointer-events-none absolute -top-8 left-0 hidden h-16 w-full lg:block" />
       {WHY_HOW_NOW.map((b, i) => (
@@ -464,9 +477,21 @@ const Trust = () => (
         </Reveal>
       ))}
     </ul>
-    <Reveal delay={120} as="p" className="font-display mt-12 text-3xl text-[#232A2A] sm:text-4xl">
-      Clever ideas get attention. <span className="hl-marker">Reliable execution gets remembered.</span>
-    </Reveal>
+    {/* The closing line ran the full width with a lot of empty paper to its
+        right — the figure fills it without crowding the sentence. */}
+    <div className="mt-12 flex items-end justify-between gap-10">
+      <Reveal delay={120} as="p" className="font-display max-w-[24ch] text-3xl text-[#232A2A] sm:text-4xl">
+        Clever ideas get attention. <span className="hl-marker">Reliable execution gets remembered.</span>
+      </Reveal>
+      <PopIllustration
+        src="/brand/pop-hands-a.png"
+        width={230}
+        rotate={2.5}
+        drift={20}
+        className="-mb-2 shrink-0"
+        testId="pop-trust"
+      />
+    </div>
   </section>
 );
 
@@ -530,6 +555,16 @@ const Closing = () => (
   <section className="container-page section-pad-b pt-4" data-testid="home-closing-section">
     <div className="panel-dark relative overflow-hidden p-8 sm:p-12 lg:p-16">
       <RouteLine d="M0,80 C 20,20 45,95 65,45 C 80,10 92,60 100,30" viewBox="0 0 100 100" strokeWidth={1.6} className="pointer-events-none absolute inset-0 h-full w-full opacity-30" />
+      {/* Copy is capped at 24ch, so the right half of this panel was empty. */}
+      <PopIllustration
+        src="/brand/pop-hat-balloon.png"
+        width={260}
+        rotate={3}
+        drift={30}
+        halo={false}
+        className="absolute bottom-0 right-8 xl:right-16"
+        testId="pop-closing"
+      />
       <div className="relative">
         <Reveal>
           <p className="font-editorial max-w-[24ch] text-[clamp(1.75rem,3vw,3.3rem)] font-medium leading-[1.12] text-[#F7F5EE]" data-testid="closing-large-type">
