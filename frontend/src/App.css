@@ -994,12 +994,25 @@ html {
 }
 
 /* page enter */
+/* The end frame must be `none`, not `translateY(0)`.
+   animation-fill-mode: both holds the final frame forever, so translateY(0)
+   left <main> with a permanent identity transform — and a transformed
+   ancestor becomes the containing block for every position:fixed descendant.
+   That silently broke ScrollTrigger's pinning: the panel pinned correctly and
+   was then offset by the scroll distance, flying off-screen and leaving ~4200px
+   of empty page behind it. `none` animates identically and creates no
+   containing block. */
 @keyframes page-in {
   from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: none; }
 }
 .page-enter {
-  animation: page-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* `backwards`, not `both`. `both` holds the final frame forever, and a held
+     transform — even the identity matrix — makes <main> the containing block
+     for every position:fixed descendant. `backwards` still covers the frame
+     before the animation starts, then lets the element fall back to its own
+     styles, where there is no transform at all. */
+  animation: page-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 /* work card image mask */
