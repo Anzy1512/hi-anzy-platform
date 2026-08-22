@@ -13,6 +13,9 @@ import { PunRow } from "@/components/PunPop";
 import { SectionConnector } from "@/components/SectionConnector";
 import { PinnedSequence } from "@/components/PinnedSequence";
 import { PopIllustration } from "@/components/PopIllustration";
+import { ProgressRule } from "@/components/ProgressRule";
+import { SystemDiagnostic } from "@/components/SystemDiagnostic";
+import { TouchpointTicker } from "@/components/TouchpointTicker";
 import { ProofStrip } from "@/components/ProofStrip";
 import { useRevealObserver, useReducedMotion, webglAvailable, gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/motion";
 import { getCaseStudies, track } from "@/lib/api";
@@ -106,9 +109,9 @@ const SomethingsOff = () => (
           Symptoms observed in the wild. Names withheld. Patterns, unfortunately, not.
         </Reveal>
         <Reveal delay={220}>
-          <figure className="relative mt-8 hidden max-w-[300px] lg:block" data-parallax="18">
-            <img src="/brand/art-cube-head.png" alt="Halftone collage — a person with a puzzle cube for a head" loading="lazy" className="w-full" />
-          </figure>
+          {/* Was the cube-head collage, which reappears as the pop figure two
+              sections below. A diagram makes the section's argument instead. */}
+          <SystemDiagnostic className="relative mt-8 hidden max-w-[300px] lg:block" testId="somethings-off-diagnostic" />
         </Reveal>
       </div>
       <div className="lg:col-span-7">
@@ -116,7 +119,7 @@ const SomethingsOff = () => (
           <ul className="divide-y divide-[#232A2A]/10">
             {SOMETHINGS_OFF.map((line, i) => (
               <Reveal as="li" key={i} delay={i * 90} className="flex items-start gap-4 py-4">
-                <span className="font-mono-sys mt-0.5 text-[12.5px] text-[#E54A25]">{`[${String(i + 1).padStart(2, "0")}]`}</span>
+                <span className="font-mono-sys accent-signal-text mt-0.5 text-[12.5px]">{`[${String(i + 1).padStart(2, "0")}]`}</span>
                 <p className="text-[17px] leading-[1.6] text-[#232A2A]/88">{line}</p>
               </Reveal>
             ))}
@@ -157,7 +160,7 @@ const WhyHowNow = () => (
         <Reveal key={b.key} delay={i * 120} className={i === 1 ? "lg:mt-10" : i === 2 ? "lg:mt-20" : ""}>
           <div className={`${i === 1 ? "panel-paper" : "panel-dark"} cap-tile h-full p-7 sm:p-8`} data-testid={`why-how-now-panel-${b.key.toLowerCase()}`}>
             <div className="flex items-center justify-between">
-              <span className="font-display text-6xl leading-none text-[#F19020]">{b.key}</span>
+              <span className="font-display accent-orange-text text-6xl leading-none">{b.key}</span>
             </div>
             <p className={`font-editorial mt-4 text-[clamp(1.15rem,1.45vw,1.4rem)] font-medium leading-[1.35] ${i === 1 ? "text-[#232A2A]" : "text-[#F7F5EE]"}`}>{b.q}</p>
             <ul className="mt-5 flex flex-wrap gap-2">
@@ -468,18 +471,41 @@ const NetworkPreview = ({ show3d }) => {
 const Trust = () => (
   <section className="container-page section-pad" data-testid="home-trust-section">
     <SectionHeading kicker="HOW TRUST GETS BUILT" title={<>Creative enough to find another answer.<br />Practical enough to make it work.</>} testId="trust-heading" className="max-w-4xl" />
-    <ul className="mt-12 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3" data-testid="trust-principles">
+
+    <Reveal delay={80} as="p" className="mt-6 max-w-[60ch] text-[17.5px] leading-[1.6] text-[#232A2A]/80">
+      Nine promises. Open any of them and you will find what it actually costs us to keep it \u2014
+      because a principle nobody has to pay for is just a poster.
+    </Reveal>
+
+    {/* Each principle opens in place. <details> rather than a custom widget:
+        keyboard, screen readers and find-in-page all work without help. */}
+    <ul className="mt-10 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3" data-testid="trust-principles">
       {TRUST_PRINCIPLES.map((p, i) => (
-        <Reveal as="li" key={p} delay={(i % 3) * 80} className="group flex items-center gap-4 border-b border-[#232A2A]/12 pb-4">
-          <span className="font-mono-sys text-[12.5px] text-[#232A2A]/40">{String(i + 1).padStart(2, "0")}</span>
-          <span className="font-display text-[19px] font-semibold text-[#232A2A]/85 transition-colors group-hover:text-[#232A2A]">{p}</span>
-          <span className="red-bar ml-auto opacity-0 transition-opacity group-hover:opacity-100" />
+        <Reveal as="li" key={p.name} delay={(i % 3) * 80}>
+          <details className="trust-item group h-full rounded-[14px] border border-[#232A2A]/12 px-4 py-3.5 transition-colors" data-testid={`trust-principle-${i + 1}`}>
+            <summary className="flex cursor-pointer items-center gap-4 marker:content-['']">
+              <span className="font-mono-sys text-[12.5px] text-[#232A2A]/40">{String(i + 1).padStart(2, "0")}</span>
+              <span className="font-display text-[19px] font-semibold text-[#232A2A]/85 transition-colors group-hover:text-[#232A2A]">{p.name}</span>
+              <span className="faq-plus ml-auto shrink-0 text-[#F19020]" aria-hidden="true">+</span>
+            </summary>
+            <p className="trust-detail mt-3 text-[15.5px] leading-[1.62] text-[#232A2A]/78">{p.detail}</p>
+          </details>
         </Reveal>
       ))}
     </ul>
+
+    {/* Bridges the list and the closing line, which previously met as a hard
+        cut across a wide band of empty paper. */}
+    <ProgressRule
+      total={TRUST_PRINCIPLES.length}
+      label="TRUST, ASSEMBLED"
+      trailing="None of these are negotiable. All of them are checkable."
+      testId="trust-progress-rule"
+    />
+
     {/* The closing line ran the full width with a lot of empty paper to its
-        right — the figure fills it without crowding the sentence. */}
-    <div className="mt-12 flex items-end justify-between gap-10">
+        right \u2014 the figure fills it without crowding the sentence. */}
+    <div className="mt-6 flex items-end justify-between gap-10">
       <Reveal delay={120} as="p" className="font-display max-w-[24ch] text-3xl text-[#232A2A] sm:text-4xl">
         Clever ideas get attention. <span className="hl-marker">Reliable execution gets remembered.</span>
       </Reveal>
@@ -555,7 +581,9 @@ const Closing = () => (
   <section className="container-page section-pad-b pt-4" data-testid="home-closing-section">
     <div className="panel-dark relative overflow-hidden p-8 sm:p-12 lg:p-16">
       <RouteLine d="M0,80 C 20,20 45,95 65,45 C 80,10 92,60 100,30" viewBox="0 0 100 100" strokeWidth={1.6} className="pointer-events-none absolute inset-0 h-full w-full opacity-30" />
-      {/* Copy is capped at 24ch, so the right half of this panel was empty. */}
+      {/* Copy is capped at 24ch, so the right half of this panel was empty:
+          the ticker takes the top corner, the figure takes the bottom. */}
+      <TouchpointTicker className="absolute right-8 top-8 hidden w-[280px] xl:block xl:right-16" testId="closing-ticker" />
       <PopIllustration
         src="/brand/pop-hat-balloon.png"
         width={260}

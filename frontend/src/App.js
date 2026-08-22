@@ -11,6 +11,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import Home from "@/pages/Home";
 const WhatWeDo = lazy(() => import("@/pages/WhatWeDo"));
+const ServiceDetail = lazy(() => import("@/pages/ServiceDetail"));
 const HowWeWork = lazy(() => import("@/pages/HowWeWork"));
 const Work = lazy(() => import("@/pages/Work"));
 const WorkDetail = lazy(() => import("@/pages/WorkDetail"));
@@ -50,6 +51,7 @@ const Shell = () => {
           <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/what-we-do" element={<WhatWeDo />} />
+            <Route path="/what-we-do/:slug" element={<ServiceDetail />} />
             <Route path="/how-we-work" element={<HowWeWork />} />
             <Route path="/work" element={<Work />} />
             <Route path="/work/:slug" element={<WorkDetail />} />

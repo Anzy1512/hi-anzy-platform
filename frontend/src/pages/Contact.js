@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { Seo } from "@/components/Seo";
@@ -24,7 +25,30 @@ const FieldLabel = ({ htmlFor, children, required }) => (
 export default function Contact() {
   const ref = useRevealObserver();
   const startedRef = useRef(false);
-  const [form, setForm] = useState({ name: "", company: "", role: "", website: "", message: "", stage: "", investmentRange: "", timeline: "", email: "", phone: "", orgField: "" });
+  const [params] = useSearchParams();
+
+  /**
+   * The package builder hands off here as ?services=slug:Module|slug:Module.
+   * It is turned into a readable opening paragraph rather than left as a code
+   * — the person still has to be able to read, and edit, what they are sending.
+   */
+  const prefilledMessage = useMemo(() => {
+    const raw = params.get("services");
+    if (!raw) return "";
+    const picked = raw
+      .split("|")
+      .map((chunk) => chunk.split(":")[1])
+      .filter(Boolean);
+    if (picked.length === 0) return "";
+    const lines = picked.map((m) => "\u2022 " + m).join("\n");
+    return (
+      "I put a rough brief together on your site. The pieces I picked:\n\n" +
+      lines +
+      "\n\nContext: "
+    );
+  }, [params]);
+
+  const [form, setForm] = useState({ name: "", company: "", role: "", website: "", message: prefilledMessage, stage: "", investmentRange: "", timeline: "", email: "", phone: "", orgField: "" });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);

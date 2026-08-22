@@ -534,6 +534,15 @@ html {
 .accent-orange-on-dark { color: var(--orange-on-dark); }
 .accent-signal-on-dark { color: var(--signal-on-dark); }
 
+/* The paper accents are dark amber and dark rust, which is right on paper and
+   unreadable on a charcoal panel. Several layouts alternate paper and dark
+   tiles from the same loop, so the tile a given accent lands on is decided at
+   render time and no single static class can be correct. Scoping the swap to
+   .panel-dark fixes the whole class of bug rather than each occurrence:
+   authors keep writing .accent-orange-text and it stays legible either way. */
+.panel-dark .accent-orange-text { color: var(--orange-on-dark); }
+.panel-dark .accent-signal-text { color: var(--signal-on-dark); }
+
 /* Provenance chips were authored for the paper ground. The transparent and
    translucent variants inherit ink, so on a charcoal panel they rendered at
    ~1.06:1 — present in the DOM, invisible on screen. Variants that carry their
@@ -724,6 +733,125 @@ html {
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .faq-item[open] .faq-plus { transform: rotate(45deg); }
+
+/* ---------- Trust principle accordion ---------- */
+/* Same <details> mechanics as the FAQ, but these sit in a grid where an open
+   panel must not shove its neighbours around, hence the fixed-ish padding and
+   the content animating rather than the box snapping. */
+.trust-item summary::-webkit-details-marker { display: none; }
+.trust-item summary { list-style: none; }
+.trust-item {
+  background: rgba(247, 245, 238, 0.35);
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+.trust-item:hover { border-color: rgba(241, 144, 32, 0.5); }
+.trust-item[open] {
+  border-color: rgba(241, 144, 32, 0.7);
+  background: rgba(247, 245, 238, 0.7);
+  box-shadow: 0 10px 26px rgba(35, 42, 42, 0.07);
+}
+.trust-item[open] .faq-plus { transform: rotate(45deg); }
+.trust-item[open] .trust-detail {
+  animation: trust-open 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes trust-open {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trust-item[open] .trust-detail { animation: none; }
+}
+
+/* ---------- Scroll-advanced info panel ---------- */
+/* Cards are stacked in the same grid cell so the panel never changes height
+   as it advances — a jumping container next to pinned copy is worse than
+   the empty space it replaced. */
+.scroll-info { position: relative; }
+.scroll-info-stack { display: grid; }
+.scroll-info-stack > .scroll-info-card { grid-area: 1 / 1; }
+
+.scroll-info-card {
+  border: 1px solid rgba(35, 42, 42, 0.12);
+  border-radius: 16px;
+  background: rgba(247, 245, 238, 0.5);
+  padding: 22px 24px;
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.scroll-info-card.is-shown { opacity: 1; transform: translateY(0); }
+.scroll-info-card.is-hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+.scroll-info-bullet {
+  margin-top: 8px;
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+.scroll-info-pips {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.scroll-info--right .scroll-info-pips { justify-content: flex-end; }
+.scroll-info-pip {
+  width: 22px;
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(35, 42, 42, 0.16);
+  transition: background 0.35s ease, width 0.35s ease;
+}
+.scroll-info-pip.is-active { width: 34px; background: var(--orange); }
+
+.scroll-info--right .scroll-info-card { text-align: left; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-info-card { transition: none; }
+}
+
+/* ---------- Banner figure (page-hero collage) ---------- */
+/* A soft ground behind the cut-out so it reads as placed rather than pasted,
+   and a slow float so a static hero has some life without demanding attention. */
+.banner-figure { isolation: isolate; }
+.banner-figure-halo {
+  position: absolute;
+  inset: 6% -6% -4% -6%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(241, 144, 32, 0.28),
+    rgba(241, 144, 32, 0.09) 62%,
+    transparent 100%
+  );
+  filter: blur(2px);
+}
+.banner-figure img { animation: banner-float 9s ease-in-out infinite; }
+@keyframes banner-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-10px) rotate(-1deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .banner-figure img { animation: none; }
+}
+
+/* ---------- Heading-sized link ---------- */
+/* link-draw's underline is sized for body copy and looks like a mistake under
+   a 3.5rem display face, so headings get their own weight. */
+.link-draw-heading {
+  background-image: linear-gradient(var(--orange), var(--orange));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 5px;
+  transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-draw-heading:hover,
+.link-draw-heading:focus-visible { background-size: 100% 5px; }
 
 /* ---------- Nav route underline ---------- */
 .nav-route-bar {

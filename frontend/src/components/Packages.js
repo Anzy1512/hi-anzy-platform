@@ -58,7 +58,7 @@ export const Packages = ({ heading = true }) => {
         <Reveal key={p.key} className="mt-6">
           <article className="grid gap-8 rounded-[18px] border border-[#232A2A]/15 bg-[#F7F5EE] p-7 sm:p-9 lg:grid-cols-12" data-testid={`package-panel-${p.key}`}>
             <div className="lg:col-span-5">
-              <p className="sys-chip text-[#F19020]">STAGE {p.stage}</p>
+              <p className="sys-chip accent-orange-text">STAGE {p.stage}</p>
               <h3 className="font-display mt-3 text-[clamp(2rem,3vw,2.8rem)] leading-[1.02] text-[#232A2A]">{p.name}</h3>
               <p className="font-editorial mt-3 text-[clamp(1.1rem,1.4vw,1.35rem)] leading-[1.4] text-[#232A2A]/85">{p.tagline}</p>
 
@@ -92,7 +92,7 @@ export const Packages = ({ heading = true }) => {
               </ul>
 
               <div className="panel-dark mt-6 p-5 sm:p-6">
-                <p className="sys-chip text-[#F19020]">WHAT YOU LEAVE WITH</p>
+                <p className="sys-chip accent-orange-text">WHAT YOU LEAVE WITH</p>
                 <p className="font-editorial mt-2 text-[clamp(1.05rem,1.3vw,1.25rem)] leading-[1.4] text-[#F7F5EE]">{p.outcome}</p>
               </div>
 
@@ -146,7 +146,7 @@ export const Packages = ({ heading = true }) => {
                     </li>
                   ))}
                 </ul>
-                <p className="mt-4 text-[14.5px] leading-[1.5] text-[#232A2A]/70">{c.forWho}</p>
+                <p className="mt-4 text-[14.5px] leading-[1.5] text-[#232A2A]/78">{c.forWho}</p>
                 <p className="sys-chip mt-auto pt-5 text-[#232A2A]/50">{c.timeline}</p>
               </article>
             </Reveal>

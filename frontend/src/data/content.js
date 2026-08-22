@@ -17,9 +17,13 @@ export const FOOTER_LINKS = [
   { label: "Terms", to: "/resources#terms" },
 ];
 
+/* The six systems. Each one is also its own page at /what-we-do/:slug, so a
+   search result can land on the specific thing someone asked for rather than
+   on a menu they then have to read. */
 export const CATEGORIES = [
   {
     num: "01",
+    slug: "business-audit-strategy",
     label: "SEE CLEARLY",
     title: "Business Audit & Strategy",
     system: "SYS / DIAGNOSIS",
@@ -27,9 +31,28 @@ export const CATEGORIES = [
     capabilities: ["Business diagnostics", "Market intelligence", "Customer understanding", "Positioning", "Opportunity mapping", "Transformation roadmaps", "Go-to-market strategy", "Operating model improvement"],
     methodStage: "AUDIT",
     why: "Every expensive mistake we have ever been called to fix started with a skipped diagnosis. This is where we make sure yours doesn't.",
+    lede: "Most businesses do not have an information problem. They have a too-much-information-and-no-agreement problem.",
+    body: [
+      "You already know something is off. The revenue is fine but the margin is not. The team is busy but the roadmap has not moved. Two departments are each certain the other one is the bottleneck. What is missing is not more data \u2014 it is a shared, honest reading of what the data means.",
+      "So we look. At the numbers, the workflows and the customer's real journey rather than the tidy version in the deck. We talk to the people who actually do the work, because they usually know exactly where the body is buried and have simply never been asked.",
+      "What comes out is a diagnosis you can act on: the problem named in plain language, the causes ranked by how much they actually cost you, and a sequence that says what to fix first. Occasionally the finding is that you are fine and the panic was inherited. That is a good outcome too, and a cheap one."
+    ],
+    signals: [
+      "Your reports disagree with each other and everyone has a favourite",
+      "Growth has flattened and nobody can say precisely when it started",
+      "You are about to spend serious money on a fix nobody has stress-tested",
+      "Every department is individually hitting targets while the business is not"
+    ],
+    deliverables: ["Business, brand and technology audit", "Customer journey walk-through, end to end", "Prioritised findings ranked by cost", "Transformation roadmap with named owners"],
+    typical: "2\u20136 weeks",
+    faqs: [
+      { q: "How is this different from a consultancy report?", a: "A report tells you what is wrong. Ours ends with a sequence \u2014 what to fix first, who owns it, and what has to be true before the next thing starts. If it cannot be acted on the following Monday, we have not finished." },
+      { q: "What if the audit says we do not need the project we planned?", a: "Then we say so and you keep the money. We would rather lose the follow-on work than take payment for building something you did not need." }
+    ]
   },
   {
     num: "02",
+    slug: "brand-experience",
     label: "MAKE SENSE",
     title: "Brand & Experience",
     system: "SYS / MEANING",
@@ -37,9 +60,28 @@ export const CATEGORIES = [
     capabilities: ["Brand strategy", "Naming", "Identity", "Messaging", "Packaging", "UX/UI", "Customer journeys", "Product experience", "Founder positioning"],
     methodStage: "ARCHITECT",
     why: "A brand is the shortcut a customer takes to a decision. We make sure the shortcut leads somewhere true.",
+    lede: "A brand is not what you say about yourself. It is the shortcut a tired person takes when deciding whether to trust you.",
+    body: [
+      "Human attention is expensive and easily spent. Someone landing on your site is running a very fast, largely unconscious calculation: do I understand this, and do I believe it? Confusion reads as risk. Risk reads as no.",
+      "So this work starts with meaning rather than decoration. What are you actually for, who is it for, and why should they care this year rather than in principle? Then the visible layer \u2014 name, identity, message, packaging, interface \u2014 gets built to carry that meaning without the customer having to work for it.",
+      "The test is not whether the brand wins an award. It is whether a stranger can explain what you do, accurately, after thirty seconds. That is a surprisingly hard bar and a very profitable one."
+    ],
+    signals: [
+      "Your best customers describe you differently than your website does",
+      "The sales team has quietly built their own deck because the official one does not land",
+      "You are competing on price against people who are not actually your competitors",
+      "The product is genuinely good and the conversion rate disagrees"
+    ],
+    deliverables: ["Brand strategy and positioning", "Messaging architecture", "Identity system", "Customer journey and UX design"],
+    typical: "4\u201310 weeks",
+    faqs: [
+      { q: "Do we need a full rebrand?", a: "Usually not. More often the strategy is sound and the expression is inconsistent, which is a cheaper and faster fix. We will tell you which one you are looking at before you commit to either." },
+      { q: "Can you work with our existing identity?", a: "Yes, and frequently that is the right call. Equity you have already built is an asset; throwing it away to feel decisive is an expensive habit." }
+    ]
   },
   {
     num: "03",
+    slug: "digital-technology-automation",
     label: "MAKE IT WORK",
     title: "Digital, Technology & Automation",
     system: "SYS / MACHINERY",
@@ -47,9 +89,28 @@ export const CATEGORIES = [
     capabilities: ["Websites", "Commerce", "Applications", "Dashboards", "CRM", "Integrations", "Cloud", "AI systems", "Workflow automation", "Internal tools"],
     methodStage: "BUILD",
     why: "Good design opens the door. Good systems keep the lights on. This is the keep-the-lights-on department.",
+    lede: "Every tool was bought to save time. Somehow the week got shorter anyway.",
+    body: [
+      "The usual pattern is not a lack of technology \u2014 it is six tools that each solve a slice of the problem and none of which talk to each other. So a human becomes the integration layer, copying figures between systems and quietly becoming the single point of failure.",
+      "We build the machinery: the site, the commerce, the dashboards, the CRM, the integrations, the automations that remove the copy-and-paste jobs entirely. Built to the blueprint rather than to whatever was trending at the last conference.",
+      "And built to be operated. If a system needs its author present to function, it is not finished. Documentation, sensible defaults and an honest handover are part of the build, not an optional extra you get quoted for later."
+    ],
+    signals: [
+      "Someone's job is substantially moving data between two systems",
+      "Your reporting requires a spreadsheet nobody is allowed to touch",
+      "The site works but nobody can update it without an agency ticket",
+      "You bought AI and it has so far produced enthusiasm rather than output"
+    ],
+    deliverables: ["Websites, commerce and applications", "Integrations and workflow automation", "Dashboards and reporting", "Documentation and team handover"],
+    typical: "6\u201316 weeks",
+    faqs: [
+      { q: "Will we be locked into you afterwards?", a: "No. You own the code, the accounts and the documentation. We consider a client who could leave and chooses not to a better outcome than one who cannot." },
+      { q: "Do you actually build, or do you specify and hand off?", a: "We build. The network brings specialists where a problem needs them, and the accountability stays in one place regardless." }
+    ]
   },
   {
     num: "04",
+    slug: "growth-content-commerce",
     label: "MAKE IT MOVE",
     title: "Growth, Content & Commerce",
     system: "SYS / MOMENTUM",
@@ -57,9 +118,28 @@ export const CATEGORIES = [
     capabilities: ["Content strategy", "Social", "Performance marketing", "SEO", "Funnels", "Lifecycle marketing", "CRO", "Marketplace growth", "Campaigns"],
     methodStage: "SCALE",
     why: "A better funnel cannot rescue a confused offer. Once the offer is right, this is where it learns to travel.",
+    lede: "Going viral is a lovely feeling and a poor business model.",
+    body: [
+      "Growth work fails most often for an unglamorous reason: it is asked to compensate for an offer that has not been made clear. No amount of creative rescues a proposition the customer does not understand. Fix the offer, and the same spend starts behaving very differently.",
+      "Once it is right, this is the department that teaches it to travel. Content that earns the click rather than buying it twice. Funnels that respect the fact people leave and come back. Lifecycle work, because the cheapest customer is one you already have and have not annoyed.",
+      "We measure the part that matters \u2014 what happened after the click. Impressions are a vanity metric with excellent PR."
+    ],
+    signals: [
+      "Traffic is up and revenue is doing something else entirely",
+      "Ad costs keep climbing and the answer keeps being 'spend more'",
+      "You have an audience that likes you and does not buy from you",
+      "Retention is quietly leaking while acquisition takes the credit"
+    ],
+    deliverables: ["Content and channel strategy", "Performance marketing and SEO", "Funnel and conversion optimisation", "Lifecycle and retention programmes"],
+    typical: "Ongoing, reviewed quarterly",
+    faqs: [
+      { q: "Can you just run our ads?", a: "We can, but if the offer or the landing experience is the actual constraint we will say so first. Spending your money efficiently on the wrong thing is still spending your money on the wrong thing." },
+      { q: "How quickly will we see results?", a: "Paid channels report in weeks, SEO and lifecycle in months. Anyone promising otherwise is selling a timeline rather than an outcome." }
+    ]
   },
   {
     num: "05",
+    slug: "media-creators-experiences",
     label: "MAKE IT TRAVEL",
     title: "Media, Creators & Experiences",
     system: "SYS / REACH",
@@ -67,9 +147,28 @@ export const CATEGORIES = [
     capabilities: ["Creators", "PR", "Media", "Events", "Venues", "Production", "Collaborations", "Institutional partnerships", "Experiential campaigns"],
     methodStage: "CONNECT",
     why: "Reach can be purchased. Relevance has to be designed. The network exists so both happen on purpose.",
+    lede: "Reach can be bought by anyone with a card. Relevance has to be designed on purpose.",
+    body: [
+      "There is a meaningful difference between being seen and being remembered. Plenty of campaigns achieve the first and quietly fail the second, because the audience was rented rather than earned and had no particular reason to care.",
+      "This is where the network does the heavy lifting: creators, media, venues, producers, institutional partners \u2014 chosen because they already hold the attention of the people you actually need, not because they were available.",
+      "Experiences included. A room full of the right people remains one of the most underrated distribution channels in existence, largely because it does not come with a dashboard."
+    ],
+    signals: [
+      "You need to reach an audience that does not trust advertising",
+      "Your category is crowded and everyone is saying the same three things",
+      "A launch is coming and the plan is currently 'post about it'",
+      "You have budget for reach and no view on which reach is relevant"
+    ],
+    deliverables: ["Creator and media partnerships", "PR and institutional collaborations", "Events, venues and production", "Experiential campaign design"],
+    typical: "Campaign-based",
+    faqs: [
+      { q: "Do you have your own roster?", a: "We have a network rather than a roster, and we label who did what on every piece of work. The team is assembled per problem, which is the point." },
+      { q: "Is this just influencer marketing?", a: "That is one instrument in it. Used alone and without a reason, it is an expensive way to reach people who were already scrolling past." }
+    ]
   },
   {
     num: "06",
+    slug: "advisory-security-scale",
     label: "MAKE IT LAST",
     title: "Advisory, Security & Scale",
     system: "SYS / ENDURANCE",
@@ -77,15 +176,83 @@ export const CATEGORIES = [
     capabilities: ["Founder advisory", "Technology advisory", "Security", "Privacy readiness", "Reputation", "Operations", "Customer systems", "Scale planning"],
     methodStage: "SCALE",
     why: "Clever ideas get attention. Reliable execution gets remembered. This is the remembered part.",
+    lede: "Scale is an excellent stress test. It finds every shortcut you took and introduces them to your customers.",
+    body: [
+      "Things that work at ten customers behave differently at ten thousand. The manual step someone was doing quietly becomes a queue. The permissive access setting becomes an incident. The process that lived in one person's head becomes a risk with a notice period.",
+      "This is the work of making growth survivable: operations that hold, security proportionate to what you actually hold, privacy readiness before a regulator asks, and advisory for the decisions that are too consequential to make from inside the weather.",
+      "Unglamorous, and the reason anyone is still around in five years to enjoy the glamorous parts."
+    ],
+    signals: [
+      "You are growing faster than your processes were designed for",
+      "Security is currently a spreadsheet and a strong sense of optimism",
+      "Key knowledge lives with one person and they have earned a holiday",
+      "A funding round or audit is coming and diligence will ask hard questions"
+    ],
+    deliverables: ["Founder and technology advisory", "Security and privacy readiness", "Operations and customer systems", "Scale planning and risk mapping"],
+    typical: "Retained or milestone-based",
+    faqs: [
+      { q: "Is this a compliance service?", a: "It is broader than compliance and proportionate by design. Customer data, payments and access get real rigour; things that do not matter do not get security theatre performed over them." },
+      { q: "We are small \u2014 is this premature?", a: "The cheapest moment to fix an access model or a manual dependency is before it has grown roots. It rarely gets less expensive with time." }
+    ]
   },
 ];
 
+export const CATEGORY_BY_SLUG = Object.fromEntries(CATEGORIES.map((c) => [c.slug, c]));
+
+/* Each stage carries the detail that used to live nowhere: what we need from
+   you, what lands at the end, and the honest failure mode. The stage cards on
+   /how-we-work only fill five of twelve columns; this is what fills the rest. */
 export const METHOD_STAGES = [
-  { label: "AUDIT", title: "See what's really happening.", page: "First, we look.", body: "The numbers, the workflows, the customer's actual experience — not the org chart version of it. Fragments become visible. Some of them are surprising. That is the point." },
-  { label: "ARCHITECT", title: "Turn the mess into a map.", page: "Then, we decide.", body: "What changes, what stays, what gets retired without a funeral. The blueprint names owners, sequences moves and decides what deserves to happen first." },
-  { label: "BUILD", title: "Make the plan real.", page: "Then, we make.", body: "Systems, brand, technology, content — built to the blueprint, not to the mood of the week. Objects gain structure. Promises gain deadlines." },
-  { label: "CONNECT", title: "Bring the right minds into the room.", page: "Then, we bring in whoever the problem needs.", body: "Strategists, designers, technologists, creators, media, venues, operators. The team changes shape per problem. The accountability doesn't." },
-  { label: "SCALE", title: "Keep what works. Improve what doesn't.", page: "Then, we prove whether it worked.", body: "Measurement, iteration, and the discipline to stop doing things that only look productive. Momentum becomes measurable." },
+  {
+    label: "AUDIT",
+    title: "See what's really happening.",
+    page: "First, we look.",
+    body: "The numbers, the workflows, the customer's actual experience \u2014 not the org chart version of it. Fragments become visible. Some of them are surprising. That is the point.",
+    duration: "2\u20134 weeks",
+    inputs: ["Access to your numbers, warts included", "30 minutes each with the people who do the work", "Permission to ask awkward questions"],
+    outputs: ["Findings ranked by what they actually cost", "A named problem, in one sentence", "The shortlist of what to fix first"],
+    pitfall: "The usual failure here is politeness \u2014 an audit that confirms what leadership already believed. We would rather be useful than welcome.",
+  },
+  {
+    label: "ARCHITECT",
+    title: "Turn the mess into a map.",
+    page: "Then, we decide.",
+    body: "What changes, what stays, what gets retired without a funeral. The blueprint names owners, sequences moves and decides what deserves to happen first.",
+    duration: "2\u20134 weeks",
+    inputs: ["Decisions, not just opinions", "One person who can say yes", "Your real constraints \u2014 budget, people, timing"],
+    outputs: ["A sequenced blueprint with owners", "What is explicitly not happening", "Dependencies mapped before they bite"],
+    pitfall: "Plans die when everything is priority one. If nothing on the list is allowed to go last, the list is a wish, not a plan.",
+  },
+  {
+    label: "BUILD",
+    title: "Make the plan real.",
+    page: "Then, we make.",
+    body: "Systems, brand, technology, content \u2014 built to the blueprint, not to the mood of the week. Objects gain structure. Promises gain deadlines.",
+    duration: "6\u201316 weeks",
+    inputs: ["Content, assets and access, on time", "A named reviewer with actual authority", "Tolerance for seeing it half-finished"],
+    outputs: ["The thing itself, working", "Documentation your team can act on", "A handover that does not need us present"],
+    pitfall: "Scope creep rarely arrives as a request. It arrives as 'while you're in there' \u2014 which is why changes go in writing.",
+  },
+  {
+    label: "CONNECT",
+    title: "Bring the right minds into the room.",
+    page: "Then, we bring in whoever the problem needs.",
+    body: "Strategists, designers, technologists, creators, media, venues, operators. The team changes shape per problem. The accountability doesn't.",
+    duration: "Per engagement",
+    inputs: ["Clarity on what success looks like", "Introductions where relationships matter", "Room for people who disagree with you"],
+    outputs: ["A roster assembled for this problem", "Labelled credit \u2014 who did what, always", "Relationships that outlast the project"],
+    pitfall: "Bringing in specialists too early is expensive theatre. They should arrive when the problem is defined enough to brief them properly.",
+  },
+  {
+    label: "SCALE",
+    title: "Keep what works. Improve what doesn't.",
+    page: "Then, we prove whether it worked.",
+    body: "Measurement, iteration, and the discipline to stop doing things that only look productive. Momentum becomes measurable.",
+    duration: "Ongoing, reviewed quarterly",
+    inputs: ["Agreement on the measure, set in advance", "Willingness to kill what is not working", "A quarterly hour to look honestly"],
+    outputs: ["Results against the measure you agreed", "A shorter list of things you still do", "Systems that survive your growth"],
+    pitfall: "The hardest part is stopping. Sunk cost is a genuine cognitive bias, and it is usually wearing a spreadsheet.",
+  },
 ];
 
 export const WHY_HOW_NOW = [
@@ -114,16 +281,54 @@ export const DIAGNOSTIC_OUTCOMES = [
   "How success gets measured",
 ];
 
+/* Each principle opens to explain itself. The headline is what we promise;
+   the detail is what that actually costs us to keep. */
 export const TRUST_PRINCIPLES = [
-  "Defined problem",
-  "Clear roadmap",
-  "Named ownership",
-  "Relevant specialists",
-  "Transparent scope",
-  "Measurable goals",
-  "Documentation",
-  "Operational thinking",
-  "Security where it matters",
+  {
+    name: "Defined problem",
+    detail:
+      "We will not start until we can say the problem out loud in one sentence, without using the word ‘synergy’. If that sentence keeps changing, we have not found the problem yet — we have found a symptom wearing a convincing hat.",
+  },
+  {
+    name: "Clear roadmap",
+    detail:
+      "A roadmap is not a wish list with dates attached. Ours names what happens, in what order, and what has to be true before the next thing can start. You should be able to read it on a Monday and know what Friday looks like.",
+  },
+  {
+    name: "Named ownership",
+    detail:
+      "Every item has a human name on it. Not a department, not ‘the team’. Diffusion of responsibility is a genuine psychological effect: the more people who could act, the less likely any one of them does. We design that effect out.",
+  },
+  {
+    name: "Relevant specialists",
+    detail:
+      "The roster is assembled per problem, not sold from a shelf. If your challenge is distribution, you do not need a brand refresh with a distribution chapter — you need someone who has actually moved product. We would rather bring the right stranger than the familiar face.",
+  },
+  {
+    name: "Transparent scope",
+    detail:
+      "What is included, what is not, and what would change the price. Written down before we begin. Scope creep is rarely malicious; it is usually two people who each assumed the other had it covered.",
+  },
+  {
+    name: "Measurable goals",
+    detail:
+      "If we cannot agree on what ‘better’ looks like in numbers, we are not setting a goal — we are setting a mood. We define the measure first, so success is something you can verify rather than something we get to claim.",
+  },
+  {
+    name: "Documentation",
+    detail:
+      "The work is written down so it survives the people who made it, including us. A system only one person understands is not an asset. It is a hostage situation with better branding.",
+  },
+  {
+    name: "Operational thinking",
+    detail:
+      "Anything we build has to run on an ordinary Tuesday, staffed by ordinary humans who have other things on. We design for the tired version of your team, not the launch-day version.",
+  },
+  {
+    name: "Security where it matters",
+    detail:
+      "Proportionate, not paranoid. Customer data, payments and access get real rigour; the office snack spreadsheet does not. Security theatre is expensive and protects nothing but feelings.",
+  },
 ];
 
 export const AUDIENCES = [

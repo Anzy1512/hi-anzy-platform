@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
@@ -10,6 +10,7 @@ import { METHOD_STAGES } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
 import { NextSteps } from "@/components/NextSteps";
 import { PopIllustration } from "@/components/PopIllustration";
+import { ScrollInfoPanel } from "@/components/ScrollInfoPanel";
 
 export default function HowWeWork() {
   const ref = useRevealObserver();
@@ -46,7 +47,7 @@ export default function HowWeWork() {
           {METHOD_STAGES.map((s, i) => (
             <Reveal key={s.label}>
               <article className={`grid gap-6 lg:grid-cols-12 ${i % 2 === 0 ? "" : "lg:text-right"}`} data-testid={`hww-stage-${s.label.toLowerCase()}`}>
-                <div className={`lg:col-span-5 ${i % 2 === 0 ? "" : "lg:col-start-8"}`}>
+                <div className={`lg:col-span-5 ${i % 2 === 0 ? "" : "lg:col-start-8 lg:row-start-1"}`}>
                   <div className={`panel-dark p-7 sm:p-8 ${i % 2 === 0 ? "" : "lg:ml-auto"}`}>
                     <div className={`flex items-center gap-3 ${i % 2 === 0 ? "" : "lg:justify-end"}`}>
                       <span className="sys-chip text-[#F19020]">{`STAGE 0${i + 1}`}</span>
@@ -56,7 +57,23 @@ export default function HowWeWork() {
                     <p className="font-display mt-2 text-[19px] font-semibold text-[#F19020]">{s.page}</p>
                     <p className="font-editorial mt-1 text-[16.5px] font-medium text-[#F7F5EE]/85">{s.title}</p>
                     <p className={`mt-4 text-[16.5px] leading-[1.58] text-[#F7F5EE]/72 ${i % 2 === 0 ? "" : "lg:ml-auto"}`}>{s.body}</p>
+                    <p className={`font-mono-sys mt-5 flex items-center gap-2 text-[12.5px] text-[#F7F5EE]/55 ${i % 2 === 0 ? "" : "lg:justify-end"}`}>
+                      <Clock size={13} aria-hidden="true" /> {s.duration}
+                    </p>
                   </div>
+                </div>
+
+                {/* The other seven columns were empty on every stage. */}
+                <div className={`lg:col-span-6 lg:self-center ${i % 2 === 0 ? "lg:col-start-7" : "lg:col-start-1 lg:row-start-1"}`}>
+                  <ScrollInfoPanel
+                    align={i % 2 === 0 ? "left" : "right"}
+                    testId={`hww-info-${s.label.toLowerCase()}`}
+                    cards={[
+                      { label: "WHAT WE NEED FROM YOU", items: s.inputs },
+                      { label: "WHAT YOU END UP WITH", items: s.outputs },
+                      { label: "WHERE THIS USUALLY GOES WRONG", text: s.pitfall },
+                    ]}
+                  />
                 </div>
               </article>
             </Reveal>

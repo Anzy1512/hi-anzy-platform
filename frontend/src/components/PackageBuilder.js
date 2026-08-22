@@ -1,0 +1,192 @@
+import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, Check, X } from "lucide-react";
+import { Reveal } from "@/components/Reveal";
+import { SectionHeading } from "@/components/SectionHeading";
+import { CATEGORIES } from "@/data/content";
+import { track } from "@/lib/api";
+
+/**
+ * Build-your-own engagement.
+ *
+ * Deliberately not a shop: there is no price, no cart total and no checkout,
+ * because scope here is genuinely a conversation and a number printed next to
+ * a checkbox would be a lie. What it does borrow from commerce is the useful
+ * part — pick the things you want, see the shape of what you picked, send it
+ * in one move instead of composing an email from scratch.
+ *
+ * The summary is derived, never stored: which systems you have touched, which
+ * method stages that implies, and the rough duration band. Selecting across
+ * three systems tells you something real about the engagement, and it tells
+ * us before the first call.
+ */
+const STAGE_ORDER = ["AUDIT", "ARCHITECT", "BUILD", "CONNECT", "SCALE"];
+
+export const PackageBuilder = ({ testId = "package-builder" }) => {
+  const navigate = useNavigate();
+  const [picked, setPicked] = useState(() => new Set());
+
+  const toggle = (categorySlug, capability) => {
+    const key = `${categorySlug}::${capability}`;
+    setPicked((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else {
+        next.add(key);
+        track("package_module_added", { category: categorySlug, module: capability });
+      }
+      return next;
+    });
+  };
+
+  const summary = useMemo(() => {
+    const categorySlugs = new Set();
+    const modules = [];
+    picked.forEach((key) => {
+      const [slug, cap] = key.split("::");
+      categorySlugs.add(slug);
+      modules.push({ slug, cap });
+    });
+    const cats = CATEGORIES.filter((c) => categorySlugs.has(c.slug));
+    const stages = STAGE_ORDER.filter((s) => cats.some((c) => c.methodStage === s));
+
+    // A rough shape, not a quote. One system is usually a focused piece of
+    // work; three or more is a programme and should be described as one.
+    let shape = "Nothing selected yet";
+    if (cats.length === 1) shape = "Focused engagement — one system";
+    else if (cats.length === 2) shape = "Paired engagement — two systems";
+    else if (cats.length >= 3) shape = `Programme — ${cats.length} systems`;
+
+    return { cats, modules, stages, shape };
+  }, [picked]);
+
+  const send = () => {
+    const params = new URLSearchParams();
+    params.set(
+      "services",
+      summary.modules.map((m) => `${m.slug}:${m.cap}`).join("|")
+    );
+    track("package_brief_sent", { modules: summary.modules.length, systems: summary.cats.length });
+    navigate(`/contact?${params.toString()}`);
+  };
+
+  const count = picked.size;
+
+  return (
+    <section className="container-page section-pad" id="build" data-testid={testId}>
+      <SectionHeading
+        kicker="BUILD YOUR OWN"
+        title={<>Tick what you need.<br />We will tell you what you actually need.</>}
+        testId="package-builder-heading"
+        className="max-w-3xl"
+      />
+      <Reveal delay={80} as="p" className="mt-5 max-w-[62ch] text-[17.5px] leading-[1.6] text-[#232A2A]/80">
+        No prices, because an honest number needs a conversation first and anything
+        else is a guess with a currency symbol on it. Pick the pieces that sound like
+        your problem and send it over — it beats writing the email from scratch.
+      </Reveal>
+
+      <div className="mt-10 grid gap-8 lg:grid-cols-12">
+        {/* Module picker */}
+        <div className="lg:col-span-8">
+          <div className="space-y-6">
+            {CATEGORIES.map((c) => (
+              <Reveal key={c.slug}>
+                <div className="rounded-[16px] border border-[#232A2A]/12 bg-[#F7F5EE]/45 p-5 sm:p-6">
+                  <div className="flex flex-wrap items-baseline gap-3">
+                    <span className="font-display text-2xl leading-none text-[#F19020]">{c.num}</span>
+                    <h3 className="font-display text-[22px] leading-none text-[#232A2A]">{c.title}</h3>
+                    <span className="sys-chip ml-auto text-[#232A2A]/45">{c.system}</span>
+                  </div>
+                  <ul className="mt-4 flex flex-wrap gap-2" data-testid={`builder-modules-${c.slug}`}>
+                    {c.capabilities.map((cap) => {
+                      const key = `${c.slug}::${cap}`;
+                      const on = picked.has(key);
+                      return (
+                        <li key={cap}>
+                          <button
+                            type="button"
+                            onClick={() => toggle(c.slug, cap)}
+                            aria-pressed={on}
+                            className={`sys-chip inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 transition-colors ${
+                              on
+                                ? "border-[#232A2A] bg-[#232A2A] text-[#F7F5EE]"
+                                : "border-[#F19020]/70 text-[#232A2A]/80 hover:border-[#F19020] hover:bg-[#F19020]/10"
+                            }`}
+                          >
+                            {on && <Check size={12} aria-hidden="true" />}
+                            {cap}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        {/* Derived summary */}
+        <div className="lg:col-span-4">
+          <div className="sticky top-[100px] rounded-[16px] border border-[#232A2A]/15 bg-[#D8CFB4]/60 p-6" data-testid="package-builder-summary">
+            <p className="sys-chip text-[#232A2A]/55">YOUR BRIEF</p>
+            <p className="font-display mt-2 text-[26px] leading-none text-[#232A2A]" data-testid="builder-count">
+              {count === 0 ? "Nothing yet" : `${count} piece${count === 1 ? "" : "s"}`}
+            </p>
+            <p className="font-mono-sys mt-2 text-[12.5px] text-[#232A2A]/60" data-testid="builder-shape">
+              {summary.shape}
+            </p>
+
+            {summary.stages.length > 0 && (
+              <div className="mt-5">
+                <p className="sys-chip text-[#232A2A]/45">METHOD STAGES IMPLIED</p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {summary.stages.map((s) => (
+                    <span key={s} className="sys-chip rounded-full bg-[#232A2A] px-2.5 py-1 text-[#F7F5EE]">{s}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {summary.modules.length > 0 && (
+              <ul className="mt-5 max-h-[240px] space-y-1.5 overflow-y-auto pr-1" data-testid="builder-selected-list">
+                {summary.modules.map((m) => (
+                  <li key={`${m.slug}::${m.cap}`} className="flex items-start gap-2 text-[14.5px] leading-[1.4] text-[#232A2A]/80">
+                    <button
+                      type="button"
+                      onClick={() => toggle(m.slug, m.cap)}
+                      aria-label={`Remove ${m.cap}`}
+                      className="mt-0.5 shrink-0 rounded-full p-0.5 text-[#A8351A] transition-colors hover:bg-[#A8351A]/12"
+                    >
+                      <X size={13} aria-hidden="true" />
+                    </button>
+                    {m.cap}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <button
+              type="button"
+              onClick={send}
+              disabled={count === 0}
+              className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-[14px] font-semibold transition-colors ${
+                count === 0
+                  ? "cursor-not-allowed border border-[#232A2A]/20 bg-transparent text-[#232A2A]/72"
+                  : "bg-[#232A2A] text-[#F7F5EE] hover:bg-[#F19020] hover:text-[#232A2A]"
+              }`}
+              data-testid="builder-send"
+            >
+              Send this as a brief <ArrowRight size={15} aria-hidden="true" />
+            </button>
+            <p className="font-mono-sys mt-3 text-[12px] leading-[1.45] text-[#232A2A]/55">
+              Goes to the contact form with your selection filled in. Nothing is
+              charged, nothing is committed, and you can still change your mind.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

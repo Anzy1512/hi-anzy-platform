@@ -10,6 +10,7 @@ import { track } from "@/lib/api";
 import { CATEGORIES } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
 import { Packages } from "@/components/Packages";
+import { PackageBuilder } from "@/components/PackageBuilder";
 
 export default function WhatWeDo() {
   const ref = useRevealObserver();
@@ -20,16 +21,44 @@ export default function WhatWeDo() {
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHAT WE DO
         </Reveal>
-        <Reveal delay={80}>
-          <h1 className="font-display mt-5 max-w-4xl leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="what-we-do-h1">
-            What does hiAnzy actually do<span className="text-[#E54A25]">?</span>
-          </h1>
-        </Reveal>
-        <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
-          We work on how a business is understood, how it operates and how it grows. Which often means
-          connecting departments that did not realise they were working on the same problem.
-          <span className="font-semibold"> Everything connects.</span>
-        </Reveal>
+        {/* The headline sat alone with the right half of the page empty. The
+            collage banner takes it \u2014 it moved here from the home page, where it
+            was duplicating the pop figure two sections below it. */}
+        <div className="mt-5 grid items-center gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <Reveal delay={80}>
+              <h1 className="font-display leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="what-we-do-h1">
+                What does hiAnzy actually do<span className="text-[#E54A25]">?</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
+              We work on how a business is understood, how it operates and how it grows. Which often means
+              connecting departments that did not realise they were working on the same problem.
+              <span className="font-semibold"> Everything connects.</span>
+            </Reveal>
+            <Reveal delay={220} className="mt-8 flex flex-wrap items-center gap-4">
+              <a href="#build" className="btn-ink inline-flex items-center gap-2" data-testid="wwd-build-jump">
+                Build your own <ArrowRight size={15} />
+              </a>
+              <Link to="/how-we-work" className="link-draw text-[14px] font-semibold text-[#232A2A]">
+                Or see how the work actually runs
+              </Link>
+            </Reveal>
+          </div>
+          <div className="lg:col-span-5">
+            <Reveal delay={200}>
+              <figure className="banner-figure relative mx-auto max-w-[380px]" data-parallax="16">
+                <span className="banner-figure-halo" aria-hidden="true" />
+                <img
+                  src="/brand/art-cube-head.png"
+                  alt="Halftone collage \u2014 a person with a puzzle cube for a head"
+                  loading="lazy"
+                  className="relative w-full"
+                />
+              </figure>
+            </Reveal>
+          </div>
+        </div>
       </section>
 
       <div className="container-page space-y-8 section-pad-b">
@@ -42,7 +71,15 @@ export default function WhatWeDo() {
                   <span className={`font-display text-6xl leading-none ${i % 2 === 0 ? "text-[#F19020]" : "text-[#F19020]"}`}>{c.num}</span>
                   <span className={`sys-chip ${i % 2 === 0 ? "text-[#232A2A]/45" : "text-[#F7F5EE]/45"}`}>{c.system}</span>
                 </div>
-                <h2 className={`font-display mt-4 text-[clamp(2.1rem,3.3vw,3.5rem)] leading-[0.98] ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F7F5EE]"}`}>{c.label}</h2>
+                <h2 className={`font-display mt-4 text-[clamp(2.1rem,3.3vw,3.5rem)] leading-[0.98] ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F7F5EE]"}`}>
+                  <Link
+                    to={`/what-we-do/${c.slug}`}
+                    className="link-draw-heading"
+                    onClick={() => track("service_explored", { category: c.label, to: "service_detail" })}
+                  >
+                    {c.label}
+                  </Link>
+                </h2>
                 <p className={`font-editorial mt-2 text-[clamp(1.2rem,1.5vw,1.5rem)] font-medium ${i % 2 === 0 ? "text-[#232A2A]/65" : "text-[#F7F5EE]/65"}`}>{c.title}</p>
                 <p className={`mt-4 text-[17px] leading-[1.6] ${i % 2 === 0 ? "text-[#232A2A]/80" : "text-[#F7F5EE]/80"}`}>{c.copy}</p>
                 <p className={`mt-4 text-[16.5px] leading-[1.58] ${i % 2 === 0 ? "text-[#232A2A]/70" : "text-[#F7F5EE]/70"}`}><span className={`font-mono-sys text-[12.5px] font-bold tracking-widest ${i % 2 === 0 ? "text-[#A8351A]" : "text-[#FF7A52]"}`}>Why it matters — </span>{c.why}</p>
@@ -64,6 +101,14 @@ export default function WhatWeDo() {
                   <Link to="/contact" className={`link-draw text-[13.5px] font-semibold ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F19020]"}`}>
                     Talk about this
                   </Link>
+                  <Link
+                    to={`/what-we-do/${c.slug}`}
+                    className={`inline-flex items-center gap-1.5 text-[13.5px] font-semibold ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F19020]"}`}
+                    data-testid={`wwd-read-more-${c.slug}`}
+                    onClick={() => track("service_explored", { category: c.label, to: "service_detail" })}
+                  >
+                    Read the full page <ArrowRight size={13} aria-hidden="true" />
+                  </Link>
                 </div>
               </div>
             </article>
@@ -80,6 +125,7 @@ export default function WhatWeDo() {
         </Reveal>
       </div>
       <Packages />
+      <PackageBuilder />
       <div className="pb-16">
         <CharacterQuote />
       </div>
