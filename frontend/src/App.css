@@ -335,6 +335,20 @@ html {
   padding-top: var(--section-y);
 }
 
+/* Two stacked section bands each contribute a full rhythm unit, so every
+   boundary between them measured ~244px where the rhythm is ~122px. The
+   preceding block's bottom padding already does the separating, so the
+   follower drops its top padding.
+
+   Excluded: any section that paints its own band (a background, a panel).
+   There the top padding is not spacing between sections — it is the inset
+   that keeps content off the edge of the colour, and removing it would crop
+   the block rather than tighten the page. */
+.section-pad + .section-pad:not([class*="bg-"]):not(.panel-dark):not(.panel-paper),
+.section-pad-b + .section-pad:not([class*="bg-"]):not(.panel-dark):not(.panel-paper) {
+  padding-top: 0;
+}
+
 /* ---------- Floating motion characters ---------- */
 @keyframes float-y {
   0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }

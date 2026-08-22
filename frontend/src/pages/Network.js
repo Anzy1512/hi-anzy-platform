@@ -11,10 +11,14 @@ import { ConstellationFallback, ThreeSafe } from "@/components/three/Fallbacks";
 import { useRevealObserver, useReducedMotion, webglAvailable, resyncScroll } from "@/lib/motion";
 import { getNetwork, getNetworkCategories, track } from "@/lib/api";
 import { NETWORK_SUBCATS } from "@/data/content";
+
 import { PunPop } from "@/components/PunPop";
 import { NextSteps } from "@/components/NextSteps";
 
 const Constellation = lazy(() => import("@/components/three/Constellation"));
+
+/** Same set the API returns, and the keys the sub-fans are looked up by. */
+const NETWORK_CATEGORY_FALLBACK = Object.keys(NETWORK_SUBCATS);
 
 const LEGEND = [
   { tag: "HI ANZY DIRECT", text: "Owned and delivered by the hiAnzy core layer." },
@@ -27,7 +31,7 @@ export default function Network() {
   const ref = useRevealObserver();
   const reduced = useReducedMotion();
   const [show3d, setShow3d] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [apiCategories, setApiCategories] = useState([]);
   const [active, setActive] = useState(null);
   const [resources, setResources] = useState(null);
 
@@ -36,8 +40,18 @@ export default function Network() {
   }, [reduced]);
 
   useEffect(() => {
-    getNetworkCategories().then(setCategories).catch(() => setCategories([]));
+    getNetworkCategories().then(setApiCategories).catch(() => setApiCategories([]));
   }, []);
+
+  /**
+   * The constellation is the centre of this page, and it was wired to render
+   * only when the categories request had returned something. A slow or failed
+   * request therefore did not degrade it — it deleted it, leaving an empty
+   * frame where the diagram should be. The local map holds the same category
+   * set the API returns (its keys are what the sub-fans are looked up by), so
+   * it stands in until the real list arrives.
+   */
+  const categories = apiCategories.length ? apiCategories : NETWORK_CATEGORY_FALLBACK;
 
   useEffect(() => {
     setResources(null);
