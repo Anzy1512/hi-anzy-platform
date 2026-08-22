@@ -95,7 +95,7 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
         </mesh>
       ))}
       <Html center transform position={[0, 0.62, 0]} scale={0.3} pointerEvents="none" zIndexRange={[2, 0]}>
-        <div ref={labelRef} style={{ transition: "opacity 0.4s ease", fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, fontSize: 16, letterSpacing: "0.16em", color: "#F7F5EE", whiteSpace: "nowrap", pointerEvents: "none" }}>{name.toUpperCase()}</div>
+        <div data-scene-label ref={labelRef} style={{ transition: "opacity 0.4s ease", fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, fontSize: 16, letterSpacing: "0.16em", color: "#F7F5EE", whiteSpace: "nowrap", pointerEvents: "none" }}>{name.toUpperCase()}</div>
       </Html>
       {/* Subcategory fan — visible when this cluster is focused */}
       {active && subs.slice(0, 6).map((s, j) => {
@@ -111,7 +111,7 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
               <meshStandardMaterial color="#F19020" emissive="#F19020" emissiveIntensity={0.6} roughness={0.4} metalness={0.2} />
             </mesh>
             <Html center transform position={[sx, sy - 0.22, 0.15]} scale={0.24} pointerEvents="none" zIndexRange={[3, 0]}>
-              <div style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: "0.08em", color: "#F7F5EE", background: "rgba(29,36,36,0.88)", border: "1px solid rgba(241,144,32,0.45)", borderRadius: 999, padding: "2px 10px", whiteSpace: "nowrap", pointerEvents: "none", animation: "subFadeIn 0.5s ease both", animationDelay: `${j * 70}ms` }}>
+              <div data-scene-label style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: "0.08em", color: "#F7F5EE", background: "rgba(29,36,36,0.88)", border: "1px solid rgba(241,144,32,0.45)", borderRadius: 999, padding: "2px 10px", whiteSpace: "nowrap", pointerEvents: "none", animation: "subFadeIn 0.5s ease both", animationDelay: `${j * 70}ms` }}>
                 {s}
               </div>
               <style>{`@keyframes subFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }`}</style>
@@ -151,7 +151,7 @@ const CenterNode = () => {
         <meshBasicMaterial color="#F7F5EE" transparent opacity={0.28} />
       </mesh>
       <Html center transform position={[0, -0.85, 0]} scale={0.34} pointerEvents="none" zIndexRange={[2, 0]}>
-        <div style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: 17, fontWeight: 700, letterSpacing: "0.2em", color: "#F19020", whiteSpace: "nowrap", pointerEvents: "none" }}>hiAnzy</div>
+        <div data-scene-label style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: 17, fontWeight: 700, letterSpacing: "0.2em", color: "#F19020", whiteSpace: "nowrap", pointerEvents: "none" }}>hiAnzy</div>
       </Html>
     </group>
   );

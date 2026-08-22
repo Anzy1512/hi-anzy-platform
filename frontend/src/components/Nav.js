@@ -125,7 +125,7 @@ export const Nav = () => {
                   <p className="font-mono-sys text-[11px] font-normal text-[#232A2A]/55">{user.email}</p>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout} className="cursor-pointer text-[#E54A25] focus:text-[#E54A25]" data-testid="nav-logout-btn">
+                <DropdownMenuItem onClick={logout} className="cursor-pointer accent-signal-text focus:text-[#E54A25]" data-testid="nav-logout-btn">
                   <LogOut size={14} /> Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>

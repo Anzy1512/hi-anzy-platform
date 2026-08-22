@@ -63,7 +63,7 @@ const NodeCard = ({ def, progressRef, index }) => {
         <meshStandardMaterial color="#F19020" roughness={0.6} />
       </mesh>
       <Html center transform position={[0.05, 0, 0.05]} scale={0.27} pointerEvents="none" zIndexRange={[2, 0]}>
-        <div style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: 22, fontWeight: 600, letterSpacing: "0.12em", color: "#232A2A", whiteSpace: "nowrap", pointerEvents: "none" }}>{def.label}</div>
+        <div data-scene-label style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: 22, fontWeight: 600, letterSpacing: "0.12em", color: "#232A2A", whiteSpace: "nowrap", pointerEvents: "none" }}>{def.label}</div>
       </Html>
     </group>
   );
@@ -116,7 +116,7 @@ const StageLabels = ({ progressRef }) => {
       {STAGE_LABELS.map((s, i) => (
         <group key={s.label} position={positions[i]}>
           <Html center transform scale={0.3} pointerEvents="none" zIndexRange={[3, 0]}>
-            <div ref={(el) => { refs.current[i] = el; }} style={{ opacity: 0, transition: "opacity 0.6s ease", fontFamily: "'Rajdhani', sans-serif", fontSize: 17, letterSpacing: "0.18em", color: "#F19020", background: "rgba(29,36,36,0.85)", padding: "3px 10px", borderRadius: 999, border: "1px solid rgba(241,144,32,0.5)", whiteSpace: "nowrap", pointerEvents: "none" }}>
+            <div data-scene-label ref={(el) => { refs.current[i] = el; }} style={{ opacity: 0, transition: "opacity 0.6s ease", fontFamily: "'Rajdhani', sans-serif", fontSize: 17, letterSpacing: "0.18em", color: "#F19020", background: "rgba(29,36,36,0.85)", padding: "3px 10px", borderRadius: 999, border: "1px solid rgba(241,144,32,0.5)", whiteSpace: "nowrap", pointerEvents: "none" }}>
               {`0${i + 1} ${s.label}`}
             </div>
           </Html>
@@ -124,7 +124,7 @@ const StageLabels = ({ progressRef }) => {
       ))}
       <group position={[ROI_POS[0], ROI_POS[1] - 0.05, ROI_POS[2] + 0.15]}>
         <Html center transform scale={0.42} pointerEvents="none" zIndexRange={[3, 0]}>
-          <div ref={roiRef} style={{ opacity: 0, transition: "opacity 0.7s ease", fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, fontSize: 30, letterSpacing: "0.06em", color: "#F7F5EE", background: "#E54A25", padding: "3px 14px", borderRadius: 10, whiteSpace: "nowrap", pointerEvents: "none" }}>
+          <div data-scene-label ref={roiRef} style={{ opacity: 0, transition: "opacity 0.7s ease", fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, fontSize: 30, letterSpacing: "0.06em", color: "#F7F5EE", background: "#E54A25", padding: "3px 14px", borderRadius: 10, whiteSpace: "nowrap", pointerEvents: "none" }}>
             ROI
           </div>
         </Html>

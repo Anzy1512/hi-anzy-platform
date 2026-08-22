@@ -25,7 +25,7 @@ export default function Collaborate() {
         </Reveal>
         <Reveal delay={80}>
           <h1 className="font-display mt-5 max-w-4xl leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="collaborate-h1">
-            Good problems attract good company<span className="text-[#E54A25]">.</span>
+            Good problems attract good company<span className="accent-signal-text">.</span>
           </h1>
         </Reveal>
         <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
@@ -36,7 +36,7 @@ export default function Collaborate() {
           {ASKS.map((a, i) => (
             <Reveal key={a.title} delay={i * 100}>
               <div className="cap-tile panel-paper h-full p-7">
-                <p className="font-mono-sys text-[12.5px] text-[#F19020]">{String(i + 1).padStart(2, "0")}</p>
+                <p className="font-mono-sys text-[12.5px] accent-orange-text">{String(i + 1).padStart(2, "0")}</p>
                 <h2 className="font-display mt-2 text-3xl text-[#232A2A]">{a.title}</h2>
                 <p className="mt-3 text-[16.5px] leading-[1.58] text-[#232A2A]/78">{a.body}</p>
               </div>
@@ -45,7 +45,7 @@ export default function Collaborate() {
         </div>
         <Reveal delay={150}>
           <div className="panel-dark mt-10 max-w-3xl p-7 sm:p-9">
-            <p className="sys-chip text-[#F19020]">HOW CREDIT WORKS HERE</p>
+            <p className="sys-chip accent-orange-text">HOW CREDIT WORKS HERE</p>
             <p className="mt-3 text-[17px] leading-[1.6] text-[#F7F5EE]/85">
               Every relationship is classified truthfully, in public:
             </p>

@@ -34,15 +34,15 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="relative overflow-hidden bg-[#1D2424] text-[#F7F5EE]" data-testid="site-footer">
+    <footer className="site-footer relative overflow-hidden bg-[#1D2424] text-[#F7F5EE]" data-testid="site-footer">
       <div className="container-page section-pad">
         <p className="font-editorial max-w-[26ch] text-[clamp(1.7rem,2.9vw,3.1rem)] leading-[1.14]" data-testid="footer-large-text">
           Still here? You are either <span className="hl-marker">thorough</span>. Curious. Or successfully avoiding another meeting.
-          <em className="text-[#F19020]"> We respect all three.</em>
+          <em className="accent-orange-text"> We respect all three.</em>
         </p>
         <p className="mt-6 font-editorial text-[18px] text-[#F7F5EE]/75">
           Have something worth discussing?{" "}
-          <Link to="/contact" className="link-draw font-semibold text-[#F19020]" data-testid="footer-say-hi-link">
+          <Link to="/contact" className="link-draw font-semibold accent-orange-text" data-testid="footer-say-hi-link">
             Say hi.
           </Link>
         </p>
@@ -57,17 +57,17 @@ export const Footer = () => {
           aria-hidden="true"
         >
           <span
-            className="qmark-node font-mono-sys inline-flex h-8 items-center justify-center rounded-full border border-[#F19020] px-3 text-[12px] tracking-[0.14em] text-[#F19020]"
+            className="qmark-node font-mono-sys inline-flex h-8 items-center justify-center rounded-full border border-[#F19020] px-3 text-[12px] tracking-[0.14em] accent-orange-text"
             style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
           >
             ABC
           </span>
           <span className="absolute left-[82%] top-1/2 flex -translate-y-1/2 items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-[#F19020]" />
-            <span className="font-mono-sys text-[12px] tracking-[0.14em] text-[#F19020]">ROI</span>
+            <span className="font-mono-sys text-[12px] tracking-[0.14em] accent-orange-text">ROI</span>
           </span>
           <span className="absolute left-[30%] right-[20%] top-1/2 hidden border-t-[3px] border-dotted border-[#F19020]/35 lg:block" />
-          <span className={`sys-chip absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap bg-[#1D2424] px-3 text-[#F19020] transition-opacity duration-300 ${connected ? "opacity-100" : "opacity-0"}`}>
+          <span className={`sys-chip absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap bg-[#1D2424] px-3 accent-orange-text transition-opacity duration-300 ${connected ? "opacity-100" : "opacity-0"}`}>
             That's the whole journey.
           </span>
         </div>

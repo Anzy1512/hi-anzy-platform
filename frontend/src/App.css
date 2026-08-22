@@ -519,7 +519,7 @@ html {
    text-safe deepenings; the raw brand values stay for fills, rules and icons,
    and on charcoal where they pass comfortably. */
 :root {
-  --orange-on-paper: #8A4E0B;
+  --orange-on-paper: #844B0A;
   --signal-on-paper: #A8351A;
 }
 .accent-orange-text { color: var(--orange-on-paper); }
@@ -540,8 +540,19 @@ html {
    render time and no single static class can be correct. Scoping the swap to
    .panel-dark fixes the whole class of bug rather than each occurrence:
    authors keep writing .accent-orange-text and it stays legible either way. */
-.panel-dark .accent-orange-text { color: var(--orange-on-dark); }
-.panel-dark .accent-signal-text { color: var(--signal-on-dark); }
+/* Every dark ground on the site, listed explicitly. `~=` matches a whole
+   class token, so `bg-[#232A2A]` is caught but `bg-[#232A2A]/12` — a 12% tint
+   that reads light over paper — is not, which a substring match would get
+   wrong in the opposite direction. */
+.panel-dark .accent-orange-text,
+.site-footer .accent-orange-text,
+[class~="bg-[#1D2424]"] .accent-orange-text,
+[class~="bg-[#232A2A]"] .accent-orange-text { color: var(--orange-on-dark); }
+
+.panel-dark .accent-signal-text,
+.site-footer .accent-signal-text,
+[class~="bg-[#1D2424]"] .accent-signal-text,
+[class~="bg-[#232A2A]"] .accent-signal-text { color: var(--signal-on-dark); }
 
 /* Provenance chips were authored for the paper ground. The transparent and
    translucent variants inherit ink, so on a charcoal panel they rendered at
@@ -814,13 +825,87 @@ html {
   .scroll-info-card { transition: none; }
 }
 
+/* ---------- Package builder groups ---------- */
+.builder-group summary::-webkit-details-marker { display: none; }
+.builder-group summary { list-style: none; }
+.builder-group { transition: border-color 0.3s ease, background 0.3s ease; }
+.builder-group[open] {
+  border-color: rgba(241, 144, 32, 0.55);
+  background: rgba(247, 245, 238, 0.7);
+}
+.builder-group[open] .faq-plus { transform: rotate(45deg); }
+.builder-group[open] .builder-modules {
+  animation: trust-open 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .builder-group[open] .builder-modules { animation: none; }
+}
+
+/* ---------- Touch target minimums ---------- */
+/* WCAG 2.5.8 asks for 24x24 CSS px of pointer target. Several controls here
+   are deliberately small as *marks* — a 10px pagination dot, a 16px footer
+   link — and growing them would wreck the typography. The hit area grows
+   instead of the ink: a centred pseudo-element carries the touch, the visible
+   element stays exactly as designed. */
+.tap-target { position: relative; }
+.tap-target::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+}
+
+/* Coarse pointers get real padding on the chip controls, where there is room
+   for it. Fine pointers keep the tighter rhythm the design was drawn at. */
+@media (pointer: coarse) {
+  .sys-chip.rounded-full,
+  button.sys-chip {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .site-footer a {
+    display: inline-block;
+    padding-block: 4px;
+  }
+
+  /* Standalone action links ("Related work", "Talk about this") sit in a row
+     of links rather than inside a sentence, so WCAG 2.5.8's inline exception
+     does not cover them. Padding is not an option — link-draw paints its
+     underline at the bottom edge and padding would push it off the text — so
+     the hit area is carried by a pseudo-element again. Expanding vertically
+     only, because the row is horizontal and neighbours must not overlap. */
+  .flex > a.link-draw,
+  .flex > a.inline-flex,
+  button.link-draw {
+    position: relative;
+  }
+  .flex > a.link-draw::after,
+  .flex > a.inline-flex::after,
+  button.link-draw::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+}
+
 /* ---------- Banner figure (page-hero collage) ---------- */
 /* A soft ground behind the cut-out so it reads as placed rather than pasted,
    and a slow float so a static hero has some life without demanding attention. */
-.banner-figure { isolation: isolate; }
+/* overflow-clip: the halo is drawn wider than the figure so the glow reads as
+   ground rather than a badge, but at 375px that bleed pushed the document 5px
+   wider than the viewport. Clipping keeps the effect and drops the overflow. */
+.banner-figure { isolation: isolate; overflow: hidden; }
 .banner-figure-halo {
   position: absolute;
-  inset: 6% -6% -4% -6%;
+  inset: 4% -6% -4% -6%;
   z-index: 0;
   border-radius: 50%;
   background: radial-gradient(

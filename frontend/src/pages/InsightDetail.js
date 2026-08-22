@@ -131,7 +131,7 @@ export default function InsightDetail() {
               return (
                 <blockquote key={i} className="panel-dark relative p-6 sm:p-7">
                   <span className="red-bar absolute left-6 top-0 -translate-y-1/2" style={{ width: 28 }} />
-                  <p className="font-editorial italic text-[clamp(1.35rem,2vw,1.8rem)] leading-[1.28] text-[#F19020]">{b.text}</p>
+                  <p className="font-editorial italic text-[clamp(1.35rem,2vw,1.8rem)] leading-[1.28] accent-orange-text">{b.text}</p>
                 </blockquote>
               );
 
@@ -163,7 +163,7 @@ export default function InsightDetail() {
                     <details key={k} className="faq-item group rounded-[14px] border border-[#232A2A]/15 bg-[#F7F5EE] p-5 sm:p-6">
                       <summary className="flex cursor-pointer items-start justify-between gap-4 text-[17.5px] font-semibold leading-[1.4] text-[#232A2A] marker:content-['']">
                         {f.q}
-                        <span className="faq-plus mt-1 shrink-0 text-[#F19020]" aria-hidden="true">+</span>
+                        <span className="faq-plus mt-1 shrink-0 accent-orange-text" aria-hidden="true">+</span>
                       </summary>
                       <p className="mt-3 text-[17px] leading-[1.65] text-[#232A2A]/80">{f.a}</p>
                     </details>

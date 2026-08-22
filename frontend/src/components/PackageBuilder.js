@@ -90,15 +90,28 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
         {/* Module picker */}
         <div className="lg:col-span-8">
           <div className="space-y-6">
-            {CATEGORIES.map((c) => (
+            {CATEGORIES.map((c, ci) => {
+              const chosen = c.capabilities.filter((cap) => picked.has(`${c.slug}::${cap}`)).length;
+              return (
               <Reveal key={c.slug}>
-                <div className="rounded-[16px] border border-[#232A2A]/12 bg-[#F7F5EE]/45 p-5 sm:p-6">
-                  <div className="flex flex-wrap items-baseline gap-3">
-                    <span className="font-display text-2xl leading-none text-[#F19020]">{c.num}</span>
+                {/* All six open at once ran to ~1800px of chips before anyone
+                    had chosen anything. Collapsed, the six systems read as a
+                    menu; you open the one that sounds like your problem. The
+                    first is open so the control explains itself on sight. */}
+                <details
+                  className="builder-group rounded-[16px] border border-[#232A2A]/12 bg-[#F7F5EE]/45 p-5 sm:p-6"
+                  open={ci === 0}
+                  data-testid={`builder-details-${c.slug}`}
+                >
+                  <summary className="flex cursor-pointer flex-wrap items-baseline gap-3 marker:content-['']">
+                    <span className="font-display text-2xl leading-none accent-orange-text">{c.num}</span>
                     <h3 className="font-display text-[22px] leading-none text-[#232A2A]">{c.title}</h3>
-                    <span className="sys-chip ml-auto text-[#232A2A]/45">{c.system}</span>
-                  </div>
-                  <ul className="mt-4 flex flex-wrap gap-2" data-testid={`builder-modules-${c.slug}`}>
+                    <span className="sys-chip ml-auto text-[#232A2A]/55" data-testid={`builder-chosen-${c.slug}`}>
+                      {chosen > 0 ? `${chosen} PICKED` : `${c.capabilities.length} OPTIONS`}
+                    </span>
+                    <span className="faq-plus shrink-0 accent-orange-text" aria-hidden="true">+</span>
+                  </summary>
+                  <ul className="builder-modules mt-4 flex flex-wrap gap-2" data-testid={`builder-modules-${c.slug}`}>
                     {c.capabilities.map((cap) => {
                       const key = `${c.slug}::${cap}`;
                       const on = picked.has(key);
@@ -121,9 +134,10 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
                       );
                     })}
                   </ul>
-                </div>
+                </details>
               </Reveal>
-            ))}
+              );
+            })}
           </div>
         </div>
 

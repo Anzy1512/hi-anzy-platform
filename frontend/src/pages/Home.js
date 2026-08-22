@@ -52,7 +52,7 @@ const Hero = ({ show3d }) => {
             <span className="hero-line"><span>We Build Brand</span></span>
             <span className="hero-line">
               <span className="relative inline-block">
-                Operating <span className="hl-marker">Systems</span><span className="text-[#E54A25]">.</span>
+                Operating <span className="hl-marker">Systems</span><span className="accent-signal-text">.</span>
                 <RouteLine d="M2,10 C 30,2 70,16 118,6" viewBox="0 0 120 14" strokeWidth={5} className="absolute -bottom-2 left-0 h-[14px] w-[70%]" start="top 95%" end="top 60%" />
               </span>
             </span>
@@ -104,7 +104,7 @@ const SomethingsOff = () => (
   <section className="container-page section-pad" data-testid="home-somethings-off-section">
     <div className="grid gap-10 lg:grid-cols-12">
       <div className="lg:col-span-5">
-        <SectionHeading kicker="SYS.CHECK" title={<>Something&rsquo;s off<span className="text-[#E54A25]">.</span></>} testId="somethings-off-heading" />
+        <SectionHeading kicker="SOUND FAMILIAR?" title={<>Something&rsquo;s off<span className="accent-signal-text">.</span></>} testId="somethings-off-heading" />
         <Reveal delay={140} as="p" className="font-mono-sys mt-6 max-w-sm text-[13px] leading-relaxed text-[#232A2A]/55">
           Symptoms observed in the wild. Names withheld. Patterns, unfortunately, not.
         </Reveal>
@@ -130,7 +130,7 @@ const SomethingsOff = () => (
             <p className="text-[17px] leading-[1.6] text-[#F7F5EE]/90">
               We find the gap. Then we decide whether it needs fixing, rebuilding or simply getting out of the way.
             </p>
-            <p className="font-accent mt-3 text-2xl text-[#F19020] sm:text-[1.7rem]">More activity is not always more progress.</p>
+            <p className="font-accent mt-3 text-2xl accent-orange-text sm:text-[1.7rem]">More activity is not always more progress.</p>
           </div>
         </Reveal>
       </div>
@@ -199,10 +199,7 @@ const WhatWeDoGrid = () => (
             data-testid={`category-tile-${c.num}`}
             className="cap-tile group block h-full rounded-[18px] border border-[#232A2A]/15 bg-[#F7F5EE] p-6 sm:p-7"
           >
-            <div className="flex items-start justify-between">
-              <span className="font-display text-5xl leading-none text-[#232A2A]/12 transition-colors group-hover:text-[#F19020]/70">{c.num}</span>
-              <span className="sys-chip text-[#232A2A]/45">{c.system}</span>
-            </div>
+            <span aria-hidden="true" className="font-display block text-5xl leading-none text-[#232A2A]/12 transition-colors group-hover:text-[#F19020]/70">{c.num}</span>
             <h3 className="font-display mt-4 text-[clamp(1.85rem,2.7vw,3.1rem)] leading-[0.98] text-[#232A2A]">{c.label}</h3>
             <p className="font-editorial mt-1 text-[clamp(1.15rem,1.35vw,1.45rem)] font-medium text-[#232A2A]/65">{c.title}</p>
             <p className="mt-3 text-[16px] leading-[1.55] text-[#232A2A]/78">{c.copy}</p>
@@ -280,7 +277,7 @@ const MethodSection = () => {
               <Reveal as="li" key={s.label} delay={i * 90}>
                 <div className={`method-stage h-full rounded-[16px] p-5 ${!reduced && i !== active ? "inactive" : ""} ${i === active || reduced ? "bg-[#232A2A] text-[#F7F5EE]" : "bg-[#F7F5EE] text-[#232A2A]"}`} data-testid={`method-stage-${s.label.toLowerCase()}`}>
                   <div className="flex items-center justify-between">
-                    <span className={`sys-chip ${i === active || reduced ? "text-[#F19020]" : "text-[#232A2A]/50"}`}>{`0${i + 1}`}</span>
+                    <span className={`sys-chip ${i === active || reduced ? "accent-orange-text" : "text-[#232A2A]/50"}`}>{`0${i + 1}`}</span>
                     {(i === active || reduced) && <span className="red-bar" />}
                   </div>
                   <p className="font-display mt-3 text-3xl leading-none">{s.label}</p>
@@ -341,7 +338,7 @@ const Diagnostic = () => (
               <ol className="mt-4 space-y-2.5">
                 {DIAGNOSTIC_OUTCOMES.map((o, i) => (
                   <Reveal as="li" key={o} delay={i * 60} className="flex items-center gap-3 text-[14px] text-[#F7F5EE]/85">
-                    <span className="font-mono-sys text-[12.5px] text-[#F19020]">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-mono-sys text-[12.5px] accent-orange-text">{String(i + 1).padStart(2, "0")}</span>
                     {o}
                   </Reveal>
                 ))}
@@ -395,7 +392,7 @@ const WorkPreview = () => {
               <h3 className="font-display mt-4 text-3xl leading-[0.95] text-[#232A2A]">{cs.title}</h3>
               <p className="sys-chip mt-2 text-[#232A2A]/50">{cs.client} · {cs.industry}</p>
               <div className="mt-4 space-y-2.5 border-t border-[#232A2A]/10 pt-4">
-                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="font-mono-sys text-[11.5px] text-[#E54A25]">GAP — </span>{cs.gap.slice(0, 110)}…</p>
+                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="font-mono-sys text-[11.5px] accent-signal-text">GAP — </span>{cs.gap.slice(0, 110)}…</p>
                 <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="accent-orange-text font-mono-sys text-[11.5px] font-bold">RESULT — </span>{cs.result.slice(0, 110)}…</p>
               </div>
               <span className="link-draw mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#232A2A]">
@@ -486,7 +483,7 @@ const Trust = () => (
             <summary className="flex cursor-pointer items-center gap-4 marker:content-['']">
               <span className="font-mono-sys text-[12.5px] text-[#232A2A]/40">{String(i + 1).padStart(2, "0")}</span>
               <span className="font-display text-[19px] font-semibold text-[#232A2A]/85 transition-colors group-hover:text-[#232A2A]">{p.name}</span>
-              <span className="faq-plus ml-auto shrink-0 text-[#F19020]" aria-hidden="true">+</span>
+              <span className="faq-plus ml-auto shrink-0 accent-orange-text" aria-hidden="true">+</span>
             </summary>
             <p className="trust-detail mt-3 text-[15.5px] leading-[1.62] text-[#232A2A]/78">{p.detail}</p>
           </details>
@@ -566,7 +563,7 @@ const WhoWith = () => (
         <ul className="mt-4 space-y-2.5">
           {FILTER_LIST.map((f) => (
             <li key={f} className="flex items-start gap-3 text-[16.5px] leading-[1.58] text-[#232A2A]/78">
-              <span className="font-mono-sys mt-0.5 text-[12.5px] text-[#E54A25]">✕</span>
+              <span className="font-mono-sys mt-0.5 text-[12.5px] accent-signal-text">✕</span>
               {f}
             </li>
           ))}
@@ -596,14 +593,14 @@ const Closing = () => (
       <div className="relative">
         <Reveal>
           <p className="font-editorial max-w-[24ch] text-[clamp(1.75rem,3vw,3.3rem)] font-medium leading-[1.12] text-[#F7F5EE]" data-testid="closing-large-type">
-            Brands are not campaigns. They are businesses people experience through <em className="text-[#F19020]">hundreds of small interactions</em>.
+            Brands are not campaigns. They are businesses people experience through <em className="accent-orange-text">hundreds of small interactions</em>.
           </p>
         </Reveal>
         <Reveal delay={120} as="p" className="font-mono-sys mt-6 max-w-2xl text-[15px] leading-[1.5] text-[#F7F5EE]/55">
           The website. The salesperson. The delivery. The reply that came fast — or didn&rsquo;t. The checkout.
           The invoice. The follow-up. When those things work together, the brand feels effortless.
         </Reveal>
-        <Reveal delay={180} as="p" className="font-accent mt-5 text-2xl text-[#F19020]">
+        <Reveal delay={180} as="p" className="font-accent mt-5 text-2xl accent-orange-text">
           It rarely is. That&rsquo;s the work.
         </Reveal>
         <Reveal delay={240} className="mt-9 flex flex-wrap items-center gap-5">

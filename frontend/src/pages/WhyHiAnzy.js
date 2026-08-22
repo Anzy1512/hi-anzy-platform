@@ -24,7 +24,7 @@ export default function WhyHiAnzy() {
             </Reveal>
             <Reveal delay={80}>
               <h1 className="font-display mt-5 leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="why-h1">
-                Who is Anzy, anyway<span className="text-[#E54A25]">?</span>
+                Who is Anzy, anyway<span className="accent-signal-text">?</span>
               </h1>
             </Reveal>
             <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
@@ -58,7 +58,7 @@ export default function WhyHiAnzy() {
           <Reveal>
             <article className="panel-dark relative grid gap-6 p-8 sm:p-10 lg:grid-cols-12" data-testid="why-section-hi">
               <div className="lg:col-span-4">
-                <p className="sys-chip text-[#F19020]">THE GREETING</p>
+                <p className="sys-chip accent-orange-text">THE GREETING</p>
                 <h2 className="font-display mt-2 text-5xl text-[#F7F5EE]">Why “Hi”?</h2>
               </div>
               <div className="lg:col-span-8">
@@ -68,7 +68,7 @@ export default function WhyHiAnzy() {
                   favourite part of the work.
                 </p>
                 <p className="mt-4 text-[17px] leading-[1.6] text-[#F7F5EE]/85">
-                  The name is approachable. The work is rigorous. <span className="text-[#F19020]">The contrast is intentional.</span>
+                  The name is approachable. The work is rigorous. <span className="accent-orange-text">The contrast is intentional.</span>
                 </p>
                 <p className="font-mono-sys mt-4 text-[12.5px] text-[#F7F5EE]/45">We take the brief seriously. Ourselves, slightly less.</p>
               </div>

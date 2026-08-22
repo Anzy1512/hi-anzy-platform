@@ -86,7 +86,7 @@ export const TouchpointTicker = ({ className = "", testId = "touchpoint-ticker" 
       <div className="rounded-[14px] border border-[#F7F5EE]/15 bg-[#F7F5EE]/[0.04] px-5 py-4 backdrop-blur-[1px]">
         <div className="flex items-center justify-between gap-4">
           <span className="sys-chip text-[#F7F5EE]/45">INTERACTIONS, TODAY</span>
-          <span className="font-display text-[26px] leading-none text-[#F19020] tabular-nums">{count}</span>
+          <span className="font-display text-[26px] leading-none accent-orange-text tabular-nums">{count}</span>
         </div>
         <p
           className="font-mono-sys mt-3 min-h-[34px] text-[13px] leading-[1.45] text-[#F7F5EE]/70"

@@ -19,14 +19,14 @@ export default function WhoWeWorkWith() {
         </Reveal>
         <Reveal delay={80}>
           <h1 className="font-display mt-5 max-w-4xl leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="wwww-h1">
-            People building things that have to work<span className="text-[#E54A25]">.</span>
+            People building things that have to work<span className="accent-signal-text">.</span>
           </h1>
         </Reveal>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {AUDIENCES.map((a, i) => (
             <Reveal key={a} delay={(i % 3) * 70}>
               <div className="cap-tile flex h-full items-center gap-4 rounded-[14px] border border-[#232A2A]/14 bg-[#F7F5EE] p-5">
-                <span className="font-mono-sys text-[12.5px] text-[#F19020]">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono-sys text-[12.5px] accent-orange-text">{String(i + 1).padStart(2, "0")}</span>
                 <span className="text-[15px] font-semibold text-[#232A2A]/85">{a}</span>
               </div>
             </Reveal>
@@ -43,7 +43,7 @@ export default function WhoWeWorkWith() {
             <ul className="mt-4 space-y-2.5">
               {FILTER_LIST.map((f) => (
                 <li key={f} className="flex items-start gap-3 text-[16.5px] leading-[1.58] text-[#F7F5EE]/78">
-                  <span className="font-mono-sys mt-0.5 text-[12.5px] text-[#E54A25]">✕</span> {f}
+                  <span className="font-mono-sys mt-0.5 text-[12.5px] accent-signal-text">✕</span> {f}
                 </li>
               ))}
             </ul>

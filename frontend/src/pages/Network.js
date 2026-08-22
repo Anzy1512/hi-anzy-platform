@@ -113,7 +113,7 @@ export default function Network() {
             <div className="lg:col-span-5">
               <Reveal delay={220}>
                 <div className="rounded-[18px] border border-[#F7F5EE]/14 bg-[#F7F5EE]/[0.04] p-6 sm:p-7" data-testid="network-hero-stats">
-                  <p className="sys-chip text-[#F19020]">NETWORK AT A GLANCE</p>
+                  <p className="sys-chip accent-orange-text">NETWORK AT A GLANCE</p>
                   <div className="mt-5 grid grid-cols-3 gap-4">
                     <div data-testid="network-stat-disciplines">
                       <p className="font-display text-[clamp(2.1rem,3.2vw,3rem)] leading-none text-[#F7F5EE]">{categories.length || 12}</p>
@@ -292,7 +292,7 @@ export default function Network() {
                   <p className="sys-chip mt-3 text-[#232A2A]/50">{r.geography}</p>
                   <ul className="mt-3 flex flex-wrap gap-1.5">
                     {(r.capabilities || []).slice(0, 6).map((cap) => (
-                      <li key={cap} className="sys-chip rounded-full border border-[#232A2A]/20 px-2.5 py-0.5 text-[#232A2A]/70">{cap}</li>
+                      <li key={cap} className="sys-chip rounded-full border border-[#232A2A]/20 px-2.5 py-0.5 text-[#232A2A]/78">{cap}</li>
                     ))}
                   </ul>
                   {r.note && <p className="font-mono-sys mt-3 text-[12px] leading-relaxed text-[#232A2A]/55">{r.note}</p>}

@@ -32,7 +32,7 @@ export const ProofStrip = () => {
       {/* Rotating quote */}
       <Reveal>
         <div className="relative grid gap-6 rounded-[18px] border border-[#232A2A]/14 bg-[#F7F5EE]/60 p-7 sm:p-9 lg:grid-cols-12 lg:items-center">
-          <span className="font-editorial absolute -top-5 left-7 text-[84px] leading-none text-[#F19020]" aria-hidden="true">&ldquo;</span>
+          <span className="font-editorial absolute -top-5 left-7 text-[84px] leading-none accent-orange-text" aria-hidden="true">&ldquo;</span>
           <div className="lg:col-span-9">
             <p
               key={idx}
@@ -52,7 +52,7 @@ export const ProofStrip = () => {
                 aria-label={`Quote ${i + 1}`}
                 onClick={() => { setIdx(i); setLeaving(false); }}
                 data-testid={`quote-dot-${i}`}
-                className={`h-2.5 rounded-full transition-all duration-300 ${i === idx ? "w-7 bg-[#F19020]" : "w-2.5 bg-[#232A2A]/25 hover:bg-[#232A2A]/45"}`}
+                className={`tap-target h-2.5 rounded-full transition-all duration-300 ${i === idx ? "w-7 bg-[#F19020]" : "w-2.5 bg-[#232A2A]/25 hover:bg-[#232A2A]/45"}`}
               />
             ))}
           </div>

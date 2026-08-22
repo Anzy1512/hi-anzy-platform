@@ -25,7 +25,7 @@ export default function Resources() {
         </Reveal>
         <Reveal delay={80}>
           <h1 className="font-display mt-5 leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="resources-h1">
-            Tools we actually use<span className="text-[#E54A25]">.</span>
+            Tools we actually use<span className="accent-signal-text">.</span>
           </h1>
         </Reveal>
         <div className="mt-12 grid gap-5 lg:grid-cols-3">

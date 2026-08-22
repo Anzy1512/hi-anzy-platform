@@ -18,7 +18,7 @@ const TIMELINES = ["Yesterday", "This month", "This quarter", "Exploring"];
 
 const FieldLabel = ({ htmlFor, children, required }) => (
   <label htmlFor={htmlFor} className="sys-chip mb-2 block text-[#232A2A]/65">
-    {children} {required && <span className="text-[#E54A25]">*</span>}
+    {children} {required && <span className="accent-signal-text">*</span>}
   </label>
 );
 
@@ -107,7 +107,7 @@ export default function Contact() {
             </Reveal>
             <Reveal delay={80}>
               <h1 className="font-display mt-5 leading-[0.92] text-[#232A2A] text-[clamp(3.4rem,7vw,6.4rem)]" data-testid="contact-h1">
-                Say Hi<span className="text-[#E54A25]">.</span>
+                Say Hi<span className="accent-signal-text">.</span>
               </h1>
             </Reveal>
             <Reveal delay={160} as="p" className="mt-6 max-w-md text-base leading-relaxed text-[#232A2A]/85">
@@ -142,12 +142,12 @@ export default function Contact() {
                   <div>
                     <FieldLabel htmlFor="cf-name" required>NAME</FieldLabel>
                     <Input id="cf-name" data-testid="contact-form-field-name" data-error={!!errors.name} value={form.name} onChange={set("name")} placeholder="Who's asking?" aria-invalid={!!errors.name} aria-describedby={errors.name ? "cf-name-err" : undefined} className="h-11 border-[#232A2A]/30 bg-[#F7F5EE]" />
-                    {errors.name && <p id="cf-name-err" role="alert" data-testid="contact-form-error-name" className="mt-1.5 text-[12px] font-semibold text-[#E54A25]">{errors.name}</p>}
+                    {errors.name && <p id="cf-name-err" role="alert" data-testid="contact-form-error-name" className="mt-1.5 text-[12px] font-semibold accent-signal-text">{errors.name}</p>}
                   </div>
                   <div>
                     <FieldLabel htmlFor="cf-email" required>EMAIL</FieldLabel>
                     <Input id="cf-email" type="email" data-testid="contact-form-field-email" data-error={!!errors.email} value={form.email} onChange={set("email")} placeholder="you@company.com" aria-invalid={!!errors.email} aria-describedby={errors.email ? "cf-email-err" : undefined} className="h-11 border-[#232A2A]/30 bg-[#F7F5EE]" />
-                    {errors.email && <p id="cf-email-err" role="alert" data-testid="contact-form-error-email" className="mt-1.5 text-[12px] font-semibold text-[#E54A25]">{errors.email}</p>}
+                    {errors.email && <p id="cf-email-err" role="alert" data-testid="contact-form-error-email" className="mt-1.5 text-[12px] font-semibold accent-signal-text">{errors.email}</p>}
                   </div>
                   <div>
                     <FieldLabel htmlFor="cf-company">COMPANY</FieldLabel>
@@ -164,7 +164,7 @@ export default function Contact() {
                   <div className="sm:col-span-2">
                     <FieldLabel htmlFor="cf-message" required>WHAT IS GOING ON?</FieldLabel>
                     <Textarea id="cf-message" rows={6} data-testid="contact-form-field-message" data-error={!!errors.message} value={form.message} onChange={set("message")} placeholder="Messy is fine. Screenshots-described-in-words is fine. 'Something feels off' is a perfectly good brief." aria-invalid={!!errors.message} aria-describedby={errors.message ? "cf-message-err" : undefined} className="border-[#232A2A]/30 bg-[#F7F5EE]" />
-                    {errors.message && <p id="cf-message-err" role="alert" data-testid="contact-form-error-message" className="mt-1.5 text-[12px] font-semibold text-[#E54A25]">{errors.message}</p>}
+                    {errors.message && <p id="cf-message-err" role="alert" data-testid="contact-form-error-message" className="mt-1.5 text-[12px] font-semibold accent-signal-text">{errors.message}</p>}
                   </div>
                   <div>
                     <FieldLabel htmlFor="cf-stage">CURRENT STAGE</FieldLabel>

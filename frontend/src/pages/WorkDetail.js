@@ -90,7 +90,7 @@ export default function WorkDetail() {
             <Reveal key={s.key}>
               <section className={`grid gap-4 rounded-[16px] p-6 sm:grid-cols-12 sm:p-8 ${s.key === "result" ? "panel-dark" : "panel-paper"}`} data-testid={`work-detail-${s.key}`}>
                 <div className="sm:col-span-3">
-                  <p className={`sys-chip flex items-center gap-2 ${s.key === "result" ? "text-[#F19020]" : "text-[#232A2A]/55"}`}>
+                  <p className={`sys-chip flex items-center gap-2 ${s.key === "result" ? "accent-orange-text" : "text-[#232A2A]/55"}`}>
                     {s.key === "gap" && <span className="red-bar" />}
                     {String(i + 1).padStart(2, "0")} {s.label}
                   </p>
@@ -128,7 +128,7 @@ export default function WorkDetail() {
               <p className="sys-chip text-[#232A2A]/50">NEXT CASE</p>
               <p className="font-display mt-1 text-2xl text-[#232A2A]">{next.title}</p>
             </div>
-            <ArrowRight className="text-[#F19020] transition-transform group-hover:translate-x-1.5" />
+            <ArrowRight className="accent-orange-text transition-transform group-hover:translate-x-1.5" />
           </Link>
         )}
       </article>

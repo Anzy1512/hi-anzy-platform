@@ -7,6 +7,7 @@ import { AuthProvider, AuthCallback } from "@/lib/auth";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { CollapseOnScroll } from "@/components/CollapseOnScroll";
 import { Toaster } from "@/components/ui/sonner";
 
 import Home from "@/pages/Home";
@@ -82,6 +83,7 @@ function App() {
         <AuthProvider>
           <LenisProvider>
             <ScrollToTop />
+            <CollapseOnScroll />
             <Shell />
           </LenisProvider>
         </AuthProvider>

@@ -23,7 +23,7 @@ export default function HowWeWork() {
         </Reveal>
         <Reveal delay={80}>
           <h1 className="font-display mt-5 max-w-4xl leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="how-we-work-h1">
-            How does this work<span className="text-[#E54A25]">?</span>
+            How does this work<span className="accent-signal-text">?</span>
           </h1>
         </Reveal>
         <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
@@ -50,11 +50,11 @@ export default function HowWeWork() {
                 <div className={`lg:col-span-5 ${i % 2 === 0 ? "" : "lg:col-start-8 lg:row-start-1"}`}>
                   <div className={`panel-dark p-7 sm:p-8 ${i % 2 === 0 ? "" : "lg:ml-auto"}`}>
                     <div className={`flex items-center gap-3 ${i % 2 === 0 ? "" : "lg:justify-end"}`}>
-                      <span className="sys-chip text-[#F19020]">{`STAGE 0${i + 1}`}</span>
+                      <span className="sys-chip accent-orange-text">{`STAGE 0${i + 1}`}</span>
                       <span className="red-bar" />
                     </div>
                     <h2 className="font-display mt-3 text-[clamp(2.2rem,3.6vw,3.75rem)] leading-none text-[#F7F5EE]">{s.label}</h2>
-                    <p className="font-display mt-2 text-[19px] font-semibold text-[#F19020]">{s.page}</p>
+                    <p className="font-display mt-2 text-[19px] font-semibold accent-orange-text">{s.page}</p>
                     <p className="font-editorial mt-1 text-[16.5px] font-medium text-[#F7F5EE]/85">{s.title}</p>
                     <p className={`mt-4 text-[16.5px] leading-[1.58] text-[#F7F5EE]/72 ${i % 2 === 0 ? "" : "lg:ml-auto"}`}>{s.body}</p>
                     <p className={`font-mono-sys mt-5 flex items-center gap-2 text-[12.5px] text-[#F7F5EE]/55 ${i % 2 === 0 ? "" : "lg:justify-end"}`}>

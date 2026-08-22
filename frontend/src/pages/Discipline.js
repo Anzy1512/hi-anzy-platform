@@ -161,7 +161,7 @@ export default function Discipline() {
             {subs.map((s, i) => (
               <Reveal key={s} delay={(i % 3) * 70}>
                 <div className="cap-tile flex items-start gap-3 rounded-[14px] border border-[#232A2A]/15 bg-[#F7F5EE] p-4">
-                  <Check size={16} className="mt-[3px] shrink-0 text-[#F19020]" aria-hidden="true" />
+                  <Check size={16} className="mt-[3px] shrink-0 accent-orange-text" aria-hidden="true" />
                   <span className="text-[16px] leading-[1.45] text-[#232A2A]/85">{s}</span>
                 </div>
               </Reveal>

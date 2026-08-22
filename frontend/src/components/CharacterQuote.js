@@ -84,7 +84,7 @@ export const CharacterQuote = ({ startIndex, testId = "character-quote-strip" })
           {/* Orange stays as the decorative dash; the name itself needs ink to
               clear AA on the paper ground — orange on paper is only 1.7:1. */}
           <p className="sys-chip mt-2 text-[#232A2A]/75">
-            <span className="text-[#F19020]" aria-hidden="true">— </span>
+            <span className="accent-orange-text" aria-hidden="true">— </span>
             {line.who.toUpperCase()}
           </p>
         </div>

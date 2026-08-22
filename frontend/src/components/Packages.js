@@ -85,7 +85,7 @@ export const Packages = ({ heading = true }) => {
               <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
                 {p.includes.map((item) => (
                   <li key={item} className="flex gap-2.5 text-[16px] leading-[1.5] text-[#232A2A]/85">
-                    <Check size={16} className="mt-[3px] shrink-0 text-[#F19020]" aria-hidden="true" />
+                    <Check size={16} className="mt-[3px] shrink-0 accent-orange-text" aria-hidden="true" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -141,7 +141,7 @@ export const Packages = ({ heading = true }) => {
                 <p className="mt-3 text-[15.5px] leading-[1.55] text-[#232A2A]/80">{c.tagline}</p>
                 <ul className="mt-4 flex flex-wrap gap-1.5">
                   {c.stages.map((s) => (
-                    <li key={s} className="sys-chip rounded-full border border-[#232A2A]/25 px-2.5 py-1 text-[#232A2A]/70">
+                    <li key={s} className="sys-chip rounded-full border border-[#232A2A]/25 px-2.5 py-1 text-[#232A2A]/78">
                       {byKey[s] ? byKey[s].stage : s}
                     </li>
                   ))}

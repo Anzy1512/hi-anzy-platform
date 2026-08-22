@@ -102,15 +102,15 @@ export default function ServiceDetail() {
           <Link to="/what-we-do" className="link-draw inline-flex items-center gap-1.5 text-[#232A2A]/70">
             <ArrowLeft size={13} aria-hidden="true" /> WHAT WE DO
           </Link>
-          <span className="text-[#232A2A]/30">/</span>
-          <span>{c.system}</span>
+          <span className="text-[#232A2A]/70" aria-hidden="true">/</span>
+          <span>{c.title}</span>
         </Reveal>
 
         <div className="mt-5 grid items-start gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <Reveal delay={80}>
               <div className="flex items-baseline gap-4">
-                <span className="font-display text-[clamp(3rem,5vw,4.5rem)] leading-none text-[#F19020]">{c.num}</span>
+                <span className="font-display text-[clamp(3rem,5vw,4.5rem)] leading-none accent-orange-text">{c.num}</span>
                 <h1 className="font-display leading-[0.94] text-[#232A2A] text-[clamp(2.4rem,5vw,4.4rem)]" data-testid="service-h1">
                   {c.label}
                 </h1>
@@ -200,7 +200,7 @@ export default function ServiceDetail() {
               <ul className="mt-4 space-y-2.5" data-testid="service-deliverables">
                 {c.deliverables.map((d) => (
                   <li key={d} className="flex items-start gap-2.5 text-[16px] leading-[1.5] text-[#232A2A]/85">
-                    <Check size={15} className="mt-1 shrink-0 text-[#F19020]" aria-hidden="true" />
+                    <Check size={15} className="mt-1 shrink-0 accent-orange-text" aria-hidden="true" />
                     {d}
                   </li>
                 ))}
@@ -239,7 +239,7 @@ export default function ServiceDetail() {
                 <details className="faq-item rounded-[14px] border border-[#232A2A]/15 bg-[#F7F5EE] p-5 sm:p-6">
                   <summary className="flex cursor-pointer items-start justify-between gap-4 text-[17.5px] font-semibold leading-[1.4] text-[#232A2A] marker:content-['']">
                     {f.q}
-                    <span className="faq-plus mt-1 shrink-0 text-[#F19020]" aria-hidden="true">+</span>
+                    <span className="faq-plus mt-1 shrink-0 accent-orange-text" aria-hidden="true">+</span>
                   </summary>
                   <p className="mt-3 text-[17px] leading-[1.65] text-[#232A2A]/80">{f.a}</p>
                 </details>
@@ -278,7 +278,7 @@ export default function ServiceDetail() {
                   className="group flex h-full items-start gap-3 rounded-[14px] border border-[#232A2A]/12 bg-[#F7F5EE]/45 p-4 transition-colors hover:border-[#F19020]"
                   onClick={() => track("service_explored", { category: o.label, to: "service_detail" })}
                 >
-                  <span className="font-display text-2xl leading-none text-[#F19020]">{o.num}</span>
+                  <span className="font-display text-2xl leading-none accent-orange-text">{o.num}</span>
                   <span>
                     <span className="font-display block text-[17px] leading-tight text-[#232A2A]">{o.label}</span>
                     <span className="font-mono-sys mt-1 block text-[12.5px] leading-[1.4] text-[#232A2A]/60">{o.title}</span>

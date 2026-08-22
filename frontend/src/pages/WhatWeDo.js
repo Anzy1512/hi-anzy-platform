@@ -28,7 +28,7 @@ export default function WhatWeDo() {
           <div className="lg:col-span-7">
             <Reveal delay={80}>
               <h1 className="font-display leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="what-we-do-h1">
-                What does hiAnzy actually do<span className="text-[#E54A25]">?</span>
+                What does hiAnzy actually do<span className="accent-signal-text">?</span>
               </h1>
             </Reveal>
             <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
@@ -67,10 +67,9 @@ export default function WhatWeDo() {
             <article className={`relative grid gap-8 overflow-hidden rounded-[18px] p-7 sm:p-10 lg:grid-cols-12 ${i % 2 === 0 ? "panel-paper" : "panel-dark"}`} data-testid={`wwd-category-${c.num}`}>
               <RouteLine d="M0,90 C 30,60 60,100 100,55" viewBox="0 0 100 100" strokeWidth={1.2} className="pointer-events-none absolute inset-0 h-full w-full opacity-25" />
               <div className="relative lg:col-span-5">
-                <div className="flex items-center gap-4">
-                  <span className={`font-display text-6xl leading-none ${i % 2 === 0 ? "text-[#F19020]" : "text-[#F19020]"}`}>{c.num}</span>
-                  <span className={`sys-chip ${i % 2 === 0 ? "text-[#232A2A]/45" : "text-[#F7F5EE]/45"}`}>{c.system}</span>
-                </div>
+                {/* Bright orange is 2.2:1 on paper. The accent token resolves
+                    per ground, so the same class stays legible on both tiles. */}
+                <span className="font-display accent-orange-text block text-6xl leading-none">{c.num}</span>
                 <h2 className={`font-display mt-4 text-[clamp(2.1rem,3.3vw,3.5rem)] leading-[0.98] ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F7F5EE]"}`}>
                   <Link
                     to={`/what-we-do/${c.slug}`}
@@ -95,15 +94,15 @@ export default function WhatWeDo() {
                   <span className={`sys-chip inline-flex items-center gap-2 rounded-full px-3 py-1.5 ${i % 2 === 0 ? "bg-[#232A2A] text-[#F7F5EE]" : "bg-[#F7F5EE] text-[#232A2A]"}`}>
                     METHOD STAGE · {c.methodStage}
                   </span>
-                  <Link to="/work" className={`link-draw text-[13.5px] font-semibold ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F19020]"}`} onClick={() => track("service_explored", { category: c.label, to: "work" })}>
+                  <Link to="/work" className={`link-draw text-[13.5px] font-semibold ${i % 2 === 0 ? "text-[#232A2A]" : "accent-orange-text"}`} onClick={() => track("service_explored", { category: c.label, to: "work" })}>
                     Related work
                   </Link>
-                  <Link to="/contact" className={`link-draw text-[13.5px] font-semibold ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F19020]"}`}>
+                  <Link to="/contact" className={`link-draw text-[13.5px] font-semibold ${i % 2 === 0 ? "text-[#232A2A]" : "accent-orange-text"}`}>
                     Talk about this
                   </Link>
                   <Link
                     to={`/what-we-do/${c.slug}`}
-                    className={`inline-flex items-center gap-1.5 text-[13.5px] font-semibold ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F19020]"}`}
+                    className={`inline-flex items-center gap-1.5 text-[13.5px] font-semibold ${i % 2 === 0 ? "text-[#232A2A]" : "accent-orange-text"}`}
                     data-testid={`wwd-read-more-${c.slug}`}
                     onClick={() => track("service_explored", { category: c.label, to: "service_detail" })}
                   >

@@ -25,7 +25,7 @@ export default function Careers() {
         </Reveal>
         <Reveal delay={80}>
           <h1 className="font-display mt-5 max-w-4xl leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="careers-h1">
-            We hire the way we work. Slowly, then decisively<span className="text-[#E54A25]">.</span>
+            We hire the way we work. Slowly, then decisively<span className="accent-signal-text">.</span>
           </h1>
         </Reveal>
         <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
@@ -36,7 +36,7 @@ export default function Careers() {
           {VALUES.map((v, i) => (
             <Reveal key={v.t} delay={(i % 2) * 90}>
               <div className="cap-tile panel-paper h-full p-7">
-                <p className="font-mono-sys text-[12.5px] text-[#F19020]">{String(i + 1).padStart(2, "0")}</p>
+                <p className="font-mono-sys text-[12.5px] accent-orange-text">{String(i + 1).padStart(2, "0")}</p>
                 <h2 className="font-display mt-2 text-2xl text-[#232A2A]">{v.t}</h2>
                 <p className="mt-2 text-[16.5px] leading-[1.58] text-[#232A2A]/75">{v.b}</p>
               </div>
