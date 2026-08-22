@@ -124,7 +124,7 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
             carries what the reader wants at exactly this moment \u2014 what the
             stage needs from them and what it leaves behind \u2014 so the showcase
             is real detail rather than filler, cross-fading with the step. */}
-        <div className="mt-8 grid gap-10 lg:grid-cols-12" data-testid={`${testId}-panels`}>
+        <div className="mt-8 grid gap-10 lg:min-h-[46vh] lg:grid-cols-12" data-testid={`${testId}-panels`}>
           <div className="relative grid lg:col-span-7">
             {steps.map((s, i) => (
               <article
@@ -151,7 +151,7 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
               <aside
                 key={s.label}
                 aria-hidden={i !== active}
-                className="col-start-1 row-start-1 rounded-[16px] border border-[#F7F5EE]/15 bg-[#F7F5EE]/[0.04] p-6 transition-all duration-500"
+                className="col-start-1 row-start-1 flex h-full flex-col justify-center rounded-[18px] border border-[#F7F5EE]/15 bg-[#F7F5EE]/[0.04] p-7 transition-all duration-500 sm:p-8"
                 style={{
                   opacity: i === active ? 1 : 0,
                   transform: i === active ? "translateY(0)" : "translateY(14px)",
@@ -160,9 +160,9 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
                 }}
               >
                 <div className="flex items-center justify-between gap-4 border-b border-[#F7F5EE]/12 pb-3">
-                  <span className="sys-chip text-[#F7F5EE]/50">STAGE {String(i + 1).padStart(2, "0")} OF {String(steps.length).padStart(2, "0")}</span>
+                  <span className="sys-chip text-[#F7F5EE]/55">STAGE {String(i + 1).padStart(2, "0")} OF {String(steps.length).padStart(2, "0")}</span>
                   {s.duration && (
-                    <span className="font-mono-sys text-[12.5px] accent-orange-text">{s.duration}</span>
+                    <span className="font-mono-sys text-[13.5px] accent-orange-text">{s.duration}</span>
                   )}
                 </div>
 
@@ -171,7 +171,7 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
                     <p className="sys-chip text-[#F7F5EE]/45">WHAT IT NEEDS FROM YOU</p>
                     <ul className="mt-2.5 space-y-1.5">
                       {s.inputs.map((it) => (
-                        <li key={it} className="flex items-start gap-2.5 text-[14.5px] leading-[1.5] text-[#F7F5EE]/80">
+                        <li key={it} className="flex items-start gap-3 text-[16px] leading-[1.55] text-[#F7F5EE]/85">
                           <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-[#F19020]" aria-hidden="true" />
                           {it}
                         </li>
@@ -185,7 +185,7 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
                     <p className="sys-chip text-[#F7F5EE]/45">WHAT YOU END UP WITH</p>
                     <ul className="mt-2.5 space-y-1.5">
                       {s.outputs.map((it) => (
-                        <li key={it} className="flex items-start gap-2.5 text-[14.5px] leading-[1.5] text-[#F7F5EE]/80">
+                        <li key={it} className="flex items-start gap-3 text-[16px] leading-[1.55] text-[#F7F5EE]/85">
                           <Check size={13} className="mt-[3px] shrink-0 accent-orange-text" aria-hidden="true" />
                           {it}
                         </li>
