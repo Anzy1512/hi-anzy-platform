@@ -37,7 +37,9 @@ export default function Contact() {
     if (!raw) return "";
     const picked = raw
       .split("|")
-      .map((chunk) => chunk.split(":")[1])
+      // rejoin: only the first colon separates slug from name, and a service
+      // name is free to contain one.
+      .map((chunk) => chunk.split(":").slice(1).join(":"))
       .filter(Boolean);
     if (picked.length === 0) return "";
     const lines = picked.map((m) => "\u2022 " + m).join("\n");

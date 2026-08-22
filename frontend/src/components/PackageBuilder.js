@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Check, X } from "lucide-react";
+import { ArrowRight, Check, Search, X } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CATEGORIES } from "@/data/content";
@@ -22,9 +22,25 @@ import { track } from "@/lib/api";
  */
 const STAGE_ORDER = ["AUDIT", "ARCHITECT", "BUILD", "CONNECT", "SCALE"];
 
+/**
+ * What the builder offers for a category: the full deck inventory where one
+ * exists, the curated shortlist otherwise. `capabilities` stays short because
+ * it is also what the What We Do cards and the JSON-LD OfferCatalog render;
+ * this list is the long tail and only belongs here.
+ */
+const modulesOf = (c) => (c.services && c.services.length ? c.services : c.capabilities);
+
+/** Everything on offer, counted once, so the intro can state the real number. */
+const TOTAL_MODULES = CATEGORIES.reduce((n, c) => n + modulesOf(c).length, 0);
+
 export const PackageBuilder = ({ testId = "package-builder" }) => {
   const navigate = useNavigate();
   const [picked, setPicked] = useState(() => new Set());
+  const [query, setQuery] = useState("");
+
+  const q = query.trim().toLowerCase();
+  const matches = (cap) => !q || cap.toLowerCase().includes(q);
+  const visibleCount = CATEGORIES.reduce((n, c) => n + modulesOf(c).filter(matches).length, 0);
 
   const toggle = (categorySlug, capability) => {
     const key = `${categorySlug}::${capability}`;
@@ -81,9 +97,37 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
         className="max-w-3xl"
       />
       <Reveal delay={80} as="p" className="mt-5 max-w-[62ch] text-[17.5px] leading-[1.6] text-[#232A2A]/80">
-        No prices, because an honest number needs a conversation first and anything
-        else is a guess with a currency symbol on it. Pick the pieces that sound like
-        your problem and send it over — it beats writing the email from scratch.
+        Everything we and the network actually do, in one list \u2014 {TOTAL_MODULES} of them.
+        No prices, because an honest number needs a conversation first and anything else
+        is a guess with a currency symbol on it. Pick the pieces that sound like your
+        problem and send it over \u2014 it beats writing the email from scratch.
+      </Reveal>
+
+      {/* At this length a list needs a way in, so it gets a filter. Typing
+          opens whichever systems still have a match and hides the rest. */}
+      <Reveal delay={120} className="mt-7 max-w-[520px]">
+        <label htmlFor="builder-filter" className="sys-chip block text-[#232A2A]/55">
+          FIND A SERVICE
+        </label>
+        <div className="relative mt-2">
+          <Search size={16} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#232A2A]/45" aria-hidden="true" />
+          <input
+            id="builder-filter"
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="packaging, automation, podcast, OOH&hellip;"
+            data-testid="builder-filter"
+            className="w-full rounded-full border border-[#232A2A]/20 bg-[#F7F5EE] py-3 pl-11 pr-4 text-[15px] text-[#232A2A] placeholder:text-[#232A2A]/45 focus:border-[#F19020] focus:outline-none"
+          />
+        </div>
+        {q && (
+          <p className="font-mono-sys mt-2 text-[12.5px] text-[#232A2A]/60" data-testid="builder-filter-count">
+            {visibleCount === 0
+              ? "Nothing by that name. Say it in your own words instead — the form takes prose."
+              : `${visibleCount} service${visibleCount === 1 ? "" : "s"} match`}
+          </p>
+        )}
       </Reveal>
 
       <div className="mt-10 grid gap-8 lg:grid-cols-12">
@@ -91,7 +135,10 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
         <div className="lg:col-span-8">
           <div className="space-y-6">
             {CATEGORIES.map((c, ci) => {
-              const chosen = c.capabilities.filter((cap) => picked.has(`${c.slug}::${cap}`)).length;
+              const all = modulesOf(c);
+              const shown = all.filter(matches);
+              if (q && shown.length === 0) return null;
+              const chosen = all.filter((cap) => picked.has(`${c.slug}::${cap}`)).length;
               return (
               <Reveal key={c.slug}>
                 {/* All six open at once ran to ~1800px of chips before anyone
@@ -100,19 +147,19 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
                     first is open so the control explains itself on sight. */}
                 <details
                   className="builder-group rounded-[16px] border border-[#232A2A]/12 bg-[#F7F5EE]/45 p-5 sm:p-6"
-                  open={ci === 0}
+                  open={q ? true : ci === 0}
                   data-testid={`builder-details-${c.slug}`}
                 >
                   <summary className="flex cursor-pointer flex-wrap items-baseline gap-3 marker:content-['']">
                     <span className="font-display text-2xl leading-none accent-orange-text">{c.num}</span>
                     <h3 className="font-display text-[22px] leading-none text-[#232A2A]">{c.title}</h3>
                     <span className="sys-chip ml-auto text-[#232A2A]/55" data-testid={`builder-chosen-${c.slug}`}>
-                      {chosen > 0 ? `${chosen} PICKED` : `${c.capabilities.length} OPTIONS`}
+                      {chosen > 0 ? `${chosen} PICKED` : `${shown.length} OPTIONS`}
                     </span>
                     <span className="faq-plus shrink-0 accent-orange-text" aria-hidden="true">+</span>
                   </summary>
                   <ul className="builder-modules mt-4 flex flex-wrap gap-2" data-testid={`builder-modules-${c.slug}`}>
-                    {c.capabilities.map((cap) => {
+                    {shown.map((cap) => {
                       const key = `${c.slug}::${cap}`;
                       const on = picked.has(key);
                       return (
