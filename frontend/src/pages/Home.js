@@ -16,6 +16,7 @@ import { PopIllustration } from "@/components/PopIllustration";
 import { ProgressRule } from "@/components/ProgressRule";
 import { SystemDiagnostic } from "@/components/SystemDiagnostic";
 import { TouchpointTicker } from "@/components/TouchpointTicker";
+import { FitQuadrant } from "@/components/FitQuadrant";
 import { ProofStrip } from "@/components/ProofStrip";
 import { useRevealObserver, useReducedMotion, webglAvailable, gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/motion";
 import { getCaseStudies, track } from "@/lib/api";
@@ -264,11 +265,6 @@ const MethodSection = () => {
         </div>
 
         <div ref={wrapRef} className="relative mt-14">
-          <div className="pointer-events-none absolute -top-24 right-0 hidden w-[150px] xl:block" aria-hidden="true">
-            <div className="float-el scrap" style={{ "--rot": "1.6deg", animationDelay: "0.8s" }}>
-              <img src="/brand/char-anchor.jpg" alt="" loading="lazy" />
-            </div>
-          </div>
           <svg viewBox="0 0 1000 60" preserveAspectRatio="none" className="pointer-events-none absolute -top-6 left-0 hidden h-14 w-full lg:block" aria-hidden="true">
             <path ref={pathRef} d="M0,45 C 100,10 160,55 250,30 C 340,8 400,52 500,30 C 600,10 660,55 750,30 C 840,8 920,45 1000,22" fill="none" stroke="#F19020" strokeWidth="5" strokeLinecap="round" />
           </svg>
@@ -504,7 +500,7 @@ const Trust = () => (
         right \u2014 the figure fills it without crowding the sentence. */}
     <div className="mt-6 flex items-end justify-between gap-10">
       <Reveal delay={120} as="p" className="font-display max-w-[24ch] text-3xl text-[#232A2A] sm:text-4xl">
-        Clever ideas get attention. <span className="hl-marker">Reliable execution gets remembered.</span>
+        Clever ideas get attention. <span className="hl-marker hl-marker-draw">Reliable execution gets remembered.</span>
       </Reveal>
       <PopIllustration
         src="/brand/pop-hands-a.png"
@@ -534,11 +530,6 @@ const MarqueeRow = ({ items, reverse = false }) => (
 
 const WhoWith = () => (
   <section className="container-page section-pad relative" data-testid="home-who-section">
-    <div className="pointer-events-none absolute right-[5%] top-[6%] hidden w-[170px] xl:block" aria-hidden="true">
-      <div className="float-el scrap" style={{ "--rot": "-2deg", animationDelay: "1.2s" }}>
-        <img src="/brand/char-trendsetter.jpg" alt="" loading="lazy" />
-      </div>
-    </div>
     <SectionHeading kicker="WHO WE WORK WITH" title="People building things that have to work." testId="who-heading" className="max-w-3xl" />
     <div className="mt-10 space-y-3" data-testid="who-audience-wall">
       <MarqueeRow items={AUDIENCES.slice(0, 6)} />
@@ -554,8 +545,12 @@ const WhoWith = () => (
       We especially like people who ask good questions. You do not need every answer.
       <span className="font-accent text-[17px]"> That is partly why we are here.</span>
     </Reveal>
-    <Reveal delay={220}>
-      <div className="panel-paper mt-10 max-w-2xl p-6 sm:p-8" data-testid="who-filter-panel">
+    {/* The filter panel was capped at max-w-2xl and left the right half of the
+        section empty. The diagram is its counterweight: the panel says when it
+        goes badly, this says when it goes well. */}
+    <div className="mt-10 grid items-start gap-8 lg:grid-cols-12">
+    <Reveal delay={220} className="lg:col-span-7">
+      <div className="panel-paper h-full p-6 sm:p-8" data-testid="who-filter-panel">
         <p className="accent-signal-text sys-chip flex items-center gap-2 font-bold">
           <span className="red-bar" /> SMALL FILTER
         </p>
@@ -570,6 +565,10 @@ const WhoWith = () => (
         </ul>
       </div>
     </Reveal>
+    <Reveal delay={280} className="lg:col-span-5">
+      <FitQuadrant className="panel-paper h-full p-6 sm:p-7" testId="who-fit-quadrant" />
+    </Reveal>
+    </div>
   </section>
 );
 
@@ -580,7 +579,7 @@ const Closing = () => (
       <RouteLine d="M0,80 C 20,20 45,95 65,45 C 80,10 92,60 100,30" viewBox="0 0 100 100" strokeWidth={1.6} className="pointer-events-none absolute inset-0 h-full w-full opacity-30" />
       {/* Copy is capped at 24ch, so the right half of this panel was empty:
           the ticker takes the top corner, the figure takes the bottom. */}
-      <TouchpointTicker className="absolute right-8 top-8 hidden w-[280px] xl:block xl:right-16" testId="closing-ticker" />
+      <TouchpointTicker className="absolute right-8 top-8 hidden w-[380px] xl:block xl:right-16" testId="closing-ticker" />
       <PopIllustration
         src="/brand/pop-hat-balloon.png"
         width={260}
@@ -680,7 +679,7 @@ export default function Home() {
         kicker="THE SEQUENCE"
         title={<>One system, five moves.<br />In this order, on purpose.</>}
         testId="home-pinned-method"
-        steps={METHOD_STAGES.map((s) => ({ label: s.label, title: s.title, body: s.body }))}
+        steps={METHOD_STAGES}
       />
       <Diagnostic />
       <SectionConnector variant="centre" label="METHOD → PROOF" testId="connector-method-proof" />

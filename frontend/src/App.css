@@ -35,6 +35,23 @@
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
+/* A highlighter that gets drawn rather than being simply present. Hooked to
+   the existing reveal observer instead of a scroll ticker, so it behaves the
+   same whether or not the animation frame loop is running. */
+.hl-marker-draw {
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 0% 100%;
+  transition: background-size 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+}
+.reveal.is-visible .hl-marker-draw,
+.reveal.is-visible.hl-marker-draw {
+  background-size: 100% 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hl-marker-draw { transition: none; background-size: 100% 100%; }
+}
+
 .hl-marker-red {
   background-image: linear-gradient(104deg, rgba(229, 74, 37, 0) 0.9%, rgba(229, 74, 37, 0.32) 2.4%, rgba(229, 74, 37, 0.26) 50%, rgba(229, 74, 37, 0.34) 97.5%, rgba(229, 74, 37, 0) 99%);
   border-radius: 4px;
@@ -837,6 +854,37 @@ html {
 
 @media (prefers-reduced-motion: reduce) {
   .scroll-info-card { transition: none; }
+}
+
+/* ---------- Fit quadrant infographic ---------- */
+.fit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.fit-cell {
+  border: 1px solid rgba(35, 42, 42, 0.14);
+  border-radius: 12px;
+  background: rgba(247, 245, 238, 0.5);
+  padding: 14px 16px;
+  min-height: 104px;
+  transition: background 0.5s ease, border-color 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* The useful quadrant is the point of the diagram, so it arrives rather than
+   simply being there — it fills in as the figure scrolls into view. */
+.fit-cell--good {
+  background: rgba(35, 42, 42, 0.9);
+  border-color: rgba(241, 144, 32, 0.5);
+}
+.fit-cell--good.is-lit {
+  background: #232A2A;
+  border-color: var(--orange);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(35, 42, 42, 0.16);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fit-cell { transition: none; }
+  .fit-cell--good.is-lit { transform: none; }
 }
 
 /* ---------- Package builder groups ---------- */

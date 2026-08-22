@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Check } from "lucide-react";
 import { ScrollTrigger, prefersReducedMotion } from "@/lib/motion";
 
 /**
@@ -20,11 +21,29 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
   const [active, setActive] = useState(0);
   const [pinned, setPinned] = useState(false);
 
+  /**
+   * Whether the viewport is wide enough to pin. This has to be state rather
+   * than a one-off read: the pin used to be decided once on mount, so a window
+   * that started narrow never got a pin however wide it was later made, and one
+   * that started wide kept its pin after being narrowed. Anyone resizing, or
+   * rotating a tablet, landed in the wrong mode until a reload.
+   */
+  const [wideEnough, setWideEnough] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = (e) => setWideEnough(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   useEffect(() => {
     const section = sectionRef.current;
     if (!section || steps.length === 0) return undefined;
 
-    const canPin = window.matchMedia("(min-width: 1024px)").matches && !prefersReducedMotion();
+    const canPin = wideEnough && !prefersReducedMotion();
     if (!canPin) {
       setPinned(false);
       setActive(0);
@@ -54,7 +73,7 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
       clearTimeout(settle);
       trigger.kill();
     };
-  }, [steps.length]);
+  }, [steps.length, wideEnough]);
 
   if (steps.length === 0) return null;
 
@@ -100,26 +119,83 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
           ))}
         </ol>
 
-        {/* steps: all mounted, cross-faded */}
-        <div className="relative mt-8 grid" data-testid={`${testId}-panels`}>
-          {steps.map((s, i) => (
-            <article
-              key={s.label}
-              aria-hidden={i !== active}
-              className="col-start-1 row-start-1 max-w-3xl transition-all duration-500"
-              style={{
-                opacity: i === active ? 1 : 0,
-                transform: i === active ? "translateY(0)" : "translateY(14px)",
-                pointerEvents: i === active ? "auto" : "none",
-                visibility: i === active ? "visible" : "hidden",
-              }}
-            >
-              <p className="font-editorial text-[clamp(1.4rem,2.4vw,2.1rem)] font-medium leading-[1.25] text-[#F7F5EE]">
-                {s.title}
-              </p>
-              <p className="mt-4 max-w-[58ch] text-[17px] leading-[1.65] text-[#F7F5EE]/80">{s.body}</p>
-            </article>
-          ))}
+        {/* The copy was capped at max-w-3xl in a full-bleed panel, so the right
+            half of every pinned screen was empty. The stage data already
+            carries what the reader wants at exactly this moment \u2014 what the
+            stage needs from them and what it leaves behind \u2014 so the showcase
+            is real detail rather than filler, cross-fading with the step. */}
+        <div className="mt-8 grid gap-10 lg:grid-cols-12" data-testid={`${testId}-panels`}>
+          <div className="relative grid lg:col-span-7">
+            {steps.map((s, i) => (
+              <article
+                key={s.label}
+                aria-hidden={i !== active}
+                className="col-start-1 row-start-1 transition-all duration-500"
+                style={{
+                  opacity: i === active ? 1 : 0,
+                  transform: i === active ? "translateY(0)" : "translateY(14px)",
+                  pointerEvents: i === active ? "auto" : "none",
+                  visibility: i === active ? "visible" : "hidden",
+                }}
+              >
+                <p className="font-editorial text-[clamp(1.4rem,2.4vw,2.1rem)] font-medium leading-[1.25] text-[#F7F5EE]">
+                  {s.title}
+                </p>
+                <p className="mt-4 max-w-[58ch] text-[17px] leading-[1.65] text-[#F7F5EE]/80">{s.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="relative hidden lg:col-span-5 lg:grid" data-testid={`${testId}-showcase`}>
+            {steps.map((s, i) => (
+              <aside
+                key={s.label}
+                aria-hidden={i !== active}
+                className="col-start-1 row-start-1 rounded-[16px] border border-[#F7F5EE]/15 bg-[#F7F5EE]/[0.04] p-6 transition-all duration-500"
+                style={{
+                  opacity: i === active ? 1 : 0,
+                  transform: i === active ? "translateY(0)" : "translateY(14px)",
+                  pointerEvents: i === active ? "auto" : "none",
+                  visibility: i === active ? "visible" : "hidden",
+                }}
+              >
+                <div className="flex items-center justify-between gap-4 border-b border-[#F7F5EE]/12 pb-3">
+                  <span className="sys-chip text-[#F7F5EE]/50">STAGE {String(i + 1).padStart(2, "0")} OF {String(steps.length).padStart(2, "0")}</span>
+                  {s.duration && (
+                    <span className="font-mono-sys text-[12.5px] accent-orange-text">{s.duration}</span>
+                  )}
+                </div>
+
+                {s.inputs && s.inputs.length > 0 && (
+                  <div className="mt-4">
+                    <p className="sys-chip text-[#F7F5EE]/45">WHAT IT NEEDS FROM YOU</p>
+                    <ul className="mt-2.5 space-y-1.5">
+                      {s.inputs.map((it) => (
+                        <li key={it} className="flex items-start gap-2.5 text-[14.5px] leading-[1.5] text-[#F7F5EE]/80">
+                          <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-[#F19020]" aria-hidden="true" />
+                          {it}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {s.outputs && s.outputs.length > 0 && (
+                  <div className="mt-5">
+                    <p className="sys-chip text-[#F7F5EE]/45">WHAT YOU END UP WITH</p>
+                    <ul className="mt-2.5 space-y-1.5">
+                      {s.outputs.map((it) => (
+                        <li key={it} className="flex items-start gap-2.5 text-[14.5px] leading-[1.5] text-[#F7F5EE]/80">
+                          <Check size={13} className="mt-[3px] shrink-0 accent-orange-text" aria-hidden="true" />
+                          {it}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </aside>
+            ))}
+          </div>
         </div>
       </div>
     </section>

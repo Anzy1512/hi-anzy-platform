@@ -83,13 +83,13 @@ export const TouchpointTicker = ({ className = "", testId = "touchpoint-ticker" 
 
   return (
     <div ref={wrapRef} className={className} data-testid={testId} aria-hidden="true">
-      <div className="rounded-[14px] border border-[#F7F5EE]/15 bg-[#F7F5EE]/[0.04] px-5 py-4 backdrop-blur-[1px]">
+      <div className="rounded-[18px] border border-[#F7F5EE]/15 bg-[#F7F5EE]/[0.04] px-7 py-6 backdrop-blur-[1px]">
         <div className="flex items-center justify-between gap-4">
           <span className="sys-chip text-[#F7F5EE]/45">INTERACTIONS, TODAY</span>
-          <span className="font-display text-[26px] leading-none accent-orange-text tabular-nums">{count}</span>
+          <span className="font-display text-[40px] leading-none accent-orange-text tabular-nums">{count}</span>
         </div>
         <p
-          className="font-mono-sys mt-3 min-h-[34px] text-[13px] leading-[1.45] text-[#F7F5EE]/70"
+          className="font-mono-sys mt-4 min-h-[46px] text-[15px] leading-[1.5] text-[#F7F5EE]/78"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(5px)",
@@ -98,7 +98,7 @@ export const TouchpointTicker = ({ className = "", testId = "touchpoint-ticker" 
         >
           {TOUCHPOINTS[i]}
         </p>
-        <div className="mt-3 h-[2px] w-full overflow-hidden rounded-full bg-[#F7F5EE]/12">
+        <div className="mt-4 h-[3px] w-full overflow-hidden rounded-full bg-[#F7F5EE]/12">
           <span
             className="block h-full bg-[#F19020]"
             style={{
@@ -107,7 +107,7 @@ export const TouchpointTicker = ({ className = "", testId = "touchpoint-ticker" 
             }}
           />
         </div>
-        <p className="font-mono-sys mt-2.5 text-[11.5px] leading-[1.4] text-[#F7F5EE]/40">
+        <p className="font-mono-sys mt-3 text-[12.5px] leading-[1.45] text-[#F7F5EE]/50">
           A sample. Not the set. Every one of them is the brand.
         </p>
       </div>
