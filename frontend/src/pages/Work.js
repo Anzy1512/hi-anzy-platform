@@ -6,6 +6,7 @@ import { Seo } from "@/components/Seo";
 import { Reveal } from "@/components/Reveal";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { RouteLine } from "@/components/RouteLine";
+import { CaseAnatomy } from "@/components/CaseAnatomy";
 import { announceExpanded, onCollapse } from "@/components/CollapseOnScroll";
 import { useRevealObserver } from "@/lib/motion";
 import { getCaseStudies, getCaseStudy, track, API } from "@/lib/api";
@@ -124,18 +125,28 @@ export default function Work() {
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WORK
         </Reveal>
-        <Reveal delay={80}>
-          <h1 className="font-display mt-5 leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="work-h1">
-            Proof has context<span className="accent-signal-text">.</span>
-          </h1>
-        </Reveal>
-        <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
-          No endless logo wall. No unexplained numbers. No tiny footnotes doing heavy lifting. Every case here
-          reads the same way: situation, gap, insight, decision, build, result — and what happened next.
-        </Reveal>
-        <Reveal delay={220} as="p" className="font-mono-sys mt-4 text-[13px] text-[#232A2A]/55">
-          Provenance is labelled honestly. Network credentials are not dressed up as client work.
-        </Reveal>
+        {/* The copy names the seven-part shape in a sentence; the diagram beside
+            it shows the same seven, which is easier to hold than a list read
+            aloud — and it takes a hero column that was empty. */}
+        <div className="mt-5 grid items-start gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <Reveal delay={80}>
+              <h1 className="font-display leading-[0.92] text-[#232A2A] text-[clamp(3rem,6.8vw,6rem)]" data-testid="work-h1">
+                Proof has context<span className="accent-signal-text">.</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
+              No endless logo wall. No unexplained numbers. No tiny footnotes doing heavy lifting. Every case here
+              reads the same way: situation, gap, insight, decision, build, result — and what happened next.
+            </Reveal>
+            <Reveal delay={220} as="p" className="font-mono-sys mt-4 text-[13px] text-[#232A2A]/55">
+              Provenance is labelled honestly. Network credentials are not dressed up as client work.
+            </Reveal>
+          </div>
+          <Reveal delay={240} className="hidden lg:col-span-5 lg:block">
+            <CaseAnatomy steps={CASE_SECTIONS} className="panel-paper p-6 sm:p-7" testId="work-case-anatomy" />
+          </Reveal>
+        </div>
       </section>
 
       <section className="container-page section-pad-b">

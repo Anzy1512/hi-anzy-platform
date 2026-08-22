@@ -856,6 +856,85 @@ html {
   .scroll-info-card { transition: none; }
 }
 
+/* ---------- Footer ABC -> ROI route ---------- */
+/* The rail draws itself when the block reveals, so the diagram has something
+   to say before anyone brings a pointer near it — which on a touch screen is
+   never. The pointer pull still works on top of it. */
+.footer-route-rail {
+  height: 0;
+  border-top: 3px dotted rgba(241, 144, 32, 0.38);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+}
+.footer-route.is-visible .footer-route-rail { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .footer-route-rail { transition: none; transform: scaleX(1); }
+}
+
+/* ---------- Case anatomy spine ---------- */
+/* A single continuous rail behind the dots, so the seven steps read as one
+   sequence rather than seven separate rows. The rail is drawn on the list and
+   the fill is a child, so the progress line and the dots cannot drift apart. */
+.case-spine {
+  position: relative;
+  padding-left: 26px;
+}
+.case-spine::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  border-radius: 2px;
+  background: rgba(35, 42, 42, 0.14);
+}
+.case-spine-step {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 7px 0;
+}
+.case-spine-dot {
+  position: absolute;
+  left: -26px;
+  top: 14px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(35, 42, 42, 0.25);
+  background: var(--paper, #E0D8C1);
+  transition: border-color 0.45s ease, background 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.case-spine-step.is-reached .case-spine-dot {
+  border-color: var(--orange);
+  background: var(--orange);
+  transform: scale(1.15);
+}
+.case-spine-index {
+  font-size: 12px;
+  color: rgba(35, 42, 42, 0.45);
+  transition: color 0.45s ease;
+}
+.case-spine-step.is-reached .case-spine-index { color: var(--orange-on-paper); }
+.case-spine-label {
+  font-size: 17px;
+  line-height: 1.2;
+  color: rgba(35, 42, 42, 0.55);
+  transition: color 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.case-spine-step.is-reached .case-spine-label {
+  color: rgba(35, 42, 42, 0.92);
+  transform: translateX(2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-spine-dot,
+  .case-spine-index,
+  .case-spine-label { transition: none; }
+}
+
 /* ---------- Fit quadrant infographic ---------- */
 .fit-grid {
   display: grid;

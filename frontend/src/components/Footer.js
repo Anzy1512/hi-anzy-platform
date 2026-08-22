@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { NAV_LINKS, FOOTER_LINKS } from "@/data/content";
 import { prefersReducedMotion } from "@/lib/motion";
@@ -12,6 +12,31 @@ export const Footer = () => {
   const zoneRef = useRef(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [connected, setConnected] = useState(false);
+
+  /**
+   * The footer sits outside <main>, and useRevealObserver only watches inside
+   * the page container it is given. Anything using .reveal down here therefore
+   * never receives .is-visible — the route's rail stayed at scaleX(0) and was
+   * simply invisible. The footer keeps its own observer.
+   */
+  useEffect(() => {
+    const el = zoneRef.current;
+    if (!el) return undefined;
+    if (prefersReducedMotion()) {
+      el.classList.add("is-visible");
+      return undefined;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        el.classList.add("is-visible");
+        io.disconnect();
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const onMove = (e) => {
     if (prefersReducedMotion() || !zoneRef.current) return;
@@ -36,40 +61,62 @@ export const Footer = () => {
   return (
     <footer className="site-footer relative overflow-hidden bg-[#1D2424] text-[#F7F5EE]" data-testid="site-footer">
       <div className="container-page section-pad">
-        <p className="font-editorial max-w-[26ch] text-[clamp(1.7rem,2.9vw,3.1rem)] leading-[1.14]" data-testid="footer-large-text">
-          Still here? You are either <span className="hl-marker">thorough</span>. Curious. Or successfully avoiding another meeting.
-          <em className="accent-orange-text"> We respect all three.</em>
-        </p>
-        <p className="mt-6 font-editorial text-[18px] text-[#F7F5EE]/75">
-          Have something worth discussing?{" "}
-          <Link to="/contact" className="link-draw font-semibold accent-orange-text" data-testid="footer-say-hi-link">
-            Say hi.
-          </Link>
-        </p>
+        {/* The closing line is capped at 26ch, so the right of the footer was
+            empty while the ABC \u2192 ROI route sat in a full-width strip below it
+            doing the same job with less room. The route moves into that column
+            and the strip goes. It also draws itself on reveal now: it used to
+            animate only when a pointer came near, so on a phone it was a
+            static diagram of nothing happening. */}
+        <div className="grid items-center gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <p className="font-editorial max-w-[26ch] text-[clamp(1.7rem,2.9vw,3.1rem)] leading-[1.14]" data-testid="footer-large-text">
+              Still here? You are either <span className="hl-marker hl-marker-draw">thorough</span>. Curious. Or successfully avoiding another meeting.
+              <em className="accent-orange-text"> We respect all three.</em>
+            </p>
+            <p className="mt-6 font-editorial text-[18px] text-[#F7F5EE]/75">
+              Have something worth discussing?{" "}
+              <Link to="/contact" className="link-draw font-semibold accent-orange-text" data-testid="footer-say-hi-link">
+                Say hi.
+              </Link>
+            </p>
+          </div>
 
-        {/* Contextual micro-interaction: the tagline as a live route — ABC drifts toward ROI */}
-        <div
-          ref={zoneRef}
-          onMouseMove={onMove}
-          onMouseLeave={() => { setOffset({ x: 0, y: 0 }); setConnected(false); }}
-          className="relative mt-12 hidden h-16 items-center rounded-xl border border-dashed border-[#F7F5EE]/15 px-8 lg:flex"
-          data-testid="footer-easter-egg"
-          aria-hidden="true"
-        >
-          <span
-            className="qmark-node font-mono-sys inline-flex h-8 items-center justify-center rounded-full border border-[#F19020] px-3 text-[12px] tracking-[0.14em] accent-orange-text"
-            style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
-          >
-            ABC
-          </span>
-          <span className="absolute left-[82%] top-1/2 flex -translate-y-1/2 items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#F19020]" />
-            <span className="font-mono-sys text-[12px] tracking-[0.14em] accent-orange-text">ROI</span>
-          </span>
-          <span className="absolute left-[30%] right-[20%] top-1/2 hidden border-t-[3px] border-dotted border-[#F19020]/35 lg:block" />
-          <span className={`sys-chip absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap bg-[#1D2424] px-3 accent-orange-text transition-opacity duration-300 ${connected ? "opacity-100" : "opacity-0"}`}>
-            That's the whole journey.
-          </span>
+          <div className="lg:col-span-5">
+            <div
+              ref={zoneRef}
+              onMouseMove={onMove}
+              onMouseLeave={() => { setOffset({ x: 0, y: 0 }); setConnected(false); }}
+              className="footer-route reveal rounded-[18px] border border-[#F7F5EE]/15 bg-[#F7F5EE]/[0.04] p-6 sm:p-7"
+              data-testid="footer-easter-egg"
+            >
+              <p className="sys-chip text-[#F7F5EE]/50">THE WHOLE JOURNEY</p>
+
+              <div className="relative mt-6 flex h-14 items-center" aria-hidden="true">
+                <span
+                  className="qmark-node font-mono-sys relative z-10 inline-flex h-9 items-center justify-center rounded-full border border-[#F19020] bg-[#1D2424] px-3.5 text-[12.5px] tracking-[0.14em] accent-orange-text"
+                  style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
+                >
+                  ABC
+                </span>
+
+                <span className="footer-route-rail absolute left-[16%] right-[24%] top-1/2 -translate-y-1/2" />
+
+                <span className="absolute right-0 top-1/2 z-10 flex -translate-y-1/2 items-center gap-2 bg-[#1D2424] pl-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#F19020]" />
+                  <span className="font-mono-sys text-[12.5px] tracking-[0.14em] accent-orange-text">ROI</span>
+                </span>
+
+                <span className={`sys-chip absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#1D2424] px-3 py-1 accent-orange-text transition-opacity duration-300 ${connected ? "opacity-100" : "opacity-0"}`}>
+                  That&rsquo;s the whole journey.
+                </span>
+              </div>
+
+              <p className="font-mono-sys mt-5 text-[12.5px] leading-[1.5] text-[#F7F5EE]/55">
+                Everything on this site sits somewhere on that line. Drag your
+                cursor across it if you want to watch it close.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="mt-14 grid gap-10 border-t border-[#F7F5EE]/12 pt-10 sm:grid-cols-2 lg:grid-cols-4">
