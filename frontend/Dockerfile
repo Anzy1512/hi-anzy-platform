@@ -43,7 +43,11 @@ COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
+
+# Probe 127.0.0.1, not localhost. Inside the container localhost resolves to
+# [::1] first and `listen 80` binds IPv4 only, so the probe was refused on IPv6
+# while the site served every request fine and the container reported unhealthy.
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
-  CMD wget -qO- http://localhost/ >/dev/null 2>&1 || exit 1
+  CMD wget -qO- http://127.0.0.1/ >/dev/null 2>&1 || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
