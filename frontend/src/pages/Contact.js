@@ -42,7 +42,7 @@ export default function Contact() {
       .map((chunk) => chunk.split(":").slice(1).join(":"))
       .filter(Boolean);
     if (picked.length === 0) return "";
-    const lines = picked.map((m) => "\u2022 " + m).join("\n");
+    const lines = picked.map((m) => "• " + m).join("\n");
     return (
       "I put a rough brief together on your site. The pieces I picked:\n\n" +
       lines +

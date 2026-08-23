@@ -56,7 +56,7 @@ export const CATEGORIES = [
     why: "Every expensive mistake we have ever been called to fix started with a skipped diagnosis. This is where we make sure yours doesn't.",
     lede: "Most businesses do not have an information problem. They have a too-much-information-and-no-agreement problem.",
     body: [
-      "You already know something is off. The revenue is fine but the margin is not. The team is busy but the roadmap has not moved. Two departments are each certain the other one is the bottleneck. What is missing is not more data \u2014 it is a shared, honest reading of what the data means.",
+      "You already know something is off. The revenue is fine but the margin is not. The team is busy but the roadmap has not moved. Two departments are each certain the other one is the bottleneck. What is missing is not more data — it is a shared, honest reading of what the data means.",
       "So we look. At the numbers, the workflows and the customer's real journey rather than the tidy version in the deck. We talk to the people who actually do the work, because they usually know exactly where the body is buried and have simply never been asked.",
       "What comes out is a diagnosis you can act on: the problem named in plain language, the causes ranked by how much they actually cost you, and a sequence that says what to fix first. Occasionally the finding is that you are fine and the panic was inherited. That is a good outcome too, and a cheap one."
     ],
@@ -67,9 +67,9 @@ export const CATEGORIES = [
       "Every department is individually hitting targets while the business is not"
     ],
     deliverables: ["Business, brand and technology audit", "Customer journey walk-through, end to end", "Prioritised findings ranked by cost", "Transformation roadmap with named owners"],
-    typical: "2\u20136 weeks",
+    typical: "2–6 weeks",
     faqs: [
-      { q: "How is this different from a consultancy report?", a: "A report tells you what is wrong. Ours ends with a sequence \u2014 what to fix first, who owns it, and what has to be true before the next thing starts. If it cannot be acted on the following Monday, we have not finished." },
+      { q: "How is this different from a consultancy report?", a: "A report tells you what is wrong. Ours ends with a sequence — what to fix first, who owns it, and what has to be true before the next thing starts. If it cannot be acted on the following Monday, we have not finished." },
       { q: "What if the audit says we do not need the project we planned?", a: "Then we say so and you keep the money. We would rather lose the follow-on work than take payment for building something you did not need." }
     ]
   },
@@ -111,7 +111,7 @@ export const CATEGORIES = [
     lede: "A brand is not what you say about yourself. It is the shortcut a tired person takes when deciding whether to trust you.",
     body: [
       "Human attention is expensive and easily spent. Someone landing on your site is running a very fast, largely unconscious calculation: do I understand this, and do I believe it? Confusion reads as risk. Risk reads as no.",
-      "So this work starts with meaning rather than decoration. What are you actually for, who is it for, and why should they care this year rather than in principle? Then the visible layer \u2014 name, identity, message, packaging, interface \u2014 gets built to carry that meaning without the customer having to work for it.",
+      "So this work starts with meaning rather than decoration. What are you actually for, who is it for, and why should they care this year rather than in principle? Then the visible layer — name, identity, message, packaging, interface — gets built to carry that meaning without the customer having to work for it.",
       "The test is not whether the brand wins an award. It is whether a stranger can explain what you do, accurately, after thirty seconds. That is a surprisingly hard bar and a very profitable one."
     ],
     signals: [
@@ -121,7 +121,7 @@ export const CATEGORIES = [
       "The product is genuinely good and the conversion rate disagrees"
     ],
     deliverables: ["Brand strategy and positioning", "Messaging architecture", "Identity system", "Customer journey and UX design"],
-    typical: "4\u201310 weeks",
+    typical: "4–10 weeks",
     faqs: [
       { q: "Do we need a full rebrand?", a: "Usually not. More often the strategy is sound and the expression is inconsistent, which is a cheaper and faster fix. We will tell you which one you are looking at before you commit to either." },
       { q: "Can you work with our existing identity?", a: "Yes, and frequently that is the right call. Equity you have already built is an asset; throwing it away to feel decisive is an expensive habit." }
@@ -167,7 +167,7 @@ export const CATEGORIES = [
     why: "Good design opens the door. Good systems keep the lights on. This is the keep-the-lights-on department.",
     lede: "Every tool was bought to save time. Somehow the week got shorter anyway.",
     body: [
-      "The usual pattern is not a lack of technology \u2014 it is six tools that each solve a slice of the problem and none of which talk to each other. So a human becomes the integration layer, copying figures between systems and quietly becoming the single point of failure.",
+      "The usual pattern is not a lack of technology — it is six tools that each solve a slice of the problem and none of which talk to each other. So a human becomes the integration layer, copying figures between systems and quietly becoming the single point of failure.",
       "We build the machinery: the site, the commerce, the dashboards, the CRM, the integrations, the automations that remove the copy-and-paste jobs entirely. Built to the blueprint rather than to whatever was trending at the last conference.",
       "And built to be operated. If a system needs its author present to function, it is not finished. Documentation, sensible defaults and an honest handover are part of the build, not an optional extra you get quoted for later."
     ],
@@ -178,7 +178,7 @@ export const CATEGORIES = [
       "You bought AI and it has so far produced enthusiasm rather than output"
     ],
     deliverables: ["Websites, commerce and applications", "Integrations and workflow automation", "Dashboards and reporting", "Documentation and team handover"],
-    typical: "6\u201316 weeks",
+    typical: "6–16 weeks",
     faqs: [
       { q: "Will we be locked into you afterwards?", a: "No. You own the code, the accounts and the documentation. We consider a client who could leave and chooses not to a better outcome than one who cannot." },
       { q: "Do you actually build, or do you specify and hand off?", a: "We build. The network brings specialists where a problem needs them, and the accountability stays in one place regardless." }
@@ -229,7 +229,7 @@ export const CATEGORIES = [
     body: [
       "Growth work fails most often for an unglamorous reason: it is asked to compensate for an offer that has not been made clear. No amount of creative rescues a proposition the customer does not understand. Fix the offer, and the same spend starts behaving very differently.",
       "Once it is right, this is the department that teaches it to travel. Content that earns the click rather than buying it twice. Funnels that respect the fact people leave and come back. Lifecycle work, because the cheapest customer is one you already have and have not annoyed.",
-      "We measure the part that matters \u2014 what happened after the click. Impressions are a vanity metric with excellent PR."
+      "We measure the part that matters — what happened after the click. Impressions are a vanity metric with excellent PR."
     ],
     signals: [
       "Traffic is up and revenue is doing something else entirely",
@@ -306,7 +306,7 @@ export const CATEGORIES = [
     lede: "Reach can be bought by anyone with a card. Relevance has to be designed on purpose.",
     body: [
       "There is a meaningful difference between being seen and being remembered. Plenty of campaigns achieve the first and quietly fail the second, because the audience was rented rather than earned and had no particular reason to care.",
-      "This is where the network does the heavy lifting: creators, media, venues, producers, institutional partners \u2014 chosen because they already hold the attention of the people you actually need, not because they were available.",
+      "This is where the network does the heavy lifting: creators, media, venues, producers, institutional partners — chosen because they already hold the attention of the people you actually need, not because they were available.",
       "Experiences included. A room full of the right people remains one of the most underrated distribution channels in existence, largely because it does not come with a dashboard."
     ],
     signals: [
@@ -373,7 +373,7 @@ export const CATEGORIES = [
     typical: "Retained or milestone-based",
     faqs: [
       { q: "Is this a compliance service?", a: "It is broader than compliance and proportionate by design. Customer data, payments and access get real rigour; things that do not matter do not get security theatre performed over them." },
-      { q: "We are small \u2014 is this premature?", a: "The cheapest moment to fix an access model or a manual dependency is before it has grown roots. It rarely gets less expensive with time." }
+      { q: "We are small — is this premature?", a: "The cheapest moment to fix an access model or a manual dependency is before it has grown roots. It rarely gets less expensive with time." }
     ]
   },
 ];
@@ -388,19 +388,19 @@ export const METHOD_STAGES = [
     label: "AUDIT",
     title: "See what's really happening.",
     page: "First, we look.",
-    body: "The numbers, the workflows, the customer's actual experience \u2014 not the org chart version of it. Fragments become visible. Some of them are surprising. That is the point.",
-    duration: "2\u20134 weeks",
+    body: "The numbers, the workflows, the customer's actual experience — not the org chart version of it. Fragments become visible. Some of them are surprising. That is the point.",
+    duration: "2–4 weeks",
     inputs: ["Access to your numbers, warts included", "30 minutes each with the people who do the work", "Permission to ask awkward questions"],
     outputs: ["Findings ranked by what they actually cost", "A named problem, in one sentence", "The shortlist of what to fix first"],
-    pitfall: "The usual failure here is politeness \u2014 an audit that confirms what leadership already believed. We would rather be useful than welcome.",
+    pitfall: "The usual failure here is politeness — an audit that confirms what leadership already believed. We would rather be useful than welcome.",
   },
   {
     label: "ARCHITECT",
     title: "Turn the mess into a map.",
     page: "Then, we decide.",
     body: "What changes, what stays, what gets retired without a funeral. The blueprint names owners, sequences moves and decides what deserves to happen first.",
-    duration: "2\u20134 weeks",
-    inputs: ["Decisions, not just opinions", "One person who can say yes", "Your real constraints \u2014 budget, people, timing"],
+    duration: "2–4 weeks",
+    inputs: ["Decisions, not just opinions", "One person who can say yes", "Your real constraints — budget, people, timing"],
     outputs: ["A sequenced blueprint with owners", "What is explicitly not happening", "Dependencies mapped before they bite"],
     pitfall: "Plans die when everything is priority one. If nothing on the list is allowed to go last, the list is a wish, not a plan.",
   },
@@ -408,11 +408,11 @@ export const METHOD_STAGES = [
     label: "BUILD",
     title: "Make the plan real.",
     page: "Then, we make.",
-    body: "Systems, brand, technology, content \u2014 built to the blueprint, not to the mood of the week. Objects gain structure. Promises gain deadlines.",
-    duration: "6\u201316 weeks",
+    body: "Systems, brand, technology, content — built to the blueprint, not to the mood of the week. Objects gain structure. Promises gain deadlines.",
+    duration: "6–16 weeks",
     inputs: ["Content, assets and access, on time", "A named reviewer with actual authority", "Tolerance for seeing it half-finished"],
     outputs: ["The thing itself, working", "Documentation your team can act on", "A handover that does not need us present"],
-    pitfall: "Scope creep rarely arrives as a request. It arrives as 'while you're in there' \u2014 which is why changes go in writing.",
+    pitfall: "Scope creep rarely arrives as a request. It arrives as 'while you're in there' — which is why changes go in writing.",
   },
   {
     label: "CONNECT",
@@ -421,7 +421,7 @@ export const METHOD_STAGES = [
     body: "Strategists, designers, technologists, creators, media, venues, operators. The team changes shape per problem. The accountability doesn't.",
     duration: "Per engagement",
     inputs: ["Clarity on what success looks like", "Introductions where relationships matter", "Room for people who disagree with you"],
-    outputs: ["A roster assembled for this problem", "Labelled credit \u2014 who did what, always", "Relationships that outlast the project"],
+    outputs: ["A roster assembled for this problem", "Labelled credit — who did what, always", "Relationships that outlast the project"],
     pitfall: "Bringing in specialists too early is expensive theatre. They should arrive when the problem is defined enough to brief them properly.",
   },
   {

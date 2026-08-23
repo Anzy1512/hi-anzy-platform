@@ -467,7 +467,7 @@ const Trust = () => (
     <SectionHeading kicker="HOW TRUST GETS BUILT" title={<>Creative enough to find another answer.<br />Practical enough to make it work.</>} testId="trust-heading" className="max-w-4xl" />
 
     <Reveal delay={80} as="p" className="mt-6 max-w-[60ch] text-[17.5px] leading-[1.6] text-[#232A2A]/80">
-      Nine promises. Open any of them and you will find what it actually costs us to keep it \u2014
+      Nine promises. Open any of them and you will find what it actually costs us to keep it —
       because a principle nobody has to pay for is just a poster.
     </Reveal>
 
@@ -498,7 +498,7 @@ const Trust = () => (
     />
 
     {/* The closing line ran the full width with a lot of empty paper to its
-        right \u2014 the figure fills it without crowding the sentence. */}
+        right — the figure fills it without crowding the sentence. */}
     <div className="mt-6 flex items-end justify-between gap-10">
       <Reveal delay={120} as="p" className="font-display max-w-[24ch] text-3xl text-[#232A2A] sm:text-4xl">
         Clever ideas get attention. <span className="hl-marker hl-marker-draw">Reliable execution gets remembered.</span>

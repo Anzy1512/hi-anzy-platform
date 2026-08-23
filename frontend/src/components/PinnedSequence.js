@@ -121,8 +121,8 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
 
         {/* The copy was capped at max-w-3xl in a full-bleed panel, so the right
             half of every pinned screen was empty. The stage data already
-            carries what the reader wants at exactly this moment \u2014 what the
-            stage needs from them and what it leaves behind \u2014 so the showcase
+            carries what the reader wants at exactly this moment — what the
+            stage needs from them and what it leaves behind — so the showcase
             is real detail rather than filler, cross-fading with the step. */}
         <div className="mt-8 grid gap-10 lg:min-h-[46vh] lg:grid-cols-12" data-testid={`${testId}-panels`}>
           <div className="relative grid lg:col-span-7">

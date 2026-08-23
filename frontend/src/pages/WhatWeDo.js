@@ -22,7 +22,7 @@ export default function WhatWeDo() {
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHAT WE DO
         </Reveal>
         {/* The headline sat alone with the right half of the page empty. The
-            collage banner takes it \u2014 it moved here from the home page, where it
+            collage banner takes it — it moved here from the home page, where it
             was duplicating the pop figure two sections below it. */}
         <div className="mt-5 grid items-center gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
@@ -51,7 +51,7 @@ export default function WhatWeDo() {
                 <span className="banner-figure-halo" aria-hidden="true" />
                 <img
                   src="/brand/art-cube-head.png"
-                  alt="Halftone collage \u2014 a person with a puzzle cube for a head"
+                  alt="Halftone collage — a person with a puzzle cube for a head"
                   loading="lazy"
                   className="relative w-full"
                 />

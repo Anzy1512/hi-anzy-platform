@@ -62,7 +62,7 @@ export const Footer = () => {
     <footer className="site-footer relative overflow-hidden bg-[#1D2424] text-[#F7F5EE]" data-testid="site-footer">
       <div className="container-page section-pad">
         {/* The closing line is capped at 26ch, so the right of the footer was
-            empty while the ABC \u2192 ROI route sat in a full-width strip below it
+            empty while the ABC → ROI route sat in a full-width strip below it
             doing the same job with less room. The route moves into that column
             and the strip goes. It also draws itself on reveal now: it used to
             animate only when a pointer came near, so on a phone it was a

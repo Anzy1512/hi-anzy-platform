@@ -97,10 +97,10 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
         className="max-w-3xl"
       />
       <Reveal delay={80} as="p" className="mt-5 max-w-[62ch] text-[17.5px] leading-[1.6] text-[#232A2A]/80">
-        Everything we and the network actually do, in one list \u2014 {TOTAL_MODULES} of them.
+        Everything we and the network actually do, in one list — {TOTAL_MODULES} of them.
         No prices, because an honest number needs a conversation first and anything else
         is a guess with a currency symbol on it. Pick the pieces that sound like your
-        problem and send it over \u2014 it beats writing the email from scratch.
+        problem and send it over — it beats writing the email from scratch.
       </Reveal>
 
       {/* At this length a list needs a way in, so it gets a filter. Typing

@@ -283,7 +283,7 @@ export default function Work() {
 
           {!portfolio && <div className="mt-10 grid gap-5 lg:grid-cols-2">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="panel-paper h-[150px] animate-pulse" />)}</div>}
           {portfolio && portfolio.length > 0 && (() => {
-            /* One group (social) carries 25 items against 4\u20139 everywhere else.
+            /* One group (social) carries 25 items against 4–9 everywhere else.
                In a two-column grid that card grew several times the height of its
                neighbour and dragged a column of dead space beside it. Oversized
                groups are pulled out, sent to the end and given the full width,
@@ -331,7 +331,7 @@ export default function Work() {
                           <p className="sys-chip accent-orange-text">THE LONG TAIL</p>
                           <h3 className="font-display mt-2 text-[clamp(1.8rem,3.2vw,2.9rem)] leading-none text-[#F7F5EE]">{g.category}</h3>
                           <p className="font-mono-sys mt-3 max-w-[52ch] text-[13px] leading-[1.5] text-[#F7F5EE]/60">
-                            The largest single body of work here \u2014 running accounts, not one-off posts.
+                            The largest single body of work here — running accounts, not one-off posts.
                             Every name below is a brand whose feed we have actually had to fill on a Monday.
                           </p>
                         </div>
