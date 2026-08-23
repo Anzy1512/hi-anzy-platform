@@ -39,8 +39,9 @@
     "test": "craco test",
     "eject": "react-scripts eject",
     "check:opacity": "node scripts/check-opacity-scale.js",
-    "prebuild": "node scripts/check-opacity-scale.js && node scripts/check-seo-output.js",
-    "check:seo": "node scripts/check-seo-output.js"
+    "prebuild": "node scripts/check-opacity-scale.js && node scripts/check-seo-output.js && node scripts/generate-sitemap.js",
+    "check:seo": "node scripts/check-seo-output.js",
+    "sitemap": "node scripts/generate-sitemap.js"
   },
   "eslintConfig": {
     "extends": [

@@ -118,6 +118,39 @@ export default function Discipline() {
                 <p className="mt-2.5 text-[18px] font-medium leading-[1.55] text-[#232A2A]">{d.outcome}</p>
               </div>
             </Reveal>
+
+            {/* This column ran ~300px shorter than the signals panel beside it,
+                so the section ended on a band of empty paper. Same at-a-glance
+                shape the service pages use, for consistency between the two
+                detail page types. Every figure is already on the page — counted
+                rather than restated, which is what a glance wants anyway. */}
+            <Reveal delay={280}>
+              <div className="mt-6 rounded-[16px] border border-[#232A2A]/12 bg-[#F7F5EE]/55 p-6" data-testid="discipline-at-a-glance">
+                <p className="sys-chip text-[#232A2A]/50">AT A GLANCE</p>
+                <dl className="mt-4 space-y-3.5">
+                  <div className="flex items-baseline justify-between gap-4 border-b border-[#232A2A]/10 pb-3">
+                    <dt className="font-mono-sys text-[12.5px] text-[#232A2A]/55">Discipline</dt>
+                    <dd className="text-right text-[15px] font-semibold text-[#232A2A]/85">{d.name}</dd>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-4 border-b border-[#232A2A]/10 pb-3">
+                    <dt className="font-mono-sys text-[12.5px] text-[#232A2A]/55">Specialisms covered</dt>
+                    <dd className="font-display text-[20px] leading-none accent-orange-text tabular-nums">{subs.length || "—"}</dd>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-4 border-b border-[#232A2A]/10 pb-3">
+                    <dt className="font-mono-sys text-[12.5px] text-[#232A2A]/55">Specialists listed</dt>
+                    <dd className="font-display text-[20px] leading-none accent-orange-text tabular-nums">
+                      {members === null ? "…" : members.length}
+                    </dd>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-4">
+                    <dt className="font-mono-sys text-[12.5px] text-[#232A2A]/55">Usually paired with</dt>
+                    <dd className="text-right text-[15px] font-semibold text-[#232A2A]/85">
+                      {related.length ? related.map((r) => r.name).join(", ") : "—"}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </Reveal>
           </div>
 
           {/* Signals — symptoms, not services */}
