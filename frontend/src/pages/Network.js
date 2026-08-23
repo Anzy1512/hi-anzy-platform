@@ -279,7 +279,7 @@ export default function Network() {
         </div>
       </section>
 
-      <section id="network-specialists" className="container-page section-pad">
+      <section id="network-specialists" className="container-page section-pad" data-index-label="THE SPECIALISTS">
         <div className="mb-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" data-testid="network-legend">
           {LEGEND.map((l) => (
             <div key={l.tag} className="rounded-[14px] border border-[#232A2A]/14 bg-[#F7F5EE]/60 p-4">

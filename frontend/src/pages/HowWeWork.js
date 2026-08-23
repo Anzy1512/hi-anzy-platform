@@ -34,7 +34,7 @@ export default function HowWeWork() {
       </section>
 
       {/* The orange route physically continues through the page */}
-      <section className="relative container-page section-pad-b">
+      <section className="relative container-page section-pad-b" data-index-label="THE FIVE STAGES">
         <RouteLine
           d="M50,0 C 20,8 20,14 50,20 C 80,26 80,32 50,38 C 20,44 20,52 50,58 C 80,64 80,72 50,78 C 20,84 20,92 50,100"
           viewBox="0 0 100 100"

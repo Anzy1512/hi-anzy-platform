@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+# Docker template: no values, and a teammate needs it to start the stack.
+!.env.docker.example
 
 # ── Dependencies ──────────────────────────────────────────────────────────
 node_modules/

@@ -149,7 +149,7 @@ export default function Work() {
         </div>
       </section>
 
-      <section className="container-page section-pad-b">
+      <section className="container-page section-pad-b" data-index-label="CASE STUDIES">
         {error && <p className="panel-paper p-6 text-[14px] text-[#232A2A]/75" data-testid="work-error">The case files are being stubborn. Refresh, or just say hi and we will walk you through them in person.</p>}
         {!cases && !error && (
           <div className="grid gap-6 lg:grid-cols-2">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="panel-paper h-[260px] animate-pulse" />)}</div>

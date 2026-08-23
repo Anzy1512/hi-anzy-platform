@@ -345,9 +345,12 @@ html {
   --section-y-lg: clamp(96px, 11vw, 152px);
 }
 .container-page {
-  max-width: 1360px;
+  max-width: calc(1360px + var(--rail-w));
   margin-inline: auto;
   padding-inline: var(--page-x);
+  /* Must follow padding-inline, which would otherwise reset it. The rail is
+     fixed-position, so without this reserved column it would sit on the text. */
+  padding-left: calc(var(--page-x) + var(--rail-w));
 }
 .section-pad {
   padding-block: var(--section-y);
@@ -877,6 +880,161 @@ html {
 .footer-route.is-visible .footer-route-rail { transform: scaleX(1); }
 @media (prefers-reduced-motion: reduce) {
   .footer-route-rail { transition: none; transform: scaleX(1); }
+}
+
+/* ---------- Section index rail ---------- */
+/* The rail reserves its own column rather than floating over the page.
+   --rail-w is set by the component and widens the left padding of every
+   container, so the text column begins where the rail ends. Default 0 so the
+   site lays out normally when the rail is absent. */
+:root { --rail-w: 0px; }
+
+.section-index {
+  position: fixed;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  max-height: 78vh;
+  display: flex;
+}
+.section-index-shell {
+  position: relative;
+  display: flex;
+  width: 100%;
+  padding: 16px 12px;
+  border-radius: 18px;
+  background: rgba(29, 36, 36, 0.86);
+  border: 1px solid rgba(247, 245, 238, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* the WebGL strip runs behind the dot column */
+.section-index-spine {
+  position: absolute;
+  left: 12px;
+  top: 16px;
+  bottom: 16px;
+  width: 28px;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.section-index-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.section-index-list::-webkit-scrollbar { display: none; }
+
+/* GSAP moves this between rows; it is the only thing that travels */
+.section-index-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  border-radius: 10px;
+  background: rgba(247, 245, 238, 0.07);
+  border: 1px solid rgba(241, 144, 32, 0.28);
+  pointer-events: none;
+}
+
+.section-index-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 8px 8px 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  color: rgba(247, 245, 238, 0.6);
+  transition: color 0.28s ease;
+}
+.section-index-row:hover { color: var(--white-d); }
+.section-index-row.is-active { color: var(--white-d); }
+.section-index-row:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+.section-index-dot {
+  flex: none;
+  width: 28px;
+  display: grid;
+  place-items: center;
+}
+.section-index-dot::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(247, 245, 238, 0.34);
+  transition: background 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.3s ease;
+}
+.section-index-row:hover .section-index-dot::after { background: rgba(247, 245, 238, 0.72); }
+.section-index-row.is-active .section-index-dot::after {
+  background: var(--orange);
+  transform: scale(1.55);
+  box-shadow: 0 0 0 4px rgba(241, 144, 32, 0.16);
+}
+
+.section-index-text {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.section-index-num {
+  font-family: var(--font-system);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(247, 245, 238, 0.45);
+  transition: color 0.28s ease;
+  flex: none;
+}
+.section-index-row.is-active .section-index-num { color: var(--orange); }
+
+.section-index-label {
+  font-family: var(--font-system);
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dots-only mode keeps the labels in the DOM for assistive tech and for the
+   title tooltip, but takes them out of the layout so the rail stays narrow. */
+.section-index--dots .section-index-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-index-dot::after,
+  .section-index-row,
+  .section-index-num { transition: none; }
 }
 
 /* ---------- Case anatomy spine ---------- */

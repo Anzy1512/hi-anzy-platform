@@ -133,6 +133,28 @@ const xmlEscape = (s) =>
     "\n</urlset>\n";
 
   const out = path.join(ROOT, "public", "sitemap.xml");
+
+  /**
+   * If the API was unreachable, this run produced a sitemap missing every
+   * database-backed page. Overwriting a fuller one with it would quietly shrink
+   * the site's coverage — which is exactly what happened building inside a
+   * container, where localhost is the container's own loopback and nothing is
+   * listening on it. A partial sitemap is fine to create; it is not fine to
+   * write over a complete one.
+   */
+  const apiReachable = insightCount + caseCount > 0;
+  if (!apiReachable && fs.existsSync(out)) {
+    const existing = fs.readFileSync(out, "utf8");
+    const existingCount = (existing.match(/<loc>/g) || []).length;
+    if (existingCount > final.length) {
+      console.log(
+        `sitemap: kept the existing ${existingCount} urls — this run reached no API ` +
+          `and would have written only ${final.length}`
+      );
+      return;
+    }
+  }
+
   fs.writeFileSync(out, xml, "utf8");
 
   // robots.txt should name the sitemap; add it once, keep it current
