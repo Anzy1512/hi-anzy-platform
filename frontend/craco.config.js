@@ -84,6 +84,16 @@ let webpackConfig = {
       '@': path.resolve(__dirname, 'src'),
     },
     configure: (webpackConfig) => {
+      // Source maps for a production build were only ever off because a local
+      // script prefixed GENERATE_SOURCEMAP=false on the command line. A deploy
+      // platform running the plain `npm run build` from this file would not
+      // know to do that, and would ship full maps -- exposing this codebase's
+      // original source, including the inline commentary that explains
+      // business logic, to anyone opening devtools. Setting it here makes
+      // "no source maps in production" a property of the build itself.
+      if (webpackConfig.mode === 'production') {
+        webpackConfig.devtool = false;
+      }
 
       // Add ignored patterns to reduce watched directories
         webpackConfig.watchOptions = {
