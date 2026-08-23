@@ -240,6 +240,16 @@ html {
 }
 
 /* ---------- Buttons ---------- */
+/* :where() so this contributes no specificity. These are single-class
+   component selectors living after Tailwind's utilities, so a plain
+   `display: inline-flex` here outranked `.hidden` on source order and a button
+   marked `hidden sm:inline-flex` stayed on screen below the breakpoint.
+   Raising `.hidden` instead would have beaten `sm:inline-flex` as well and
+   hidden the button everywhere — the fix belongs on this side. */
+:where(.btn-ink, .btn-paper, .btn-orange) {
+  display: inline-flex;
+}
+
 .btn-ink {
   white-space: nowrap;
   background: var(--ink);
@@ -250,7 +260,6 @@ html {
   font-weight: 600;
   font-size: 16.5px;
   letter-spacing: 0.02em;
-  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
@@ -272,7 +281,6 @@ html {
   font-weight: 600;
   font-size: 16.5px;
   letter-spacing: 0.02em;
-  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -291,7 +299,6 @@ html {
   font-weight: 600;
   font-size: 16.5px;
   letter-spacing: 0.02em;
-  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   box-shadow: 0 10px 24px rgba(241, 144, 32, 0.3);
@@ -915,14 +922,17 @@ html {
 }
 .case-spine-index {
   font-size: 12px;
-  color: rgba(35, 42, 42, 0.45);
+  /* The resting state still has to clear AA on its own. At 0.45 the numbers
+     read 2.6:1 before the sequence animates — and for anyone who never sees it
+     animate, that is the only state there is. */
+  color: rgba(35, 42, 42, 0.68);
   transition: color 0.45s ease;
 }
 .case-spine-step.is-reached .case-spine-index { color: var(--orange-on-paper); }
 .case-spine-label {
   font-size: 17px;
   line-height: 1.2;
-  color: rgba(35, 42, 42, 0.55);
+  color: rgba(35, 42, 42, 0.74);
   transition: color 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .case-spine-step.is-reached .case-spine-label {
@@ -1002,10 +1012,15 @@ html {
 /* Coarse pointers get real padding on the chip controls, where there is room
    for it. Fine pointers keep the tighter rhythm the design was drawn at. */
 @media (pointer: coarse) {
-  .sys-chip.rounded-full,
-  button.sys-chip {
+  /* No `display` here. These selectors outrank Tailwind's `.hidden`, so
+     setting display resurrected every sys-chip button that a breakpoint had
+     hidden — the header's SIGN IN reappeared on phones and wrapped to two
+     lines. The chips are already inline-flex from their utilities; the
+     min-height is all this rule was ever for. `:not(.hidden)` keeps it that
+     way if someone adds a display back. */
+  .sys-chip.rounded-full:not(.hidden),
+  button.sys-chip:not(.hidden) {
     min-height: 40px;
-    display: inline-flex;
     align-items: center;
   }
   .site-footer a {

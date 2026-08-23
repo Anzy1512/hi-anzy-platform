@@ -80,7 +80,3 @@ export const HalftoneBackdrop = () => (
   </div>
 );
 
-/** Static CSS fallback — same halftone language without motion. */
-export const HalftoneStatic = () => (
-  <div className="halftone-static pointer-events-none fixed inset-0 -z-10" aria-hidden="true" data-testid="home-texture-backdrop" />
-);

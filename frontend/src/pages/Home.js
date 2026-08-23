@@ -8,7 +8,7 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { RouteLine } from "@/components/RouteLine";
 import { SystemCoreFallback, ConstellationFallback, ThreeSafe } from "@/components/three/Fallbacks";
-import { HalftoneBackdrop, HalftoneStatic } from "@/components/three/HalftoneBackdrop";
+import { HalftoneStatic } from "@/components/three/HalftoneStatic";
 import { PunRow } from "@/components/PunPop";
 import { SectionConnector } from "@/components/SectionConnector";
 import { PinnedSequence } from "@/components/PinnedSequence";
@@ -25,6 +25,7 @@ import {
   DIAGNOSTIC_OUTCOMES, TRUST_PRINCIPLES, AUDIENCES, FILTER_LIST, NETWORK_CATEGORIES_HOME, NETWORK_SUBCATS,
 } from "@/data/content";
 
+const HalftoneBackdrop = lazy(() => import("@/components/three/HalftoneBackdrop").then((m) => ({ default: m.HalftoneBackdrop })));
 const SystemCore = lazy(() => import("@/components/three/SystemCore"));
 const Constellation = lazy(() => import("@/components/three/Constellation"));
 
@@ -642,7 +643,13 @@ export default function Home() {
   return (
     <div ref={ref} data-testid="home-page">
       {/* Deck-referenced halftone texture — minor 3JS motion backdrop */}
-      {show3d ? <HalftoneBackdrop /> : <HalftoneStatic />}
+      {show3d ? (
+        <Suspense fallback={<HalftoneStatic />}>
+          <HalftoneBackdrop />
+        </Suspense>
+      ) : (
+        <HalftoneStatic />
+      )}
       <Seo
         title="hiAnzy — We Build Brand Operating Systems"
         description="hiAnzy is a Business Systems & Transformation Consultancy. We find what is disconnected in your business, figure out what belongs together and build the system around it. From ABC to ROI."

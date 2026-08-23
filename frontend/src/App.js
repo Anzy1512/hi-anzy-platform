@@ -79,7 +79,10 @@ const Shell = () => {
 function App() {
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      {/* Opt in to the v7 behaviours now: both are already how this app expects
+          routing to work, and without the flags React Router logs a future
+          warning on every load, which buries anything real in the console. */}
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AuthProvider>
           <LenisProvider>
             <ScrollToTop />

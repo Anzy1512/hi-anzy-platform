@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { track } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { subscribeScroll, isDarkUnderNav } from "@/lib/motion";
+import { MenuConstellation } from "@/components/MenuConstellation";
 
 export const Nav = () => {
   const location = useLocation();
@@ -143,8 +144,12 @@ export const Nav = () => {
                 <Menu size={18} />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] border-l border-[#232A2A]/15 bg-[#E0D8C1] p-0">
-              <nav aria-label="Mobile" className="flex h-full flex-col justify-between p-6 pt-14">
+            <SheetContent side="right" className="relative w-[300px] overflow-hidden border-l border-[#232A2A]/15 bg-[#E0D8C1] p-0">
+              {/* The panel was a flat list on a flat ground. The constellation
+                  gives it the network motif the rest of the site runs on, and
+                  it only exists while the sheet is mounted. */}
+              <MenuConstellation className="pointer-events-none absolute inset-x-0 top-0 h-[46%] w-full opacity-70" testId="nav-mobile-constellation" />
+              <nav aria-label="Mobile" className="relative flex h-full flex-col justify-between p-6 pt-14">
                 <div className="flex flex-col gap-1">
                   {NAV_LINKS.map((l) => {
                     // Radix's asChild clones props onto the child through Slot,
