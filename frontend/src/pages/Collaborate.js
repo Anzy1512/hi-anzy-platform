@@ -36,7 +36,6 @@ export default function Collaborate() {
           {ASKS.map((a, i) => (
             <Reveal key={a.title} delay={i * 100}>
               <div className="cap-tile panel-paper h-full p-7">
-                <p className="font-mono-sys text-[12.5px] accent-orange-text">{String(i + 1).padStart(2, "0")}</p>
                 <h2 className="font-display mt-2 text-3xl text-[#232A2A]">{a.title}</h2>
                 <p className="mt-3 text-[16.5px] leading-[1.58] text-[#232A2A]/78">{a.body}</p>
               </div>

@@ -26,7 +26,6 @@ export default function WhoWeWorkWith() {
           {AUDIENCES.map((a, i) => (
             <Reveal key={a} delay={(i % 3) * 70}>
               <div className="cap-tile flex h-full items-center gap-4 rounded-[14px] border border-[#232A2A]/14 bg-[#F7F5EE] p-5">
-                <span className="font-mono-sys text-[12.5px] accent-orange-text">{String(i + 1).padStart(2, "0")}</span>
                 <span className="text-[15px] font-semibold text-[#232A2A]/85">{a}</span>
               </div>
             </Reveal>

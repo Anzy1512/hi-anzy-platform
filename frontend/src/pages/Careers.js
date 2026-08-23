@@ -36,7 +36,6 @@ export default function Careers() {
           {VALUES.map((v, i) => (
             <Reveal key={v.t} delay={(i % 2) * 90}>
               <div className="cap-tile panel-paper h-full p-7">
-                <p className="font-mono-sys text-[12.5px] accent-orange-text">{String(i + 1).padStart(2, "0")}</p>
                 <h2 className="font-display mt-2 text-2xl text-[#232A2A]">{v.t}</h2>
                 <p className="mt-2 text-[16.5px] leading-[1.58] text-[#232A2A]/75">{v.b}</p>
               </div>

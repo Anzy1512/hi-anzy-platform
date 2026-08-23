@@ -110,7 +110,6 @@ export default function ServiceDetail() {
           <div className="lg:col-span-7">
             <Reveal delay={80}>
               <div className="flex items-baseline gap-4">
-                <span className="font-display text-[clamp(3rem,5vw,4.5rem)] leading-none accent-orange-text">{c.num}</span>
                 <h1 className="font-display leading-[0.94] text-[#232A2A] text-[clamp(2.4rem,5vw,4.4rem)]" data-testid="service-h1">
                   {c.label}
                 </h1>
@@ -158,7 +157,7 @@ export default function ServiceDetail() {
             <ul className="mt-6 space-y-3" data-testid="service-signals">
               {c.signals.map((s, i) => (
                 <Reveal as="li" key={s} delay={i * 70} className="flex items-start gap-3 border-b border-[#232A2A]/10 pb-3">
-                  <span className="font-mono-sys mt-0.5 shrink-0 text-[12.5px] accent-signal-text">{`[${String(i + 1).padStart(2, "0")}]`}</span>
+                  <span className="mt-[9px] h-[6px] w-[6px] shrink-0 rounded-full bg-[#E54A25]" aria-hidden="true" />
                   <span className="text-[16.5px] leading-[1.55] text-[#232A2A]/85">{s}</span>
                 </Reveal>
               ))}
@@ -278,7 +277,6 @@ export default function ServiceDetail() {
                   className="group flex h-full items-start gap-3 rounded-[14px] border border-[#232A2A]/12 bg-[#F7F5EE]/45 p-4 transition-colors hover:border-[#F19020]"
                   onClick={() => track("service_explored", { category: o.label, to: "service_detail" })}
                 >
-                  <span className="font-display text-2xl leading-none accent-orange-text">{o.num}</span>
                   <span>
                     <span className="font-display block text-[17px] leading-tight text-[#232A2A]">{o.label}</span>
                     <span className="font-mono-sys mt-1 block text-[12.5px] leading-[1.4] text-[#232A2A]/60">{o.title}</span>

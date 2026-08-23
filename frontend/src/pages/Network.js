@@ -266,7 +266,6 @@ export default function Network() {
                 data-testid={`discipline-card-${d.slug}`}
                 className="cap-tile group flex h-full flex-col rounded-[16px] border border-[#232A2A]/15 bg-[#F7F5EE] p-6 transition-colors hover:border-[#F19020]"
               >
-                <span className="sys-chip text-[#232A2A]/50">{String(i + 1).padStart(2, "0")}</span>
                 <span className="font-display mt-1.5 text-[26px] leading-none text-[#232A2A]">{d.name}</span>
                 <span className="mt-3 text-[15.5px] leading-[1.55] text-[#232A2A]/80">{d.hook}</span>
                 <span className="link-draw mt-auto inline-flex items-center gap-1.5 pt-5 text-[13.5px] font-semibold text-[#232A2A]">

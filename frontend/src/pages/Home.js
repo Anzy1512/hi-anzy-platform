@@ -121,7 +121,7 @@ const SomethingsOff = () => (
           <ul className="divide-y divide-[#232A2A]/10">
             {SOMETHINGS_OFF.map((line, i) => (
               <Reveal as="li" key={i} delay={i * 90} className="flex items-start gap-4 py-4">
-                <span className="font-mono-sys accent-signal-text mt-0.5 text-[12.5px]">{`[${String(i + 1).padStart(2, "0")}]`}</span>
+                <span className="mt-[9px] h-[6px] w-[6px] shrink-0 rounded-full bg-[#E54A25]" aria-hidden="true" />
                 <p className="text-[17px] leading-[1.6] text-[#232A2A]/88">{line}</p>
               </Reveal>
             ))}
@@ -201,7 +201,6 @@ const WhatWeDoGrid = () => (
             data-testid={`category-tile-${c.num}`}
             className="cap-tile group block h-full rounded-[18px] border border-[#232A2A]/15 bg-[#F7F5EE] p-6 sm:p-7"
           >
-            <span aria-hidden="true" className="font-display block text-5xl leading-none text-[#232A2A]/12 transition-colors group-hover:text-[#F19020]/70">{c.num}</span>
             <h3 className="font-display mt-4 text-[clamp(1.85rem,2.7vw,3.1rem)] leading-[0.98] text-[#232A2A]">{c.label}</h3>
             <p className="font-editorial mt-1 text-[clamp(1.15rem,1.35vw,1.45rem)] font-medium text-[#232A2A]/65">{c.title}</p>
             <p className="mt-3 text-[16px] leading-[1.55] text-[#232A2A]/78">{c.copy}</p>
@@ -335,7 +334,6 @@ const Diagnostic = () => (
               <ol className="mt-4 space-y-2.5">
                 {DIAGNOSTIC_OUTCOMES.map((o, i) => (
                   <Reveal as="li" key={o} delay={i * 60} className="flex items-center gap-3 text-[14px] text-[#F7F5EE]/85">
-                    <span className="font-mono-sys text-[12.5px] accent-orange-text">{String(i + 1).padStart(2, "0")}</span>
                     {o}
                   </Reveal>
                 ))}
@@ -478,7 +476,6 @@ const Trust = () => (
         <Reveal as="li" key={p.name} delay={(i % 3) * 80}>
           <details className="trust-item group h-full rounded-[14px] border border-[#232A2A]/12 px-4 py-3.5 transition-colors" data-testid={`trust-principle-${i + 1}`}>
             <summary className="flex cursor-pointer items-center gap-4 marker:content-['']">
-              <span className="font-mono-sys text-[12.5px] text-[#232A2A]/40">{String(i + 1).padStart(2, "0")}</span>
               <span className="font-display text-[19px] font-semibold text-[#232A2A]/85 transition-colors group-hover:text-[#232A2A]">{p.name}</span>
               <span className="faq-plus ml-auto shrink-0 accent-orange-text" aria-hidden="true">+</span>
             </summary>

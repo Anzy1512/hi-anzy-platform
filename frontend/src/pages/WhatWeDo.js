@@ -69,7 +69,6 @@ export default function WhatWeDo() {
               <div className="relative lg:col-span-5">
                 {/* Bright orange is 2.2:1 on paper. The accent token resolves
                     per ground, so the same class stays legible on both tiles. */}
-                <span className="font-display accent-orange-text block text-6xl leading-none">{c.num}</span>
                 <h2 className={`font-display mt-4 text-[clamp(2.1rem,3.3vw,3.5rem)] leading-[0.98] ${i % 2 === 0 ? "text-[#232A2A]" : "text-[#F7F5EE]"}`}>
                   <Link
                     to={`/what-we-do/${c.slug}`}

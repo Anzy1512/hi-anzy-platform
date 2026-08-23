@@ -151,7 +151,6 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
                   data-testid={`builder-details-${c.slug}`}
                 >
                   <summary className="flex cursor-pointer flex-wrap items-baseline gap-3 marker:content-['']">
-                    <span className="font-display text-2xl leading-none accent-orange-text">{c.num}</span>
                     <h3 className="font-display text-[22px] leading-none text-[#232A2A]">{c.title}</h3>
                     <span className="sys-chip ml-auto text-[#232A2A]/55" data-testid={`builder-chosen-${c.slug}`}>
                       {chosen > 0 ? `${chosen} PICKED` : `${shown.length} OPTIONS`}

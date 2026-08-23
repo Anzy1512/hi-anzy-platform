@@ -19,11 +19,13 @@ const IndexSpine = lazy(() => import("@/components/three/IndexSpine"));
  * through --rail-w, and the column starts where the rail ends. Nothing is ever
  * painted over.
  *
- * That also rules out hover-to-expand. An expanding panel would either overlap
- * the text it just made room beside, or shove the page sideways on a mouseover.
- * Instead there are two fixed modes chosen by how much width the viewport can
- * spare — labelled when there is room, dots-only when there is not — and
- * neither moves once chosen.
+ * Only the collapsed width is reserved. At rest the rail is a column of dots
+ * that occupies its own space and covers nothing, and the page never shifts.
+ * Labels arrive on hover as a panel over the page — which is the one moment
+ * covering something is fine, because the reader asked for it and it leaves the
+ * instant they move away. Reserving the expanded width instead would idle a
+ * third of the gutter empty; shifting the page on mouseover would be worse
+ * still.
  *
  * Three layers of motion, each doing a job the others cannot:
  *  - three.js spine: the reader's position as a travelling node with motes that
@@ -34,14 +36,12 @@ const IndexSpine = lazy(() => import("@/components/three/IndexSpine"));
  */
 const MIN_SECTIONS = 2;
 
-/** Dots only. */
+/** The resting rail: dots only. This is the width that gets reserved. */
 const RAIL_NARROW = 88;
-/** Dots plus labels. */
-const RAIL_WIDE = 216;
+/** How far the label column opens on hover. Overlays; nothing is reserved. */
+const LABEL_W = 178;
 /** Below this the page needs its full width more than it needs an index. */
 const MIN_VIEWPORT = 1180;
-/** Above this there is room to carry the labels as well. */
-const LABEL_VIEWPORT = 1460;
 
 /**
  * A heading broken across lines comes back from textContent with the lines run
@@ -106,33 +106,28 @@ export const SectionIndex = () => {
   const { pathname } = useLocation();
   const [items, setItems] = useState([]);
   const [active, setActive] = useState(0);
-  const [mode, setMode] = useState("off"); // off | dots | labels
+  const [enabled, setEnabled] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const progressRef = useRef(0);
+  const railRef = useRef(null);
   const listRef = useRef(null);
   const markerRef = useRef(null);
   const [use3d, setUse3d] = useState(false);
 
-  const width = mode === "labels" ? RAIL_WIDE : RAIL_NARROW;
-
-  // Which mode the viewport can afford, re-evaluated on resize so a resized
-  // window is never stuck in the mode it happened to load in.
+  // Re-evaluated on resize so a resized window is never stuck in the state it
+  // happened to load in.
   useEffect(() => {
-    const measure = () => {
-      if (prefersReducedMotion() || window.innerWidth < MIN_VIEWPORT) {
-        setMode("off");
-        return;
-      }
-      setMode(window.innerWidth >= LABEL_VIEWPORT ? "labels" : "dots");
-    };
+    const measure = () =>
+      setEnabled(!prefersReducedMotion() && window.innerWidth >= MIN_VIEWPORT);
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
   }, []);
 
   useEffect(() => {
-    if (mode !== "off") setUse3d(webglAvailable());
-  }, [mode]);
+    if (enabled) setUse3d(webglAvailable());
+  }, [enabled]);
 
   /**
    * Reserve the space before paint. --rail-w widens the left padding of every
@@ -142,14 +137,33 @@ export const SectionIndex = () => {
    */
   useLayoutEffect(() => {
     const root = document.documentElement;
-    const on = mode !== "off" && items.length >= MIN_SECTIONS;
-    root.style.setProperty("--rail-w", on ? `${width}px` : "0px");
+    const on = enabled && items.length >= MIN_SECTIONS;
+    // Deliberately the collapsed width, never the open one — the reserved
+    // column must not change when the pointer arrives.
+    root.style.setProperty("--rail-w", on ? `${RAIL_NARROW}px` : "0px");
     return () => root.style.setProperty("--rail-w", "0px");
-  }, [mode, width, items.length]);
+  }, [enabled, items.length]);
+
+  /**
+   * GSAP opens the label column rather than a CSS transition, so a hover
+   * interrupted mid-flight eases from where it had got to instead of snapping
+   * back and starting again.
+   */
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return undefined;
+    const tween = gsap.to(rail, {
+      "--idx-label-w": open ? `${LABEL_W}px` : "0px",
+      "--idx-label-o": open ? 1 : 0,
+      duration: 0.4,
+      ease: "power3.out",
+    });
+    return () => tween.kill();
+  }, [open, items.length]);
 
   // Discover this route's sections, then again once fetched content lands.
   useEffect(() => {
-    if (mode === "off") {
+    if (!enabled) {
       setItems([]);
       return undefined;
     }
@@ -179,11 +193,11 @@ export const SectionIndex = () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
     };
-  }, [pathname, mode]);
+  }, [pathname, enabled]);
 
   // Active row and page progress, from the one scroll source Lenis feeds.
   useEffect(() => {
-    if (mode === "off" || items.length === 0) return undefined;
+    if (!enabled || items.length === 0) return undefined;
     let current = -1;
     const off = subscribeScroll((y, limit) => {
       progressRef.current = limit > 0 ? Math.min(1, Math.max(0, y / limit)) : 0;
@@ -199,7 +213,7 @@ export const SectionIndex = () => {
       }
     });
     return () => off && off();
-  }, [mode, items]);
+  }, [enabled, items]);
 
   /**
    * GSAP slides the active marker between rows. A CSS transition would restart
@@ -220,7 +234,7 @@ export const SectionIndex = () => {
       ease: "power3.out",
     });
     return () => tween.kill();
-  }, [active, items.length, mode]);
+  }, [active, items.length]);
 
   const jump = useCallback((el) => {
     if (!el) return;
@@ -229,15 +243,17 @@ export const SectionIndex = () => {
     else window.scrollTo({ top, behavior: "smooth" });
   }, []);
 
-  if (mode === "off" || items.length === 0) return null;
+  if (!enabled || items.length === 0) return null;
 
   return (
     <nav
-      className={`section-index section-index--${mode}`}
+      ref={railRef}
+      className="section-index"
       aria-label="Page sections"
       data-testid="section-index"
-      data-mode={mode}
-      style={{ width: `${width - 20}px` }}
+      data-open={open ? "true" : "false"}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
     >
       <div className="section-index-shell">
         <div className="section-index-spine" aria-hidden="true">
@@ -255,6 +271,11 @@ export const SectionIndex = () => {
               <button
                 type="button"
                 onClick={() => jump(it.el)}
+                onFocus={() => setOpen(true)}
+                onBlur={(e) => {
+                  // only close when focus actually leaves the rail
+                  if (!e.currentTarget.closest("nav").contains(e.relatedTarget)) setOpen(false);
+                }}
                 aria-current={i === active ? "true" : undefined}
                 title={it.label}
                 className={`section-index-row ${i === active ? "is-active" : ""}`}
@@ -262,9 +283,6 @@ export const SectionIndex = () => {
               >
                 <span className="section-index-dot" aria-hidden="true" />
                 <span className="section-index-text">
-                  <span className="section-index-num" aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
                   <span className="section-index-label">{it.label}</span>
                 </span>
               </button>

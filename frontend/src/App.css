@@ -890,6 +890,9 @@ html {
 :root { --rail-w: 0px; }
 
 .section-index {
+  /* GSAP writes these two; CSS just applies them. Zero at rest. */
+  --idx-label-w: 0px;
+  --idx-label-o: 0;
   position: fixed;
   left: 14px;
   top: 50%;
@@ -901,7 +904,7 @@ html {
 .section-index-shell {
   position: relative;
   display: flex;
-  width: 100%;
+  width: max-content;
   padding: 16px 12px;
   border-radius: 18px;
   background: rgba(29, 36, 36, 0.86);
@@ -993,11 +996,16 @@ html {
   box-shadow: 0 0 0 4px rgba(241, 144, 32, 0.16);
 }
 
+/* Width and opacity are animated by GSAP on hover. At rest this is 0 wide, so
+   the rail is a dot column; the labels stay in the DOM the whole time for
+   assistive tech and for the title tooltip. */
 .section-index-text {
   display: flex;
   align-items: baseline;
   gap: 9px;
   min-width: 0;
+  width: var(--idx-label-w);
+  opacity: var(--idx-label-o);
   overflow: hidden;
   white-space: nowrap;
 }
@@ -1018,17 +1026,6 @@ html {
   text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* Dots-only mode keeps the labels in the DOM for assistive tech and for the
-   title tooltip, but takes them out of the layout so the rail stays narrow. */
-.section-index--dots .section-index-text {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
