@@ -35,8 +35,11 @@ export default function Resources() {
                 <span className="sys-chip w-fit rounded-full border border-[#F19020]/70 px-2.5 py-0.5 text-[#232A2A]/70">{r.tag}</span>
                 <h2 className="font-display mt-3 text-3xl text-[#232A2A]">{r.t}</h2>
                 <p className="mt-3 flex-1 text-[16.5px] leading-[1.58] text-[#232A2A]/78">{r.b}</p>
-                <Link to="/contact" onClick={() => track("resource_downloaded", { resource: r.t })} className="link-draw mt-5 inline-flex w-fit items-center gap-1.5 text-[13px] font-semibold text-[#232A2A]">
-                  Request it <ArrowRight size={14} />
+                {/* This routes to the contact form, so it says so. It used to
+                    fire `resource_downloaded`, which counted a click as a
+                    delivered file and made the number meaningless. */}
+                <Link to="/contact" onClick={() => track("resource_requested", { resource: r.t })} className="link-draw mt-5 inline-flex w-fit items-center gap-1.5 text-[13px] font-semibold text-[#232A2A]">
+                  Ask us for it <ArrowRight size={14} />
                 </Link>
               </div>
             </Reveal>

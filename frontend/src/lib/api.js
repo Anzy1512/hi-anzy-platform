@@ -20,6 +20,8 @@ export const getInsight = (slug) => axios.get(`${API}/insights/${slug}`).then((r
 
 export const submitContact = (payload) => axios.post(`${API}/contact`, payload).then((r) => r.data);
 
+export const subscribe = (payload) => axios.post(`${API}/subscribe`, payload).then((r) => r.data);
+
 /** Analytics — clear event names, fire-and-forget. GA4/Plausible-ready hook point. */
 export const track = (name, meta = {}) => {
   try {

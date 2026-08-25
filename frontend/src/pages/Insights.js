@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
+import { NotesSubscribe } from "@/components/NotesSubscribe";
+import { LensFocus } from "@/components/deck/LensFocus";
 import { Reveal } from "@/components/Reveal";
 import { useRevealObserver } from "@/lib/motion";
 import { getInsights } from "@/lib/api";
@@ -23,6 +25,8 @@ export default function Insights() {
     <div ref={ref} className="pt-[84px]" data-testid="insights-page">
       <Seo title="Notes From the Work — hiAnzy Insights" description="Business systems, brand clarity, technology without theatre and growth with receipts. Useful first. Search engine second." />
       <section className="container-page section-pad relative">
+       <div className="grid items-center gap-10 lg:grid-cols-12">
+        <div className="lg:col-span-7">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> INSIGHTS
         </Reveal>
@@ -32,11 +36,11 @@ export default function Insights() {
           </h1>
         </Reveal>
         <Reveal delay={160} as="p" className="font-mono-sys mt-5 text-[13px] text-[#232A2A]/55">Useful first. Search engine second.</Reveal>
-        <div className="pointer-events-none absolute right-[6%] top-[16%] hidden w-[190px] xl:block" aria-hidden="true">
-          <div className="float-el scrap" style={{ "--rot": "2deg" }}>
-            <img src="/brand/char-challenger.jpg" alt="" loading="lazy" />
-          </div>
         </div>
+        <div className="hidden lg:col-span-5 lg:block">
+          <LensFocus />
+        </div>
+       </div>
 
         <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter insights by category" data-testid="insights-category-filter">
           <button type="button" onClick={() => setActive(null)} className={`sys-chip rounded-full border px-3.5 py-1.5 transition-colors ${!active ? "border-[#232A2A] bg-[#232A2A] text-[#F7F5EE]" : "border-[#232A2A]/30 text-[#232A2A]/70 hover:border-[#232A2A]"}`} data-testid="insights-filter-all">ALL</button>
@@ -71,6 +75,9 @@ export default function Insights() {
           </div>
         )}
       </section>
+      <div className="container-page pb-4">
+        <NotesSubscribe source="insights-index" className="max-w-3xl" />
+      </div>
       <div className="pb-16">
         <CharacterQuote />
       </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
+import { NotesSubscribe } from "@/components/NotesSubscribe";
 import { MagneticButton } from "@/components/MagneticButton";
 import { useRevealObserver } from "@/lib/motion";
 import { getInsight, getInsights, track } from "@/lib/api";
@@ -181,6 +182,8 @@ export default function InsightDetail() {
             Say Hi <ArrowRight size={15} />
           </MagneticButton>
         </div>
+
+        <NotesSubscribe source={`insight:${slug}`} className="mt-10" />
 
         {related.length > 0 && (
           <div className="mt-10">

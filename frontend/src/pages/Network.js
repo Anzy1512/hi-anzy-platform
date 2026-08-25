@@ -139,7 +139,7 @@ export default function Network() {
                     </div>
                     <div data-testid="network-stat-tiers">
                       <p className="font-display text-[clamp(2.1rem,3.2vw,3rem)] leading-none text-[#F7F5EE]">{LEGEND.length}</p>
-                      <p className="sys-chip mt-2 text-[#F7F5EE]/50">PROVENANCE TIERS</p>
+                      <p className="sys-chip mt-2 text-[#F7F5EE]/50">PROVENANCE LABELS</p>
                     </div>
                   </div>
                   <p className="font-mono-sys mt-5 border-t border-[#F7F5EE]/10 pt-4 text-[12px] leading-relaxed text-[#F7F5EE]/45">Assembled per problem. Never a fixed bench. Every relationship labelled honestly below.

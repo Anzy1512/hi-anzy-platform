@@ -320,7 +320,7 @@ const Diagnostic = () => (
           </Reveal>
         </div>
         <div className="lg:col-span-6">
-          <p className="sys-chip text-[#F7F5EE]/50">SCAN AREAS</p>
+          <p className="sys-chip text-[#F7F5EE]/50">WHAT WE LOOK AT</p>
           <div className="mt-4 flex flex-wrap gap-2" data-testid="diagnostic-areas">
             {DIAGNOSTIC_AREAS.map((a, i) => (
               <Reveal key={a} delay={i * 40} as="span" className="sys-chip inline-flex items-center gap-2 rounded-full border border-[#F7F5EE]/20 px-3 py-1.5 text-[#F7F5EE]/80">

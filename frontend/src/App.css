@@ -197,7 +197,9 @@ html {
   .reveal.pun-sticker { opacity: 1; transform: none; }
 }
 
-/* Pressed feedback for every button-like element — transform only */
+/* Pressed feedback. Only reaches buttons that have no inline transform —
+   MagneticButton composes the press scale into its own transform instead,
+   because an inline style outranks this rule the moment the pointer moves. */
 .btn-ink:active,
 .btn-paper:active,
 .btn-orange:active {
@@ -208,6 +210,106 @@ html {
 .btn-orange {
   transition-property: box-shadow, background-color, filter, transform;
   transition-duration: 0.25s;
+}
+
+/* ---------- Button motion ---------- */
+/* Three additions, all of which stay off `transform` on the button itself,
+   because MagneticButton owns that property and an inline style would win. */
+
+/* 1. A sheen that crosses the face on hover. The button gets a stacking
+      context and clips it; the hover-text swap already has its own clip. */
+.btn-ink,
+.btn-paper,
+.btn-orange {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-ink::after,
+.btn-paper::after,
+.btn-orange::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    transparent 32%,
+    rgba(255, 255, 255, 0.26) 50%,
+    transparent 68%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-paper::after {
+  background: linear-gradient(
+    100deg,
+    transparent 32%,
+    rgba(241, 144, 32, 0.22) 50%,
+    transparent 68%
+  );
+}
+.btn-ink:hover::after,
+.btn-paper:hover::after,
+.btn-orange:hover::after,
+.btn-ink:focus-visible::after,
+.btn-paper:focus-visible::after,
+.btn-orange:focus-visible::after {
+  transform: translateX(120%);
+}
+
+/* 2. The arrow leans toward where it is about to take you. */
+.btn-ink svg,
+.btn-paper svg,
+.btn-orange svg,
+.link-draw svg {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-ink:hover svg,
+.btn-paper:hover svg,
+.btn-orange:hover svg,
+.btn-ink:focus-visible svg,
+.btn-paper:focus-visible svg,
+.btn-orange:focus-visible svg,
+.link-draw:hover svg,
+.link-draw:focus-visible svg {
+  transform: translateX(4px);
+}
+
+/* 3. The ring a click leaves behind. GSAP scales and fades it from the point
+      that was pressed; this only describes what it looks like. */
+.btn-pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-ink::after,
+  .btn-paper::after,
+  .btn-orange::after,
+  .btn-ink svg,
+  .btn-paper svg,
+  .btn-orange svg,
+  .link-draw svg {
+    transition: none;
+  }
+  .btn-ink:hover::after,
+  .btn-paper:hover::after,
+  .btn-orange:hover::after {
+    transform: translateX(-120%);
+  }
+  .btn-pulse {
+    display: none;
+  }
 }
 
 /* ---------- Reveal (intersection) ---------- */
@@ -1145,6 +1247,34 @@ html {
 }
 @media (prefers-reduced-motion: reduce) {
   .builder-group[open] .builder-modules { animation: none; }
+}
+
+/* ---------- Deck motifs ---------- */
+/* The four hero motifs on the secondary pages. The poster is an SVG that is
+   complete on its own; the WebGL canvas, where there is one, sits over it and
+   adds only the movement a still cannot carry. Both layers fill the frame, so
+   the canvas never changes the space the poster already reserved and the
+   column cannot reflow when the scene finishes loading. */
+.motif-frame {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+}
+.motif-poster,
+.motif-canvas {
+  position: absolute;
+  inset: 0;
+}
+.motif-poster > svg {
+  display: block;
+  overflow: visible;
+}
+/* The canvas is decoration over a complete picture, so it must never swallow a
+   click meant for the column behind it. */
+.motif-canvas,
+.motif-canvas canvas {
+  pointer-events: none !important;
 }
 
 /* ---------- Touch target minimums ---------- */

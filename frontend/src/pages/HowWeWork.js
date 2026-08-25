@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight, Clock } from "lucide-react";
 import { Seo } from "@/components/Seo";
+import { InboxUnfold } from "@/components/deck/InboxUnfold";
 import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { RouteLine } from "@/components/RouteLine";
@@ -18,6 +19,8 @@ export default function HowWeWork() {
     <div ref={ref} className="pt-[84px]" data-testid="how-we-work-page">
       <Seo title="How We Work — hiAnzy" description="The hiAnzy operating model: Audit, Architect, Build, Connect, Scale. Less ceremony. More consequence." />
       <section className="container-page section-pad">
+       <div className="grid items-center gap-10 lg:grid-cols-12">
+        <div className="lg:col-span-7">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> HOW WE WORK
         </Reveal>
@@ -31,6 +34,11 @@ export default function HowWeWork() {
           <span className="font-mono-sys text-[15px]"> “Can you tell me what’s wrong here?”</span> Both work.
         </Reveal>
         <Reveal delay={220} as="p" className="font-mono-sys mt-4 text-[13px] text-[#232A2A]/55">The brief can be messy. The thinking won’t be.</Reveal>
+        </div>
+        <div className="hidden lg:col-span-5 lg:block">
+          <InboxUnfold />
+        </div>
+       </div>
       </section>
 
       {/* The orange route physically continues through the page */}

@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
+import { HandsSpark } from "@/components/deck/HandsSpark";
 import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
@@ -20,6 +21,8 @@ export default function Collaborate() {
     <div ref={ref} className="pt-[84px]" data-testid="collaborate-page">
       <Seo title="Collaborate — Join the hiAnzy Network" description="Specialists, creators, media and venues: the hiAnzy network runs on honest classification and real credit. Introduce yourself." />
       <section className="container-page section-pad">
+       <div className="grid items-center gap-10 lg:grid-cols-12">
+        <div className="lg:col-span-7">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> COLLABORATE
         </Reveal>
@@ -32,6 +35,11 @@ export default function Collaborate() {
           The hiAnzy network is assembled per problem, credited honestly and briefed properly. If you are
           exceptional at something businesses need, we would like to know you exist.
         </Reveal>
+        </div>
+        <div className="hidden lg:col-span-5 lg:block">
+          <HandsSpark />
+        </div>
+       </div>
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
           {ASKS.map((a, i) => (
             <Reveal key={a.title} delay={i * 100}>

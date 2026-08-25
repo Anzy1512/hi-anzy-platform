@@ -220,7 +220,7 @@ export default function ServiceDetail() {
       <div className="container-page">
         <ProgressRule
           total={c.deliverables.length}
-          label="SCOPE, ASSEMBLED"
+          label="EVERY DELIVERABLE"
           trailing="Fixed before we start. Changed only in writing, and only by you."
           testId="service-progress-rule"
         />

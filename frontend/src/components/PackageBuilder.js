@@ -200,7 +200,7 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
 
             {summary.stages.length > 0 && (
               <div className="mt-5">
-                <p className="sys-chip text-[#232A2A]/45">METHOD STAGES IMPLIED</p>
+                <p className="sys-chip text-[#232A2A]/45">STAGES THIS TOUCHES</p>
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   {summary.stages.map((s) => (
                     <span key={s} className="sys-chip rounded-full bg-[#232A2A] px-2.5 py-1 text-[#F7F5EE]">{s}</span>

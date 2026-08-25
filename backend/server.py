@@ -76,6 +76,14 @@ class ContactCreate(BaseModel):
     orgField: Optional[str] = None  # honeypot
 
 
+class SubscribeCreate(BaseModel):
+    email: EmailStr
+    # Which page the reader was on when they subscribed. Useful for knowing
+    # which note actually earned the address; never required.
+    source: Optional[str] = Field(None, max_length=120)
+    orgField: Optional[str] = None  # honeypot
+
+
 class AnalyticsEvent(BaseModel):
     name: str
     path: Optional[str] = None
@@ -269,6 +277,85 @@ async def create_contact(payload: ContactCreate, request: Request):
     )
 
     return {"ok": True, "id": sub_id, "emailSent": email_sent}
+
+
+@api_router.post("/subscribe")
+async def create_subscription(payload: SubscribeCreate, request: Request):
+    """Take an email address for the notes.
+
+    Same defences as /contact — honeypot first, then the per-IP limiter — and
+    the same quiet response either way, so neither a bot nor a scraper learns
+    anything from the difference.
+
+    Re-subscribing is not an error. The address is the key, so a second attempt
+    updates the timestamp rather than creating a duplicate, and the caller still
+    gets ok: true — telling someone "you are already on this list" leaks who is
+    on it to anyone who cares to ask.
+    """
+    ip = request.client.host if request.client else "unknown"
+
+    if payload.orgField:
+        return {"ok": True, "already": False}
+
+    if rate_limited(ip):
+        return {"ok": True, "already": False}
+
+    email = payload.email.lower().strip()
+    existing = await db.subscribers.find_one({"email": email})
+
+    await db.subscribers.update_one(
+        {"email": email},
+        {
+            "$set": {
+                "email": email,
+                "source": payload.source,
+                "updatedAt": now_iso(),
+            },
+            "$setOnInsert": {
+                "id": str(uuid.uuid4()),
+                "createdAt": now_iso(),
+                "confirmed": False,
+            },
+        },
+        upsert=True,
+    )
+
+    if not existing:
+        await send_email(
+            subject=f"New notes subscriber: {email}",
+            text=f"Email: {email}\nSource: {payload.source or '-'}\n",
+        )
+
+    return {"ok": True, "already": bool(existing)}
+
+
+@api_router.get("/subscribers")
+async def list_subscribers(request: Request):
+    """Admin-only, for the same reason /contact-submissions is.
+
+    A subscriber list is a list of real people's addresses. It is gated behind
+    the same session-plus-ADMIN_EMAILS check, and the response never carries
+    the stored IP.
+    """
+    user = await session_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    admins = {
+        e.strip().lower()
+        for e in os.environ.get("ADMIN_EMAILS", "").split(",")
+        if e.strip()
+    }
+    if not admins:
+        logger.error("ADMIN_EMAILS is unset - refusing access to subscribers.")
+        raise HTTPException(status_code=403, detail="Admin access is not configured")
+
+    if (user.get("email") or "").lower() not in admins:
+        logger.warning("Rejected subscriber access for %s", user.get("email"))
+        raise HTTPException(status_code=403, detail="Not authorised")
+
+    cursor = db.subscribers.find({}, {"_id": 0, "ip": 0}).sort("createdAt", -1)
+    return await cursor.to_list(length=500)
 
 
 @api_router.get("/contact-submissions")

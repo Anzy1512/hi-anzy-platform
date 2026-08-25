@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
+import { QuestionOrbit } from "@/components/deck/QuestionOrbit";
 import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { useRevealObserver } from "@/lib/motion";
@@ -20,6 +21,8 @@ export default function Careers() {
     <div ref={ref} className="pt-[84px]" data-testid="careers-page">
       <Seo title="Careers — hiAnzy" description="We hire slowly and deliberately. If you notice things other people miss, introduce yourself anyway." />
       <section className="container-page section-pad">
+       <div className="grid items-center gap-10 lg:grid-cols-12">
+        <div className="lg:col-span-7">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> CAREERS
         </Reveal>
@@ -32,6 +35,11 @@ export default function Careers() {
           There is no open-roles wall here right now. There is a standing rule instead: when someone genuinely
           sharp introduces themselves, we pay attention. Consider this the introduction form.
         </Reveal>
+        </div>
+        <div className="hidden lg:col-span-5 lg:block">
+          <QuestionOrbit />
+        </div>
+       </div>
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
           {VALUES.map((v, i) => (
             <Reveal key={v.t} delay={(i % 2) * 90}>
