@@ -143,19 +143,36 @@ const xmlEscape = (s) =>
    * write over a complete one.
    */
   const apiReachable = insightCount + caseCount > 0;
+  let wroteExisting = false;
   if (!apiReachable && fs.existsSync(out)) {
     const existing = fs.readFileSync(out, "utf8");
     const existingCount = (existing.match(/<loc>/g) || []).length;
     if (existingCount > final.length) {
-      console.log(
-        `sitemap: kept the existing ${existingCount} urls — this run reached no API ` +
-          `and would have written only ${final.length}`
+      /**
+       * Coverage from the old file is worth keeping; its domain is not. The
+       * file on disk was written by whatever SITE_URL that earlier run had —
+       * almost always the real production domain, since a container build is
+       * exactly the situation with no API to reach. Writing it back unchanged inside a
+       * container built for a different origin (say http://localhost:8080)
+       * would ship a sitemap that correctly lists every page and incorrectly
+       * tells every one of them apart from where they actually are. Every
+       * <loc> is re-based onto this run's SITE, and lastmod is not touched —
+       * these paths were not actually re-verified today.
+       */
+      const rebased = existing.replace(
+        /<loc>https?:\/\/[^/]+(\/[^<]*)<\/loc>/g,
+        (m, pathPart) => `<loc>${xmlEscape(SITE + pathPart)}</loc>`
       );
-      return;
+      fs.writeFileSync(out, rebased, "utf8");
+      wroteExisting = true;
+      console.log(
+        `sitemap: kept the existing ${existingCount} urls, re-based onto ${SITE} — ` +
+          `this run reached no API and would have written only ${final.length}`
+      );
     }
   }
 
-  fs.writeFileSync(out, xml, "utf8");
+  if (!wroteExisting) fs.writeFileSync(out, xml, "utf8");
 
   // robots.txt should name the sitemap; add it once, keep it current
   const robotsPath = path.join(ROOT, "public", "robots.txt");
