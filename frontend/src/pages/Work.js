@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Seo } from "@/components/Seo";
+import { ClientMarquee } from "@/components/ClientMarquee";
 import { Reveal } from "@/components/Reveal";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { RouteLine } from "@/components/RouteLine";
@@ -135,8 +136,12 @@ export default function Work() {
                 Proof has context<span className="accent-signal-text">.</span>
               </h1>
             </Reveal>
+            {/* Used to open "No endless logo wall." — which a crawling client
+                strip a few lines below would have flatly contradicted. The
+                actual promise survives without that clause: not vanity
+                numbers, not footnotes doing the work a real answer should. */}
             <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
-              No endless logo wall. No unexplained numbers. No tiny footnotes doing heavy lifting. Every case here
+              No unexplained numbers. No tiny footnotes doing heavy lifting. Every case here
               reads the same way: situation, gap, insight, decision, build, result — and what happened next.
             </Reveal>
             <Reveal delay={220} as="p" className="font-mono-sys mt-4 text-[13px] text-[#232A2A]/55">
@@ -146,6 +151,9 @@ export default function Work() {
           <Reveal delay={240} className="hidden lg:col-span-5 lg:block">
             <CaseAnatomy steps={CASE_SECTIONS} className="panel-paper p-6 sm:p-7" testId="work-case-anatomy" />
           </Reveal>
+        </div>
+        <div className="mt-12">
+          <ClientMarquee />
         </div>
       </section>
 

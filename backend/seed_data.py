@@ -469,7 +469,6 @@ PORTFOLIO_GROUPS = [
             {"name": "Tranquilli Tea", "url": "https://drive.google.com/file/d/1_Z8vHSISnYBiTNUQwNvYNngh6Km2U54b/view?usp=sharing"},
         ]},
     {"category": "Web Development", "slug": "web-development", "items": [
-            {"name": "Ashok Leyland", "url": "https://youtu.be/SHQyqV1haXg?si=59DwtvQKIf_nVgFT"},
             {"name": "Usual Designer Gifts", "url": "https://unusualdesignergifts.co.uk/"},
             {"name": "Daily Life Prime", "url": "https://dailylifeprime.shop/"},
             {"name": "Primo Customs", "url": "http://www.primocustoms.co.in/"},
@@ -478,6 +477,7 @@ PORTFOLIO_GROUPS = [
             {"name": "Ekdanta Taxi"},
             {"name": "Cure It Herb", "url": "http://www.cureitherb.com/"},
             {"name": "Mall of Tastes", "url": "http://www.malloftastes.com/"},
+            {"name": "Samsung Teams", "url": "https://teams.samsung.net/"},
         ]},
     {"category": "E-Commerce", "slug": "e-commerce", "items": [
             {"name": "Auto Parts Sooq", "url": "https://autopartssooq.com/"},
@@ -486,7 +486,6 @@ PORTFOLIO_GROUPS = [
             {"name": "Mud Patch (commerce + design)", "url": "https://www.mud-patch.com/"},
         ]},
     {"category": "Motion Graphics", "slug": "motion-graphics", "items": [
-            {"name": "Samsung Teams", "url": "https://teams.samsung.net/"},
             {"name": "Vesta", "url": "https://www.vesta.io/"},
             {"name": "Kotak Mutual Funds", "url": "https://f1studioz.in/demo/kotak-mutual-funds/"},
             {"name": "T20 World Cup x OREO (2D)"},
@@ -525,6 +524,7 @@ PORTFOLIO_GROUPS = [
             {"name": "Canon India", "url": "https://www.youtube.com/watch?v=r-P9zTpdhB4"},
         ]},
     {"category": "TVC & Video Production", "slug": "tvc-video-production", "items": [
+            {"name": "Ashok Leyland", "url": "https://youtu.be/SHQyqV1haXg?si=59DwtvQKIf_nVgFT"},
             {"name": "BharatPe", "url": "https://www.instagram.com/bharatpe/"},
             {"name": "Armstrong Tires", "url": "https://www.instagram.com/armstrongtire/"},
             {"name": "Australian Avocados", "url": "https://www.instagram.com/australianavocados"},

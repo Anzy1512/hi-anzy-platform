@@ -542,6 +542,27 @@ export const BRAND_REFS = [
   "Canon", "Sunburn", "Comic-Con", "Ministry of Power", "The Oberoi", "NDTV", "Times of India", "Zee Network",
 ];
 
+/**
+ * The curated top tier of BRAND_REFS, for the one place on the site that
+ * claims to show only the biggest names: the Work page marquee.
+ *
+ * BRAND_REFS above is the full honest list — everyone from a single-location
+ * teahouse to a UN agency, credited without ranking. This is deliberately
+ * smaller: publications, ministries and niche/regional names are real
+ * relationships but not what "the biggest names" means, so they are left out
+ * here without being erased from BRAND_REFS itself.
+ *
+ * Sourced from two places, both traceable: names already verified against the
+ * brand deck's own client-logo page, plus a few pulled from the portfolio
+ * credits in seed_data.py (Hero MotoCorp, Ashok Leyland, Bath & Body Works),
+ * which carry a live campaign URL each rather than being asserted from a logo
+ * alone. Nothing here is a name hiAnzy has not actually worked with.
+ */
+export const TOP_CLIENT_MARKS = [
+  "Hyundai", "PepsiCo", "UNICEF", "Airtel", "Adani", "Paytm",
+  "Canon", "Hitachi", "Hero MotoCorp", "Bath & Body Works", "JioHotstar", "Ashok Leyland",
+];
+
 export const CHARACTERS = [
   { img: "/brand/char-visionary.jpg", name: "The Visionary", line: "Sees the big picture before it's even drawn" },
   { img: "/brand/char-challenger.jpg", name: "The Challenger", line: "Bold ideas, always questioning norms" },
