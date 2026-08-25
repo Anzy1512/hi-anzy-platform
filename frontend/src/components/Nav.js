@@ -123,7 +123,7 @@ export const Nav = () => {
               <DropdownMenuContent align="end" className="border-[#232A2A]/15 bg-[#F7F5EE]">
                 <DropdownMenuLabel data-testid="nav-user-name">
                   <span className="font-display text-[15px] text-[#232A2A]">{user.name}</span>
-                  <p className="font-mono-sys text-[11px] font-normal text-[#232A2A]/55">{user.email}</p>
+                  <p className="font-mono-sys text-[12.5px] font-normal text-[#232A2A]/55">{user.email}</p>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout} className="cursor-pointer accent-signal-text focus:text-[#E54A25]" data-testid="nav-logout-btn">
@@ -144,7 +144,15 @@ export const Nav = () => {
                 <Menu size={18} />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="relative w-[300px] overflow-hidden border-l border-[#232A2A]/15 bg-[#E0D8C1] p-0">
+            {/* No `relative` here. cn() is tailwind-merge, so a position
+                utility passed in from outside is treated as conflicting with
+                the `fixed` that sheetVariants sets, and the caller wins — which
+                silently dropped `fixed`, and with it `inset-y-0` and `h-full`.
+                The panel then laid out in normal flow at the foot of a 17,000px
+                document: the overlay dimmed the page and the menu was nowhere
+                on screen. `fixed` is itself a containing block, so the
+                constellation and the close button still position against it. */}
+            <SheetContent side="right" className="w-[300px] overflow-hidden border-l border-[#232A2A]/15 bg-[#E0D8C1] p-0">
               {/* The panel was a flat list on a flat ground. The constellation
                   gives it the network motif the rest of the site runs on, and
                   it only exists while the sheet is mounted. */}

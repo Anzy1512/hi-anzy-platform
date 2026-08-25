@@ -387,8 +387,8 @@ const WorkPreview = () => {
               <h3 className="font-display mt-4 text-3xl leading-[0.95] text-[#232A2A]">{cs.title}</h3>
               <p className="sys-chip mt-2 text-[#232A2A]/50">{cs.client} · {cs.industry}</p>
               <div className="mt-4 space-y-2.5 border-t border-[#232A2A]/10 pt-4">
-                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="font-mono-sys text-[11.5px] accent-signal-text">GAP — </span>{cs.gap.slice(0, 110)}…</p>
-                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="accent-orange-text font-mono-sys text-[11.5px] font-bold">RESULT — </span>{cs.result.slice(0, 110)}…</p>
+                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="font-mono-sys text-[12.5px] accent-signal-text">GAP — </span>{cs.gap.slice(0, 110)}…</p>
+                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="accent-orange-text font-mono-sys text-[12.5px] font-bold">RESULT — </span>{cs.result.slice(0, 110)}…</p>
               </div>
               <span className="link-draw mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#232A2A]">
                 Read the thinking <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />

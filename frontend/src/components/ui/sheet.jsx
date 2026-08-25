@@ -47,8 +47,13 @@ const SheetContent = React.forwardRef(({ side = "right", className, children, ..
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
+      {/* The shipped default is a bare 16x16 icon button — the whole target,
+          not just the ink. That is the control that dismisses the mobile menu,
+          and it failed WCAG 2.5.8 at 16x16. Padding grows the box to 44x44
+          while the offsets shrink by the same 14px, so the X still lands on
+          exactly the pixels it did before; only the hit area changed. */}
       <SheetPrimitive.Close
-        className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+        className="absolute right-[2px] top-[2px] p-3.5 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>

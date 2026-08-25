@@ -76,7 +76,7 @@ export const FitQuadrant = ({ className = "", testId = "fit-quadrant" }) => {
               <p className={`font-display text-[17px] leading-[1.15] ${good ? "text-[#F7F5EE]" : "text-[#232A2A]/85"}`}>
                 {q.label}
               </p>
-              <p className={`font-mono-sys mt-1.5 text-[11.5px] leading-[1.4] ${good ? "text-[#F7F5EE]/75" : "text-[#232A2A]/60"}`}>
+              <p className={`font-mono-sys mt-1.5 text-[12.5px] leading-[1.4] ${good ? "text-[#F7F5EE]/75" : "text-[#232A2A]/60"}`}>
                 {q.note}
               </p>
             </div>
@@ -85,10 +85,10 @@ export const FitQuadrant = ({ className = "", testId = "fit-quadrant" }) => {
       </div>
 
       <figcaption className="mt-3 flex items-center justify-between gap-4">
-        <span className="font-mono-sys text-[11.5px] text-[#232A2A]/55">
+        <span className="font-mono-sys text-[12.5px] text-[#232A2A]/55">
           → Problem is clear
         </span>
-        <span className="font-mono-sys text-[11.5px] text-[#232A2A]/55">
+        <span className="font-mono-sys text-[12.5px] text-[#232A2A]/55">
           ↑ Appetite to change
         </span>
       </figcaption>
