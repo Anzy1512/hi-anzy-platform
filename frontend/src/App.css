@@ -115,6 +115,31 @@ a:hover .nav-logo-img {
   background-position: right 0.85rem center;
   cursor: pointer;
 }
+/* Skip link. Off-screen rather than display:none, because a hidden element is
+   not focusable and the whole point is that Tab reaches it first. */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: var(--ink, #232A2A);
+  color: var(--white-d, #F7F5EE);
+  font-family: var(--font-system);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  transition: top 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.skip-link:focus {
+  top: 12px;
+}
+/* main takes focus from the skip link but must never show a ring of its own */
+main:focus {
+  outline: none;
+}
+
 .select-native:focus-visible {
   outline: 2px solid var(--orange);
   outline-offset: 2px;
@@ -1275,6 +1300,16 @@ html {
 .motif-canvas,
 .motif-canvas canvas {
   pointer-events: none !important;
+}
+
+/* The breadcrumb back-link on every detail page ("ALL WORK", "ALL NOTES",
+   "THE NETWORK", "WHAT WE DO"). One line of sys-chip type measures 22px, two
+   under the 24px minimum, and the .flex > a.link-draw pseudo-element below
+   does not reach them because they are inline-flex in their own right rather
+   than children of a flex row. They are already items-center, so a minimum
+   height re-centres the same text in a 24px box and shifts nothing. */
+a.link-draw.sys-chip {
+  min-height: 24px;
 }
 
 /* ---------- Touch target minimums ---------- */

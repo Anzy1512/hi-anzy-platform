@@ -39,8 +39,19 @@ RUN npm run build
 # ---- serve ------------------------------------------------------------------
 FROM nginx:1.27-alpine AS serve
 
+# ARGs do not cross stages; re-declare so the CSP default can reference it.
+ARG REACT_APP_BACKEND_URL=http://localhost:8010
+
 COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# The template, not a finished conf. nginx:alpine's entrypoint renders
+# /etc/nginx/templates/*.template through envsubst into /etc/nginx/conf.d, and
+# substitutes only names present in the environment — so ${CSP_CONNECT_SRC} is
+# filled in while nginx's own $uri survives untouched.
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
+
+# The CSP has to allow the origin the bundle was told to call. Default it from
+# the same build arg so the two cannot drift; compose can override at runtime.
+ENV CSP_CONNECT_SRC=$REACT_APP_BACKEND_URL
 
 EXPOSE 80
 

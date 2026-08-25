@@ -71,6 +71,11 @@ export const Nav = () => {
       data-testid="site-nav"
       data-nav-theme={onDark ? "dark" : "light"}
     >
+      {/* First tabbable on every page. Off-screen until focused, so it costs
+          sighted readers nothing and saves everyone else eleven Tab presses. */}
+      <a href="#main" className="skip-link" data-testid="skip-to-content">
+        Skip to content
+      </a>
       <div className="container-page flex h-[84px] items-center justify-between">
         <Link to="/" className="flex items-center gap-3" data-testid="nav-logo" aria-label="hiAnzy — home">
           <span className="nav-logo-stack">

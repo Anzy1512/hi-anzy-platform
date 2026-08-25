@@ -66,6 +66,11 @@ services:
         # than runtime environment. Changing them means rebuilding the image.
         SITE_URL: ${SITE_URL:-http://localhost:8080}
         REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL:-http://localhost:8010}
+    environment:
+      # Origins the page is allowed to call, appended to the CSP's connect-src.
+      # Defaults to the API this compose file publishes; set it to the real API
+      # origin when deploying, or the browser will block every request.
+      CSP_CONNECT_SRC: ${CSP_CONNECT_SRC:-${REACT_APP_BACKEND_URL:-http://localhost:8010}}
     container_name: hianzy-web
     restart: unless-stopped
     depends_on:

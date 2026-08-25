@@ -108,15 +108,20 @@ export default function ServiceDetail() {
 
         <div className="mt-5 grid items-start gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <Reveal delay={80}>
-              <div className="flex items-baseline gap-4">
-                <h1 className="font-display leading-[0.94] text-[#232A2A] text-[clamp(2.4rem,5vw,4.4rem)]" data-testid="service-h1">
-                  {c.label}
-                </h1>
-              </div>
+            {/* The h1 names the service. It used to be c.label — "SEE CLEARLY",
+                "MAKE IT MOVE" — which is the category's evocative tag, not the
+                page's subject. That put the six most commercially important
+                pages on the site under a heading that contradicted their own
+                <title> and JSON-LD, and told a search result or an answer
+                engine "SEE CLEARLY" where it needed "Business Audit &
+                Strategy". The label keeps its prominence as the kicker above. */}
+            <Reveal delay={80} as="p" className="font-display accent-orange-text text-[clamp(1.4rem,2.4vw,2.1rem)] leading-none">
+              {c.label}
             </Reveal>
-            <Reveal delay={140} as="p" className="font-editorial mt-3 text-[clamp(1.3rem,2vw,1.9rem)] font-medium leading-[1.2] text-[#232A2A]/70">
-              {c.title}
+            <Reveal delay={140}>
+              <h1 className="font-display mt-2 leading-[0.94] text-[#232A2A] text-[clamp(2.4rem,5vw,4.4rem)]" data-testid="service-h1">
+                {c.title}
+              </h1>
             </Reveal>
             <Reveal delay={200} as="p" className="font-editorial mt-6 max-w-[46ch] text-[clamp(1.15rem,1.5vw,1.4rem)] leading-[1.45] text-[#232A2A]/85">
               {c.lede}

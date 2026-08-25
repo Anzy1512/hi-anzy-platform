@@ -68,20 +68,36 @@ export default function Contact() {
     setErrors((er) => ({ ...er, [k]: undefined }));
   };
 
+  /** Returns the error map so the caller can act on it without waiting for state. */
   const validate = () => {
     const er = {};
     if (!form.name || form.name.trim().length < 2) er.name = "A name helps. Even a nickname works.";
     if (!form.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) er.email = "That email looks off. One more try?";
     if (!form.message || form.message.trim().length < 10) er.message = "Give us a little more — ten characters of chaos minimum.";
     setErrors(er);
-    return Object.keys(er).length === 0;
+    return er;
   };
+
+  /** Tab order of the validated fields, so "first invalid" means first on screen. */
+  const FIELD_ORDER = ["name", "email", "message"];
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) {
-      const first = document.querySelector("[data-error='true']");
-      if (first) first.focus();
+    const er = validate();
+    if (Object.keys(er).length > 0) {
+      // Focus the first field that failed. The previous version queried
+      // [data-error='true'] on the line after setErrors, which runs before
+      // React has committed it — the attribute did not exist yet, the query
+      // returned null, and an invalid submit left focus on <body> with the
+      // errors somewhere off screen. Going through the id after a frame is
+      // what actually moves it.
+      const firstKey = FIELD_ORDER.find((k) => er[k]);
+      if (firstKey) {
+        requestAnimationFrame(() => {
+          const el = document.getElementById(`cf-${firstKey}`);
+          if (el) el.focus();
+        });
+      }
       return;
     }
     setSubmitting(true);
