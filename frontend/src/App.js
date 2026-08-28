@@ -9,6 +9,7 @@ import { Footer } from "@/components/Footer";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { CollapseOnScroll } from "@/components/CollapseOnScroll";
 import { SectionIndex } from "@/components/SectionIndex";
+import { StickyCta } from "@/components/StickyCta";
 import { Toaster } from "@/components/ui/sonner";
 
 import Home from "@/pages/Home";
@@ -49,6 +50,7 @@ const Shell = () => {
       {location.pathname !== "/" && <div className="halftone-static pointer-events-none fixed inset-0 -z-10" aria-hidden="true" />}
       <Nav />
       <SectionIndex />
+      <StickyCta />
       <main id="main" tabIndex={-1} key={location.pathname} className="page-enter">
         <Suspense fallback={<PageFallback />}>
           <Routes location={location}>
@@ -72,6 +74,7 @@ const Shell = () => {
           </Routes>
         </Suspense>
       </main>
+      <StickyCta />
       <Footer />
       <Toaster position="bottom-right" />
     </div>
