@@ -146,19 +146,25 @@ const Lattice = ({ progressRef, pulseRef }) => {
     }
     inst.instanceMatrix.needsUpdate = true;
 
+    // Indexed loops, not forEach: this runs 60x a second and the callback
+    // (plus the destructured [a, b] array) would be a fresh allocation every
+    // frame for a list whose shape never changes.
     let o = 0;
-    MESH_EDGES.forEach(([a, b]) => {
-      meshPositions[o++] = current[a].x; meshPositions[o++] = current[a].y; meshPositions[o++] = current[a].z;
-      meshPositions[o++] = current[b].x; meshPositions[o++] = current[b].y; meshPositions[o++] = current[b].z;
-    });
+    for (let e = 0; e < MESH_EDGES.length; e += 1) {
+      const a = current[MESH_EDGES[e][0]];
+      const b = current[MESH_EDGES[e][1]];
+      meshPositions[o++] = a.x; meshPositions[o++] = a.y; meshPositions[o++] = a.z;
+      meshPositions[o++] = b.x; meshPositions[o++] = b.y; meshPositions[o++] = b.z;
+    }
     meshLine.geometry.attributes.position.needsUpdate = true;
     meshLine.material.opacity = clamp01((p - 0.5) * 2.4) * 0.32;
 
     let s = 0;
-    SPOKE_NODES.forEach((n) => {
+    for (let k = 0; k < SPOKE_NODES.length; k += 1) {
+      const n = current[SPOKE_NODES[k]];
       spokePositions[s++] = 0; spokePositions[s++] = 0; spokePositions[s++] = 0;
-      spokePositions[s++] = current[n].x; spokePositions[s++] = current[n].y; spokePositions[s++] = current[n].z;
-    });
+      spokePositions[s++] = n.x; spokePositions[s++] = n.y; spokePositions[s++] = n.z;
+    }
     spokeLine.geometry.attributes.position.needsUpdate = true;
     spokeLine.material.opacity = clamp01((p - 0.3) * 2) * 0.85;
 
@@ -220,6 +226,16 @@ const Pulse = ({ pulseRef }) => {
     const positions = pulseRef.current.positions;
     if (!m || !positions) return;
 
+    // Invisible for the whole first three-quarters of the intro. Nothing below
+    // is worth computing until there is something to see; skipping it keeps
+    // this off the main thread during mount, when the page is busiest.
+    const appear = clamp01((pulseRef.current.progress - 0.75) * 4);
+    if (appear <= 0) {
+      m.visible = false;
+      return;
+    }
+    m.visible = true;
+
     const s = state.current;
     s.t += delta;
     let frac = clamp01(s.t / s.leg);
@@ -233,10 +249,10 @@ const Pulse = ({ pulseRef }) => {
       frac = 0;
     }
 
-    const posOf = (idx) => (idx === -1 ? ORIGIN : positions[idx] || ORIGIN);
-    m.position.lerpVectors(posOf(s.from), posOf(s.to), easeInOut(frac));
+    const fromPos = s.from === -1 ? ORIGIN : positions[s.from] || ORIGIN;
+    const toPos = s.to === -1 ? ORIGIN : positions[s.to] || ORIGIN;
+    m.position.lerpVectors(fromPos, toPos, easeInOut(frac));
 
-    const appear = clamp01((pulseRef.current.progress - 0.75) * 4);
     const beat = 1 + Math.sin(frac * Math.PI) * 0.6;
     m.scale.setScalar(beat * appear);
   });
@@ -282,7 +298,7 @@ const SceneInner = ({ progressRef, pointerRef, pulseRef }) => {
   );
 };
 
-const SystemCore = () => {
+const SystemCore = ({ onReady }) => {
   const progressRef = useRef(0);
   const pointerRef = useRef({ x: 0, y: 0 });
   const pulseRef = useRef({ positions: null, progress: 0 });
@@ -307,7 +323,18 @@ const SystemCore = () => {
 
   return (
     <div className="h-full w-full" data-testid="hero-system-core-canvas">
-      <Canvas dpr={[1, 1.75]} camera={{ position: [0, 0, 7], fov: 38 }} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }} style={{ background: "transparent" }}>
+      {/* onCreated fires once the renderer exists and the first frame is about
+          to paint. Home uses it to retire the static diagram underneath at the
+          moment there is genuinely something to replace it with — a guessed
+          timeout would race the lazy chunk's own download on a slow line and
+          could blank the panel before this ever mounted. */}
+      <Canvas
+        dpr={[1, 1.75]}
+        camera={{ position: [0, 0, 7], fov: 38 }}
+        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        style={{ background: "transparent" }}
+        onCreated={onReady}
+      >
         <AdaptiveQuality />
         <SceneInner progressRef={progressRef} pointerRef={pointerRef} pulseRef={pulseRef} />
       </Canvas>

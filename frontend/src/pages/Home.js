@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
+import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
@@ -47,18 +47,21 @@ const Hero = ({ show3d }) => {
   // painting over it — the canvas itself has a transparent background (by
   // design, so it can sit on this panel in either theme), which means the
   // diagram would otherwise stay visible forever *through* it, doubled up
-  // with whatever the scene draws. Hiding it once the fade-in has had time
-  // to finish is what actually removes it from the page, not an assumption
-  // that the canvas paints over every pixel.
+  // with whatever the scene draws.
+  //
+  // Driven by the canvas's own onCreated, not a timer. SystemCore is a lazy
+  // chunk, so any guessed delay races its download: too short on a slow line
+  // and the diagram fades out before there is anything behind it, leaving an
+  // empty panel.
   const [coreReady, setCoreReady] = useState(false);
   useEffect(() => {
-    if (!show3d) {
-      setCoreReady(false);
-      return undefined;
-    }
-    const t = setTimeout(() => setCoreReady(true), 650);
-    return () => clearTimeout(t);
+    if (!show3d) setCoreReady(false);
   }, [show3d]);
+  const handleCoreReady = useCallback(() => setCoreReady(true), []);
+  // A scene can fail well after its first frame — a GPU context lost when a
+  // laptop sleeps, a driver crash. Bringing the diagram back is what keeps
+  // that from leaving a blank panel for the rest of the session.
+  const handleCoreFailed = useCallback(() => setCoreReady(false), []);
 
   return (
     <section className="relative container-page pb-10 pt-[124px] lg:pb-14 lg:pt-[148px]" data-testid="home-hero-section">
@@ -107,14 +110,23 @@ const Hero = ({ show3d }) => {
                   diagram mounted underneath forever would let it show through
                   every gap in the scene, doubled up with whatever draws there. */}
               <div className="absolute inset-0">
-                <div className={coreReady ? "hero-core-fallback-out" : undefined}>
+                {/* absolute inset-0, not a bare div: SystemCoreFallback sizes
+                    itself with h-full, which resolves against its parent — a
+                    plain wrapper would collapse it to its own square aspect
+                    ratio instead of filling the panel. aria-hidden once the
+                    canvas is up so the retired diagram's label does not linger
+                    in the accessibility tree behind the live scene. */}
+                <div
+                  className={`absolute inset-0 ${coreReady ? "hero-core-fallback-out" : ""}`}
+                  aria-hidden={coreReady ? "true" : undefined}
+                >
                   <SystemCoreFallback />
                 </div>
                 {show3d && (
-                  <ThreeSafe fallback={null}>
+                  <ThreeSafe fallback={null} onError={handleCoreFailed}>
                     <Suspense fallback={null}>
                       <div className="absolute inset-0 hero-core-fade-in">
-                        <SystemCore />
+                        <SystemCore onReady={handleCoreReady} />
                       </div>
                     </Suspense>
                   </ThreeSafe>
@@ -653,7 +665,16 @@ export default function Home() {
   // two checks the effect already ran eagerly means the fetch starts in the
   // same tick as everything else on the page.
   const [show3d, setShow3d] = useState(() => !prefersReducedMotion() && webglAvailable());
+  // Only re-evaluate when the motion preference actually changes. Without the
+  // guard this fires once on mount too, and webglAvailable() builds a real
+  // WebGL context to test with — a driver round-trip, repeated for an answer
+  // the initialiser above already has.
+  const firstRun = useRef(true);
   useEffect(() => {
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
     setShow3d(!reduced && webglAvailable());
   }, [reduced]);
 

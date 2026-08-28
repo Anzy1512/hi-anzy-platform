@@ -54,6 +54,7 @@ export const MotifFrame = ({
 }) => {
   const wrapRef = useRef(null);
   const tiltRef = useRef(null);
+  const rectRef = useRef(null);
   const [near, setNear] = useState(false);
   const [use3d, setUse3d] = useState(false);
 
@@ -87,11 +88,24 @@ export const MotifFrame = ({
   // Direct style writes, not state — the same choice MagneticButton makes for
   // its pull, and for the same reason: a re-render per mousemove is wasted
   // work when the DOM node it would produce is identical every time.
-  const onTiltMove = useCallback((e) => {
+  //
+  // The rect is measured once on enter rather than per move. getBoundingClientRect
+  // forces a synchronous layout, and mousemove fires at the pointer's poll rate,
+  // so reading it every event is the one genuinely expensive thing this handler
+  // could do. The frame cannot move under the cursor between enter and leave
+  // without the pointer also leaving it.
+  const onTiltEnter = useCallback(() => {
     const wrap = wrapRef.current;
     const tilt = tiltRef.current;
     if (!wrap || !tilt || prefersReducedMotion()) return;
-    const r = wrap.getBoundingClientRect();
+    rectRef.current = wrap.getBoundingClientRect();
+    tilt.classList.remove("is-releasing");
+  }, []);
+
+  const onTiltMove = useCallback((e) => {
+    const tilt = tiltRef.current;
+    const r = rectRef.current;
+    if (!tilt || !r || prefersReducedMotion()) return;
     const px = (e.clientX - r.left) / r.width;
     const py = (e.clientY - r.top) / r.height;
     const rotY = (px - 0.5) * 2 * TILT_MAX;
@@ -99,8 +113,13 @@ export const MotifFrame = ({
     tilt.style.transform = `rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.035, 1.035, 1)`;
   }, []);
 
+  // Easing belongs only to the settle back to flat; see .motif-tilt in App.css.
   const onTiltLeave = useCallback(() => {
-    if (tiltRef.current) tiltRef.current.style.transform = "";
+    const tilt = tiltRef.current;
+    if (!tilt) return;
+    rectRef.current = null;
+    tilt.classList.add("is-releasing");
+    tilt.style.transform = "";
   }, []);
 
   return (
@@ -108,6 +127,7 @@ export const MotifFrame = ({
       ref={wrapRef}
       className={`motif-frame ${className}`}
       style={{ aspectRatio: ratio }}
+      onMouseEnter={onTiltEnter}
       onMouseMove={onTiltMove}
       onMouseLeave={onTiltLeave}
       data-testid={testId}

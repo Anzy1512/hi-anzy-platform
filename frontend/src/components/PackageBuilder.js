@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Check, Search, X } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CATEGORIES } from "@/data/content";
 import { track } from "@/lib/api";
+import { onCollapse } from "@/components/CollapseOnScroll";
 
 /**
  * Build-your-own engagement.
@@ -48,6 +49,15 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
   // had actually opened. Category 0 stays open on first render; after that,
   // onToggle is the only thing that ever changes this.
   const [openSlugs, setOpenSlugs] = useState(() => new Set([CATEGORIES[0]?.slug]));
+
+  // CollapseOnScroll (mounted once in App.js) closes any open <details> once
+  // the reader scrolls past it, so the page doesn't silently change length
+  // under them — and because that closes the DOM directly, not through
+  // React, it's exactly the kind of external mutation the comment above
+  // warns about: without this, the next unrelated re-render (a chip pick, a
+  // filter keystroke) would reconcile `open` back to true from openSlugs and
+  // silently reopen a category the reader had just scrolled away from.
+  useEffect(() => onCollapse(() => setOpenSlugs(new Set())), []);
 
   const q = query.trim().toLowerCase();
   const matches = (cap) => !q || cap.toLowerCase().includes(q);

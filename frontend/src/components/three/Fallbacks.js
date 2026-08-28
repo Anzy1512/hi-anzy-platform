@@ -1,6 +1,13 @@
 import React from "react";
 
-/** Error boundary: if a 3D scene ever fails at runtime, fall back to the editorial diagram. */
+/** Error boundary: if a 3D scene ever fails at runtime, fall back to the editorial diagram.
+ *
+ * `onError` matters when the caller layers the scene over its own copy of the
+ * fallback and hides that copy once the scene is up: a scene can throw long
+ * after its first frame (a GPU context lost when a laptop sleeps, a driver
+ * crash), and without a way to say so, the boundary would render nothing over
+ * an already-hidden diagram and leave a blank panel for the rest of the
+ * session. */
 export class ThreeSafe extends React.Component {
   constructor(props) {
     super(props);
@@ -9,7 +16,9 @@ export class ThreeSafe extends React.Component {
   static getDerivedStateFromError() {
     return { failed: true };
   }
-  componentDidCatch() {}
+  componentDidCatch() {
+    if (this.props.onError) this.props.onError();
+  }
   render() {
     if (this.state.failed) return this.props.fallback;
     return this.props.children;

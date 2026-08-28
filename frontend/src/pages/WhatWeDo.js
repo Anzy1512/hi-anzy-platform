@@ -11,7 +11,7 @@ import { CATEGORIES } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
 import { Packages } from "@/components/Packages";
 import { PackageBuilder } from "@/components/PackageBuilder";
-import { CubeHeadArt } from "@/components/art/CubeHeadArt";
+import { DisciplineOrbit } from "@/components/art/DisciplineOrbit";
 
 export default function WhatWeDo() {
   const ref = useRevealObserver();
@@ -49,8 +49,7 @@ export default function WhatWeDo() {
           <div className="lg:col-span-5">
             <Reveal delay={200}>
               <figure className="banner-figure banner-figure-bold relative mx-auto max-w-[380px]" data-parallax="16">
-                <span className="banner-figure-halo" aria-hidden="true" />
-                <CubeHeadArt className="relative w-full" />
+                <DisciplineOrbit className="relative w-full" />
               </figure>
             </Reveal>
           </div>
