@@ -89,7 +89,9 @@ export const Nav = () => {
         {/* Desktop */}
         <nav aria-label="Primary" className="hidden lg:block">
           <div ref={listRef} className="relative flex items-center gap-6">
-            {NAV_LINKS.map((l) => (
+            {/* The logo, right beside this, already goes home — a "Home" link
+                here is a second, redundant control for the same destination. */}
+            {NAV_LINKS.filter((l) => l.to !== "/").map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
@@ -185,7 +187,7 @@ export const Nav = () => {
               <MenuConstellation className="pointer-events-none absolute inset-x-0 top-0 h-[46%] w-full opacity-70" testId="nav-mobile-constellation" />
               <nav aria-label="Mobile" className="relative flex h-full flex-col justify-between p-6 pt-14">
                 <div className="flex flex-col gap-1">
-                  {NAV_LINKS.map((l) => {
+                  {NAV_LINKS.filter((l) => l.to !== "/").map((l) => {
                     // Radix's asChild clones props onto the child through Slot,
                     // which stringifies a function className straight into the
                     // class attribute — the literal source text ends up in the
