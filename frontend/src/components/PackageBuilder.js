@@ -37,6 +37,17 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
   const navigate = useNavigate();
   const [picked, setPicked] = useState(() => new Set());
   const [query, setQuery] = useState("");
+  // Real per-category open/closed state, keyed by slug. The previous version
+  // set `open={ci === 0}` directly from render-time values with no state
+  // behind it — <details> is natively uncontrolled (the browser owns "open"
+  // once a person clicks <summary>), but handing React a fixed expression for
+  // that same attribute makes React fight the browser for it. The instant
+  // ANYTHING else in this component re-rendered — picking a module chip in a
+  // totally different category, typing a search letter — React reconciled
+  // every <details> back to `ci === 0` and slammed shut whatever the reader
+  // had actually opened. Category 0 stays open on first render; after that,
+  // onToggle is the only thing that ever changes this.
+  const [openSlugs, setOpenSlugs] = useState(() => new Set([CATEGORIES[0]?.slug]));
 
   const q = query.trim().toLowerCase();
   const matches = (cap) => !q || cap.toLowerCase().includes(q);
@@ -147,7 +158,20 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
                     first is open so the control explains itself on sight. */}
                 <details
                   className="builder-group rounded-[16px] border border-[#232A2A]/12 bg-[#F7F5EE]/45 p-5 sm:p-6"
-                  open={q ? true : ci === 0}
+                  open={q ? true : openSlugs.has(c.slug)}
+                  onToggle={(e) => {
+                    // Ignore toggles fired while a search is forcing every
+                    // group open — that state is not a choice to remember,
+                    // and recording it would reopen everything the moment the
+                    // query is cleared even for groups the reader had shut.
+                    if (q) return;
+                    setOpenSlugs((prev) => {
+                      const next = new Set(prev);
+                      if (e.target.open) next.add(c.slug);
+                      else next.delete(c.slug);
+                      return next;
+                    });
+                  }}
                   data-testid={`builder-details-${c.slug}`}
                 >
                   <summary className="flex cursor-pointer flex-wrap items-baseline gap-3 marker:content-['']">

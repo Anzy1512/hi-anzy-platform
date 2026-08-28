@@ -1,6 +1,12 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { prefersReducedMotion, webglAvailable } from "@/lib/motion";
 import { ThreeSafe } from "@/components/three/Fallbacks";
+
+// Degrees of tilt at the frame's edge. A cursor-tracking rotateX/rotateY, in
+// the same family as the hover-tilt cards on sites like 21st.dev and the
+// card-tilt patterns three.js's own examples use — built from this frame's
+// existing poster+canvas layers rather than any one registry component.
+const TILT_MAX = 10;
 
 /**
  * The shell every deck motif sits in.
@@ -25,6 +31,9 @@ import { ThreeSafe } from "@/components/three/Fallbacks";
  *    the whole frame is aria-hidden unless a label is passed.
  *  - It only mounts the scene once it is near the viewport. A hero motif on
  *    /careers should not cost anything to a reader who never scrolls there.
+ *  - It tilts toward the cursor. Poster and canvas move together as one
+ *    rigid card, so the motion reads the same whether WebGL is active or a
+ *    reader is looking at the plain poster.
  */
 export const MotifFrame = ({
   poster,
@@ -44,6 +53,7 @@ export const MotifFrame = ({
   sceneMode = "over",
 }) => {
   const wrapRef = useRef(null);
+  const tiltRef = useRef(null);
   const [near, setNear] = useState(false);
   const [use3d, setUse3d] = useState(false);
 
@@ -74,27 +84,50 @@ export const MotifFrame = ({
     setUse3d(webglAvailable());
   }, [near, scene]);
 
+  // Direct style writes, not state — the same choice MagneticButton makes for
+  // its pull, and for the same reason: a re-render per mousemove is wasted
+  // work when the DOM node it would produce is identical every time.
+  const onTiltMove = useCallback((e) => {
+    const wrap = wrapRef.current;
+    const tilt = tiltRef.current;
+    if (!wrap || !tilt || prefersReducedMotion()) return;
+    const r = wrap.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    const rotY = (px - 0.5) * 2 * TILT_MAX;
+    const rotX = (0.5 - py) * 2 * TILT_MAX;
+    tilt.style.transform = `rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.035, 1.035, 1)`;
+  }, []);
+
+  const onTiltLeave = useCallback(() => {
+    if (tiltRef.current) tiltRef.current.style.transform = "";
+  }, []);
+
   return (
     <div
       ref={wrapRef}
       className={`motif-frame ${className}`}
       style={{ aspectRatio: ratio }}
+      onMouseMove={onTiltMove}
+      onMouseLeave={onTiltLeave}
       data-testid={testId}
       {...(label ? { role: "img", "aria-label": label } : { "aria-hidden": "true" })}
     >
-      <div
-        className="motif-poster"
-        style={use3d && sceneMode === "replace" ? { opacity: 0 } : undefined}
-      >
-        {poster}
+      <div ref={tiltRef} className="motif-tilt">
+        <div
+          className="motif-poster"
+          style={use3d && sceneMode === "replace" ? { opacity: 0 } : undefined}
+        >
+          {poster}
+        </div>
+        {use3d && scene ? (
+          <ThreeSafe fallback={null}>
+            <Suspense fallback={null}>
+              <div className="motif-canvas">{scene}</div>
+            </Suspense>
+          </ThreeSafe>
+        ) : null}
       </div>
-      {use3d && scene ? (
-        <ThreeSafe fallback={null}>
-          <Suspense fallback={null}>
-            <div className="motif-canvas">{scene}</div>
-          </Suspense>
-        </ThreeSafe>
-      ) : null}
     </div>
   );
 };

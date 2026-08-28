@@ -47,7 +47,15 @@ export default function WhatWeDo() {
           </div>
           <div className="lg:col-span-5">
             <Reveal delay={200}>
-              <figure className="banner-figure relative mx-auto max-w-[380px]" data-parallax="16">
+              {/* art-cube-head.png is genuinely monochrome — checked the source
+                  pixels, zero chroma — so a grayscale(0)-on-hover trick would
+                  be a silent no-op with nothing underneath to reveal. This
+                  paints the colour instead of pretending to uncover it: a
+                  duotone wash in mix-blend-mode: color, which takes the hue
+                  from the overlay and the luminance from the art beneath it,
+                  so every fold of the halftone stays legible through the
+                  tint. Ink and orange only, both already brand tokens. */}
+              <figure className="banner-figure banner-figure-tint relative mx-auto max-w-[380px]" data-parallax="16">
                 <span className="banner-figure-halo" aria-hidden="true" />
                 <img
                   src="/brand/art-cube-head.png"
@@ -55,6 +63,7 @@ export default function WhatWeDo() {
                   loading="lazy"
                   className="relative w-full"
                 />
+                <span className="banner-figure-duotone" aria-hidden="true" />
               </figure>
             </Reveal>
           </div>

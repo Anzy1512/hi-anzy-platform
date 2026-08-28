@@ -58,7 +58,7 @@ export default function Insights() {
         {posts && posts.length > 0 && (
           <div className="grid gap-5 lg:grid-cols-2" data-testid="insights-grid">
             {posts.map((p, i) => (
-              <Reveal key={p.slug} delay={(i % 2) * 90}>
+              <Reveal key={p.slug} delay={(i % 2) * 90} className="card-stack">
                 <Link to={`/insights/${p.slug}`} className="case-card group block h-full rounded-[18px] border border-[#232A2A]/15 bg-[#F7F5EE] p-7" data-testid={`insight-card-${p.slug}`}>
                   <div className="flex items-center justify-between gap-3">
                     <span className="sys-chip rounded-full border border-[#F19020]/70 px-3 py-1 text-[#232A2A]/70">{p.category.toUpperCase()}</span>

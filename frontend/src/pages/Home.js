@@ -82,15 +82,21 @@ const Hero = ({ show3d }) => {
         <div className="lg:col-span-5">
           <Reveal delay={200}>
             <div className="panel-dark relative overflow-hidden" style={{ aspectRatio: "4/4.6" }} data-testid="hero-core-frame">
+              {/* The diagram is the permanent base layer, not a placeholder swapped
+                  away — the same layering .motif-frame already uses for its deck
+                  scenes. The canvas only ever gets added on top once it is truly
+                  ready to paint, and fades in there instead of popping in over
+                  what had been an empty frame. */}
               <div className="absolute inset-0">
-                {show3d ? (
-                  <ThreeSafe fallback={<SystemCoreFallback />}>
-                    <Suspense fallback={<SystemCoreFallback />}>
-                      <SystemCore />
+                <SystemCoreFallback />
+                {show3d && (
+                  <ThreeSafe fallback={null}>
+                    <Suspense fallback={null}>
+                      <div className="absolute inset-0 hero-core-fade-in">
+                        <SystemCore />
+                      </div>
                     </Suspense>
                   </ThreeSafe>
-                ) : (
-                  <SystemCoreFallback />
                 )}
               </div>
             </div>
@@ -617,7 +623,15 @@ const Closing = () => (
 export default function Home() {
   const ref = useRevealObserver();
   const reduced = useReducedMotion();
-  const [show3d, setShow3d] = useState(false);
+  // Computed synchronously on first render, not after it: this state used to
+  // start false and only flip in an effect, so the lazy `import()` for the
+  // hero canvas — a 215KB chunk — did not even begin downloading until a
+  // whole extra tick after mount. On desktop, where the WebGL check nearly
+  // always passes, that tick was the entire visible delay between the page
+  // appearing and the hero canvas showing up late behind it. Reading the same
+  // two checks the effect already ran eagerly means the fetch starts in the
+  // same tick as everything else on the page.
+  const [show3d, setShow3d] = useState(() => !prefersReducedMotion() && webglAvailable());
   useEffect(() => {
     setShow3d(!reduced && webglAvailable());
   }, [reduced]);

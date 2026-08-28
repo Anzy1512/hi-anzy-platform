@@ -1331,6 +1331,18 @@ html {
   width: 100%;
   max-width: 420px;
   margin-inline: auto;
+  perspective: 900px;
+}
+/* The rigid card that actually tilts. Poster and canvas ride on it together
+   as one unit rather than each rotating independently, which is what keeps
+   them pixel-aligned at every angle. JS writes `transform` directly on
+   mousemove (see MotifFrame); this transition only covers the release, when
+   the cursor leaves and the card settles back to flat. */
+.motif-tilt {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 .motif-poster,
 .motif-canvas {
@@ -1346,6 +1358,19 @@ html {
 .motif-canvas,
 .motif-canvas canvas {
   pointer-events: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .motif-tilt { transition: none; }
+}
+
+/* Hero system-core canvas: same base-layer-plus-overlay idea as the deck
+   motifs above, for the same reason — the diagram underneath is already a
+   complete picture, so the canvas arriving is a reveal, not a swap. */
+.hero-core-fade-in {
+  animation: cmdk-fade 0.6s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-core-fade-in { animation: none; }
 }
 
 /* The breadcrumb back-link on every detail page ("ALL WORK", "ALL NOTES",
@@ -1755,6 +1780,31 @@ button.link-draw::after {
   filter: blur(2px);
 }
 .banner-figure img { animation: banner-float 9s ease-in-out infinite; }
+/* Colour-on-hover for a genuinely monochrome asset. mix-blend-mode: color
+   takes hue/saturation from this layer and luminance from the image beneath
+   it — the halftone shading survives the tint completely intact, which is
+   what makes it read as "the art gaining colour" rather than "a orange box
+   appearing over a photo". Ink-to-orange so it still reads as ink in the
+   shadows, the way the rest of the brand's dark grounds do. */
+.banner-figure-duotone {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(155deg, var(--ink, #232A2A) 0%, var(--orange, #F19020) 100%);
+  mix-blend-mode: color;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+.banner-figure-tint:hover .banner-figure-duotone,
+.banner-figure-tint:focus-within .banner-figure-duotone {
+  opacity: 0.82;
+}
+@media (prefers-reduced-motion: reduce) {
+  .banner-figure-duotone { transition: none; }
+}
+
+
 @keyframes banner-float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50%      { transform: translateY(-10px) rotate(-1deg); }
@@ -1837,6 +1887,26 @@ button.link-draw::after {
      before the animation starts, then lets the element fall back to its own
      styles, where there is no transform at all. */
   animation: page-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* Insights grid — cards arrive as if dealt from a stack: each one starts
+   behind and below its slot, faintly rotated, and straightens as it settles.
+   Alternating the tilt by column keeps a 2-up grid from reading as one card
+   repeated twice. Same shared reveal observer as everything else on the
+   page — .reveal.pun-sticker two rules up is the same idea for a different
+   shape (spring pop instead of a settle). */
+.reveal.card-stack {
+  opacity: 0;
+  transform: translateY(48px) scale(0.92) rotate(-3deg);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: bottom center;
+}
+.reveal.card-stack:nth-child(even) {
+  transform: translateY(48px) scale(0.92) rotate(3deg);
+}
+.reveal.card-stack.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1) rotate(0deg);
 }
 
 /* work card image mask */
