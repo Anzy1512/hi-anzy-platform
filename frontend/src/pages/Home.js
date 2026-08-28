@@ -340,7 +340,7 @@ const Diagnostic = () => (
               </ol>
             </div>
             <Reveal delay={200} className="hidden shrink-0 xl:block">
-              <img src="/brand/art-thinker.png" alt="Etched illustration — a person thinking, surrounded by question marks" loading="lazy" className="w-[170px] opacity-90" data-parallax="12" />
+              <img src="/brand/art-thinker.png" width="354" height="354" alt="Etched illustration — a person thinking, surrounded by question marks" loading="lazy" className="w-[170px] opacity-90" data-parallax="12" />
             </Reveal>
           </div>
         </div>

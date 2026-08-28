@@ -158,7 +158,7 @@ export default function Contact() {
             <Reveal delay={280}>
               <figure className="float-el mt-10 hidden max-w-[250px] lg:block" style={{ "--rot": "-1.5deg" }} data-testid="contact-walkers-art">
                 <div className="scrap">
-                  <img src="/brand/char-walkers.jpg" alt="Two camera-headed figures walking in — halftone collage" loading="lazy" />
+                  <img src="/brand/char-walkers.jpg" width="522" height="980" alt="Two camera-headed figures walking in — halftone collage" loading="lazy" />
                 </div>
               </figure>
             </Reveal>
