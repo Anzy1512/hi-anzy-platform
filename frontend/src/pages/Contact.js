@@ -50,6 +50,11 @@ export default function Contact() {
     );
   }, [params]);
 
+  // Abandonment needs to know a submit already happened, so a reader who fills
+  // the form and leaves is not counted as having dropped out. startedRef and
+  // started() above already handle the "began filling" half.
+  const submittedRef = useRef(false);
+
   const [form, setForm] = useState({ name: "", company: "", role: "", website: "", message: prefilledMessage, stage: "", investmentRange: "", timeline: "", email: "", phone: "", orgField: "" });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -81,6 +86,20 @@ export default function Contact() {
   /** Tab order of the validated fields, so "first invalid" means first on screen. */
   const FIELD_ORDER = ["name", "email", "message"];
 
+  React.useEffect(() => {
+    const report = () => {
+      if (document.visibilityState !== "hidden") return;
+      if (!startedRef.current || submittedRef.current) return;
+      submittedRef.current = true; // report once, not on every tab switch
+      const filled = Object.entries(form)
+        .filter(([k, v]) => k !== "orgField" && v)
+        .map(([k]) => k);
+      track("contact_form_abandoned", { filled: filled.join(","), count: filled.length });
+    };
+    document.addEventListener("visibilitychange", report);
+    return () => document.removeEventListener("visibilitychange", report);
+  }, [form]);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const er = validate();
@@ -91,6 +110,7 @@ export default function Contact() {
       // returned null, and an invalid submit left focus on <body> with the
       // errors somewhere off screen. Going through the id after a frame is
       // what actually moves it.
+      track("contact_validation_failed", { fields: Object.keys(er).join(",") });
       const firstKey = FIELD_ORDER.find((k) => er[k]);
       if (firstKey) {
         requestAnimationFrame(() => {
@@ -105,6 +125,7 @@ export default function Contact() {
       const payload = Object.fromEntries(Object.entries(form).filter(([, v]) => v !== ""));
       await submitContact(payload);
       setSuccess(true);
+      submittedRef.current = true;
       track("contact_completed");
     } catch (err) {
       const msg = err?.response?.status === 429 ? "Too many messages in a row. Give it a few minutes — we are not going anywhere." : "That didn't send. The irony is not lost on us. Please try again.";
@@ -156,6 +177,9 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={onSubmit} noValidate className="panel-paper p-7 sm:p-10" data-testid="contact-form">
+                <p className="font-mono-sys mb-6 text-[12.5px] leading-relaxed text-[#232A2A]/55" data-testid="contact-form-intro">
+                  Three fields are all we need: your name, your email and what is going on. Everything else is optional and only helps us come back to you with something useful.
+                </p>
                 <div className="grid gap-6 sm:grid-cols-2">
                   <div>
                     <FieldLabel htmlFor="cf-name" required>NAME</FieldLabel>
@@ -168,15 +192,15 @@ export default function Contact() {
                     {errors.email && <p id="cf-email-err" role="alert" data-testid="contact-form-error-email" className="mt-1.5 text-[12px] font-semibold accent-signal-text">{errors.email}</p>}
                   </div>
                   <div>
-                    <FieldLabel htmlFor="cf-company">COMPANY</FieldLabel>
+                    <FieldLabel htmlFor="cf-company">COMPANY (OPTIONAL)</FieldLabel>
                     <Input id="cf-company" data-testid="contact-form-field-company" value={form.company} onChange={set("company")} placeholder="Or the idea's working title" className="h-11 border-[#232A2A]/30 bg-[#F7F5EE]" />
                   </div>
                   <div>
-                    <FieldLabel htmlFor="cf-role">ROLE</FieldLabel>
+                    <FieldLabel htmlFor="cf-role">ROLE (OPTIONAL)</FieldLabel>
                     <Input id="cf-role" data-testid="contact-form-field-role" value={form.role} onChange={set("role")} placeholder="Founder, CMO, the person who noticed" className="h-11 border-[#232A2A]/30 bg-[#F7F5EE]" />
                   </div>
                   <div className="sm:col-span-2">
-                    <FieldLabel htmlFor="cf-website">WEBSITE</FieldLabel>
+                    <FieldLabel htmlFor="cf-website">WEBSITE (OPTIONAL)</FieldLabel>
                     <Input id="cf-website" data-testid="contact-form-field-website" value={form.website} onChange={set("website")} placeholder="https:// — if it exists yet" className="h-11 border-[#232A2A]/30 bg-[#F7F5EE]" />
                   </div>
                   <div className="sm:col-span-2">
@@ -185,21 +209,21 @@ export default function Contact() {
                     {errors.message && <p id="cf-message-err" role="alert" data-testid="contact-form-error-message" className="mt-1.5 text-[12px] font-semibold accent-signal-text">{errors.message}</p>}
                   </div>
                   <div>
-                    <FieldLabel htmlFor="cf-stage">CURRENT STAGE</FieldLabel>
+                    <FieldLabel htmlFor="cf-stage">CURRENT STAGE (OPTIONAL)</FieldLabel>
                     <select id="cf-stage" data-testid="contact-form-field-stage" className="select-native" value={form.stage} onChange={(e) => { started(); setForm((f) => ({ ...f, stage: e.target.value })); }}>
                       <option value="">Pick one</option>
                       {STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </div>
                   <div>
-                    <FieldLabel htmlFor="cf-range">INVESTMENT RANGE</FieldLabel>
+                    <FieldLabel htmlFor="cf-range">INVESTMENT RANGE (OPTIONAL)</FieldLabel>
                     <select id="cf-range" data-testid="contact-form-field-investment" className="select-native" value={form.investmentRange} onChange={(e) => { started(); setForm((f) => ({ ...f, investmentRange: e.target.value })); }}>
                       <option value="">Roughly</option>
                       {RANGES.map((s) => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </div>
                   <div>
-                    <FieldLabel htmlFor="cf-timeline">TIMELINE</FieldLabel>
+                    <FieldLabel htmlFor="cf-timeline">TIMELINE (OPTIONAL)</FieldLabel>
                     <select id="cf-timeline" data-testid="contact-form-field-timeline" className="select-native" value={form.timeline} onChange={(e) => { started(); setForm((f) => ({ ...f, timeline: e.target.value })); }}>
                       <option value="">Honestly</option>
                       {TIMELINES.map((s) => <option key={s} value={s}>{s}</option>)}

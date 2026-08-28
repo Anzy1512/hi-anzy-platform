@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
+import { abs } from "@/lib/absoluteUrl";
 import { NotesSubscribe } from "@/components/NotesSubscribe";
 import { MagneticButton } from "@/components/MagneticButton";
 import { useRevealObserver } from "@/lib/motion";
@@ -81,14 +82,14 @@ export default function InsightDetail() {
       wordCount: (post.body || []).reduce((n, b) => n + (b.text ? b.text.split(/\s+/).length : 0), 0),
       author: { "@type": "Organization", name: "hiAnzy" },
       publisher: { "@type": "Organization", name: "hiAnzy" },
-      mainEntityOfPage: { "@type": "WebPage", "@id": `/insights/${post.slug}` },
+      mainEntityOfPage: { "@type": "WebPage", "@id": abs(`/insights/${post.slug}`) },
     },
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Insights", item: "/insights" },
-        { "@type": "ListItem", position: 2, name: post.title, item: `/insights/${post.slug}` },
+        { "@type": "ListItem", position: 1, name: "Insights", item: abs("/insights") },
+        { "@type": "ListItem", position: 2, name: post.title, item: abs(`/insights/${post.slug}`) },
       ],
     },
     ...(faqPairs.length

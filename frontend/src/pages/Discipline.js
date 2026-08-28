@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { Seo } from "@/components/Seo";
+import { abs } from "@/lib/absoluteUrl";
 import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
@@ -68,8 +69,8 @@ export default function Discipline() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Network", item: "/network" },
-        { "@type": "ListItem", position: 2, name: d.name, item: `/network/${d.slug}` },
+        { "@type": "ListItem", position: 1, name: "Network", item: abs("/network") },
+        { "@type": "ListItem", position: 2, name: d.name, item: abs(`/network/${d.slug}`) },
       ],
     },
   ];

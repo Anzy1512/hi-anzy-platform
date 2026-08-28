@@ -51,10 +51,29 @@ export default function Resources() {
             <section id="privacy" className="panel-paper p-7 sm:p-9" data-testid="resources-privacy">
               <p className="sys-chip text-[#232A2A]/55">PRIVACY</p>
               <h2 className="font-display mt-2 text-3xl text-[#232A2A]">Your data, plainly.</h2>
+              {/* The IP sentence is not decoration. The contact endpoint stores
+                  the sender's IP address (server.py, on every submission) for
+                  abuse handling, and IP is personal data under both GDPR and
+                  India's DPDP Act — so it has to be disclosed here rather than
+                  only existing in the database. The analytics claim below is
+                  accurate as written: /api/analytics/event records name, path
+                  and timestamp, and deliberately no IP. */}
               <p className="mt-4 text-[16.5px] leading-[1.58] text-[#232A2A]/78">
-                When you write to us, we store what you send so a person can read it and reply. We do not sell it,
-                rent it, or feed it to a mailing list you never asked for. Analytics on this site measure what is
-                useful, not who you are. Want something deleted? Say the word and it is gone.
+                When you write to us, we store what you send so a person can read it and reply — your name, your
+                email, anything else you chose to fill in, and the IP address the message arrived from. The IP is
+                kept for one reason only: stopping the form being abused by bots. We do not sell any of it, rent
+                it, or feed it to a mailing list you never asked for. Analytics on this site record which pages
+                were used and when, and never your IP address — they measure what is useful, not who you are.
+              </p>
+              <p className="mt-4 text-[16.5px] leading-[1.58] text-[#232A2A]/78">
+                Want a copy of what we hold, or want it deleted? Say the word and it is done. Write to the address
+                in the footer{/* TODO(hiAnzy): once a real inbox is published, name it here explicitly. */} and a
+                person will action it — no ticket queue, no form to fill in twice.
+              </p>
+              <p className="font-mono-sys mt-4 text-[12.5px] leading-relaxed text-[#232A2A]/55">
+                TODO before launch: this notice is written plainly and honestly, but it is not a substitute for a
+                reviewed policy. A qualified practitioner should confirm the retention period, the named data
+                controller and the lawful basis before this site takes real traffic.
               </p>
             </section>
           </Reveal>

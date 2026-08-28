@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { Seo } from "@/components/Seo";
+import { abs } from "@/lib/absoluteUrl";
 import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { NextSteps } from "@/components/NextSteps";
 import { PopIllustration } from "@/components/PopIllustration";
 import { ProgressRule } from "@/components/ProgressRule";
 import { useRevealObserver } from "@/lib/motion";
-import { track } from "@/lib/api";
+import { getCaseStudies, track } from "@/lib/api";
 import { CATEGORIES, CATEGORY_BY_SLUG } from "@/data/content";
 
 /**
@@ -35,6 +36,17 @@ const FIGURES = [
  * own FAQ block so the answer can be lifted directly into a search result.
  */
 export default function ServiceDetail() {
+  /* Proof belongs on the page that sells. These pages carried no evidence at
+     all — the case studies existed two clicks away and never said so. Cases
+     declare which services they drew on, so this is their own claim rather
+     than a keyword match. */
+  const [cases, setCases] = useState([]);
+  useEffect(() => {
+    getCaseStudies()
+      .then((all) => setCases(Array.isArray(all) ? all : []))
+      .catch(() => setCases([]));
+  }, []);
+
   const { slug } = useParams();
   const ref = useRevealObserver();
   const c = CATEGORY_BY_SLUG[slug];
@@ -74,8 +86,8 @@ export default function ServiceDetail() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "What We Do", item: "/what-we-do" },
-        { "@type": "ListItem", position: 2, name: c.title, item: `/what-we-do/${c.slug}` },
+        { "@type": "ListItem", position: 1, name: "What We Do", item: abs("/what-we-do") },
+        { "@type": "ListItem", position: 2, name: c.title, item: abs(`/what-we-do/${c.slug}`) },
       ],
     },
   ];
@@ -271,6 +283,35 @@ export default function ServiceDetail() {
             </MagneticButton>
           </div>
         </Reveal>
+
+        {(() => {
+          const proof = cases.filter(
+            (cs) => Array.isArray(cs.relatedServices) && cs.relatedServices.includes(c.slug)
+          );
+          if (proof.length === 0) return null;
+          return (
+            <Reveal delay={80}>
+              <div className="mt-12" data-testid="service-proof">
+                <p className="sys-chip text-[#232A2A]/50">WHERE THIS HAS ALREADY RUN</p>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {proof.slice(0, 2).map((cs) => (
+                    <Link
+                      key={cs.slug}
+                      to={`/work/${cs.slug}`}
+                      className="case-card block rounded-[14px] border border-[#232A2A]/15 bg-[#F7F5EE] p-5"
+                      onClick={() => track("service_to_case", { from: c.slug, to: cs.slug })}
+                      data-testid={`service-proof-${cs.slug}`}
+                    >
+                      <span className="sys-chip text-[#232A2A]/50">{cs.industry} · {cs.year}</span>
+                      <p className="font-display mt-2 text-xl leading-tight text-[#232A2A]">{cs.title}</p>
+                      <p className="mt-2 text-[15px] leading-[1.5] text-[#232A2A]/72">{cs.summary}</p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          );
+        })()}
 
         <Reveal delay={100}>
           <p className="sys-chip mt-12 text-[#232A2A]/50">THE OTHER FIVE</p>

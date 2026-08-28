@@ -148,6 +148,37 @@ export const Footer = () => {
             <p className="sys-chip mb-4 text-[#F7F5EE]/45">Start</p>
             <Link to="/contact" className="btn-orange" data-testid="footer-say-hi-cta">Say Hi</Link>
             <p className="font-mono-sys mt-4 text-[12.5px] leading-relaxed text-[#F7F5EE]/62">Bring the brief. Or bring the problem. We can start with either.</p>
+
+            {/* =====================================================================
+                DIRECT CONTACT — wired, values deliberately not invented.
+
+                Until this block is filled in, the only way to reach hiAnzy is the
+                contact form. For a consultancy selling to founders and executives
+                that removes the channel that buyer most often prefers, and reads
+                as evasive at exactly the moment trust is being decided.
+
+                To publish: set CONTACT_EMAIL / LINKEDIN_URL below to the real
+                values and delete the `false &&` guard on the block underneath.
+                Also uncomment `sameAs` in components/Seo.js with the same URLs —
+                that is what ties this site to the entity behind it for search.
+                ===================================================================== */}
+            {false && (
+              <div className="mt-6 border-t border-[#F7F5EE]/12 pt-5" data-testid="footer-direct-contact">
+                <p className="sys-chip mb-3 text-[#F7F5EE]/45">Or just write to us</p>
+                <ul className="space-y-2">
+                  <li>
+                    <a href="mailto:CONTACT_EMAIL" className="link-draw text-[16px] text-[#F7F5EE]/80" data-testid="footer-email">
+                      CONTACT_EMAIL
+                    </a>
+                  </li>
+                  <li>
+                    <a href="LINKEDIN_URL" target="_blank" rel="noopener noreferrer" className="link-draw text-[16px] text-[#F7F5EE]/80" data-testid="footer-linkedin">
+                      LinkedIn
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 

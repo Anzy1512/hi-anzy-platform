@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
+import { abs } from "@/lib/absoluteUrl";
 import { Reveal } from "@/components/Reveal";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { MagneticButton } from "@/components/MagneticButton";
 import { useRevealObserver } from "@/lib/motion";
 import { getCaseStudy, getCaseStudies, track } from "@/lib/api";
+import { CATEGORY_BY_SLUG } from "@/data/content";
 
 const SECTIONS = [
   { key: "situation", label: "SITUATION" },
@@ -62,8 +64,8 @@ export default function WorkDetail() {
   const jsonLd = [
     { "@context": "https://schema.org", "@type": "Article", headline: cs.title, about: cs.industry, author: { "@type": "Organization", name: "hiAnzy" } },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Work", item: "/work" },
-      { "@type": "ListItem", position: 2, name: cs.title, item: `/work/${cs.slug}` },
+      { "@type": "ListItem", position: 1, name: "Work", item: abs("/work") },
+      { "@type": "ListItem", position: 2, name: cs.title, item: abs(`/work/${cs.slug}`) },
     ] },
   ];
 
@@ -102,10 +104,41 @@ export default function WorkDetail() {
         </div>
 
         <Reveal>
-          <div className="mt-10 flex flex-wrap gap-2" data-testid="work-detail-services">
-            {(cs.services || []).map((s) => (
-              <span key={s} className="sys-chip rounded-full border border-[#F19020]/70 px-3 py-1 text-[#232A2A]/75">{s}</span>
-            ))}
+          <div className="mt-10" data-testid="work-detail-services">
+            <div className="flex flex-wrap gap-2">
+              {(cs.services || []).map((s) => (
+                <span key={s} className="sys-chip rounded-full border border-[#F19020]/70 px-3 py-1 text-[#232A2A]/75">{s}</span>
+              ))}
+            </div>
+
+            {/* The chips above name what was done; these link to the pages that
+                sell it. Case studies were the least internally linked pages on
+                the site — three links each, on the strongest sales asset there
+                is — so the reader most convinced by this story had nowhere to
+                go with it, and the money pages got no authority from it. */}
+            {Array.isArray(cs.relatedServices) && cs.relatedServices.length > 0 && (
+              <div className="mt-5 border-t border-[#232A2A]/12 pt-4" data-testid="work-detail-related-services">
+                <p className="font-mono-sys text-[12.5px] text-[#232A2A]/55">Read how we run this work:</p>
+                <ul className="mt-2.5 flex flex-wrap gap-2.5">
+                  {cs.relatedServices
+                    .map((slug) => CATEGORY_BY_SLUG[slug])
+                    .filter(Boolean)
+                    .map((c) => (
+                      <li key={c.slug}>
+                        <Link
+                          to={`/what-we-do/${c.slug}`}
+                          className="link-draw inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#232A2A]"
+                          onClick={() => track("case_to_service", { from: cs.slug, to: c.slug })}
+                          data-testid={`work-detail-service-${c.slug}`}
+                        >
+                          {c.title}
+                          <ArrowRight size={13} aria-hidden="true" />
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            )}
           </div>
         </Reveal>
         {cs.metricEvidence && (

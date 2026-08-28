@@ -9,6 +9,7 @@ CASE_STUDIES = [
     {
         "title": "The Storefront Was Never the Problem",
         "slug": "the-storefront-was-never-the-problem",
+        "relatedServices": ["business-audit-strategy", "growth-content-commerce", "digital-technology-automation"],
         "client": "D2C Ayurvedic skincare brand",
         "industry": "D2C / Commerce",
         "year": "2024",
@@ -30,6 +31,7 @@ CASE_STUDIES = [
     {
         "title": "A Rebrand That Turned Out to Be a Pricing Problem",
         "slug": "a-rebrand-that-turned-out-to-be-a-pricing-problem",
+        "relatedServices": ["business-audit-strategy", "brand-experience"],
         "client": "Founder-led B2B logistics company",
         "industry": "B2B Services",
         "year": "2024",
@@ -51,6 +53,7 @@ CASE_STUDIES = [
     {
         "title": "Commerce, Untangled",
         "slug": "commerce-untangled",
+        "relatedServices": ["business-audit-strategy", "digital-technology-automation"],
         "client": "Multi-city hospitality group",
         "industry": "Hospitality",
         "year": "2025",
@@ -72,6 +75,7 @@ CASE_STUDIES = [
     {
         "title": "Launch Systems for a Festival Season",
         "slug": "launch-systems-for-a-festival-season",
+        "relatedServices": ["media-creators-experiences", "growth-content-commerce"],
         "client": "Consumer electronics launch",
         "industry": "Consumer Tech",
         "year": "2023",
@@ -93,6 +97,7 @@ CASE_STUDIES = [
     {
         "title": "The Dashboard Nobody Opened",
         "slug": "the-dashboard-nobody-opened",
+        "relatedServices": ["digital-technology-automation", "business-audit-strategy"],
         "client": "Professional services firm, 120 people",
         "industry": "Professional Services",
         "year": "2024",

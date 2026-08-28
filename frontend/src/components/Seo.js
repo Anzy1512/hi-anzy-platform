@@ -8,6 +8,13 @@ const ORG_JSONLD = {
   description: "Business Systems & Transformation Consultancy. We build brand operating systems. From ABC to ROI.",
   slogan: "From ABC to ROI",
   knowsAbout: ["Business Systems Consulting", "Business Transformation", "Business Audit", "Brand Strategy", "Digital Transformation", "AI Automation Consulting", "E-commerce Consulting", "Growth Strategy", "Technology Advisory"],
+  // TODO(hiAnzy): add real profile URLs and uncomment. `sameAs` is how a search
+  // engine ties this site to the entity behind it, and it is the single
+  // biggest schema gap left. Left commented rather than filled with guesses.
+  // sameAs: [
+  //   "https://www.linkedin.com/company/REPLACE-ME",
+  //   "https://www.instagram.com/REPLACE-ME",
+  // ],
 };
 
 /**
@@ -26,9 +33,16 @@ const ORG_JSONLD = {
 export const Seo = ({ title, description, jsonLd, image }) => {
   const blocks = [ORG_JSONLD, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [])];
   const url = typeof window !== "undefined" ? window.location.href.split("#")[0] : undefined;
-  const ogImage = image
-    ? new URL(image, typeof window !== "undefined" ? window.location.origin : undefined).href
-    : undefined;
+  // Every page gets a share card. No caller was passing `image`, so og:image
+  // was never emitted and twitter:card silently degraded to "summary" — a
+  // shared link rendered as a text stub on LinkedIn and WhatsApp, which is
+  // where this business actually gets shared. og-default.png is a composed
+  // 1200x630 card in the brand palette, not a stretched wordmark; a
+  // per-page generated card is still the better answer and still open work.
+  const ogImage = new URL(
+    image || "/og-default.png",
+    typeof window !== "undefined" ? window.location.origin : "http://localhost"
+  ).href;
 
   return (
     <Helmet>
