@@ -8,6 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Figtree:ital,wght@0,300..900;1,300..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Runs before first paint so a night-mode visitor never sees a paper
+         flash. External, not inline: the CSP is script-src 'self' with no
+         unsafe-inline, and an inline block is refused. -->
+    <script src="%PUBLIC_URL%/theme-boot.js"></script>
     <title>hiAnzy — From ABC to ROI</title>
   </head>
   <body>

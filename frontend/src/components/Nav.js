@@ -9,6 +9,7 @@ import { track } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { subscribeScroll, isDarkUnderNav } from "@/lib/motion";
 import { MenuConstellation } from "@/components/MenuConstellation";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Nav = () => {
   const location = useLocation();
@@ -103,6 +104,11 @@ export const Nav = () => {
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* Night mode. Small on purpose — a preference control, not a call
+              to action. Shown at every width, unlike the palette trigger,
+              because a phone in a dark room is exactly where it matters. */}
+          <ThemeToggle />
+
           {/* Discoverable entry point for the palette. A shortcut nobody is
               told about is a shortcut nobody uses, and this is the site's
               main search. Hidden on touch, where there is no key to press. */}

@@ -1,5 +1,9 @@
 import React, { Suspense, lazy } from "react";
 import "@/App.css";
+// Order matters: the generated utility remap first, then the
+// hand-written component rules that are allowed to beat it.
+import "@/dark.generated.css";
+import "@/dark.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { LenisProvider, ScrollToTop } from "@/lib/motion";
