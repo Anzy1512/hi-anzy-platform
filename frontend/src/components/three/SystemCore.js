@@ -1,5 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { AdaptiveQuality } from "@/components/three/AdaptiveQuality";
 import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import { subscribeScroll } from "@/lib/motion";
@@ -309,6 +310,7 @@ const SystemCore = () => {
   return (
     <div className="h-full w-full" data-testid="hero-system-core-canvas">
       <Canvas dpr={[1, 1.75]} camera={{ position: [0, 0, 10.2], fov: 38 }} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }} style={{ background: "transparent" }}>
+      <AdaptiveQuality />
         <SceneInner progressRef={progressRef} pointerRef={pointerRef} />
       </Canvas>
     </div>

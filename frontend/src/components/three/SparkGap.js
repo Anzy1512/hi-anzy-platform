@@ -1,5 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { AdaptiveQuality } from "@/components/three/AdaptiveQuality";
 import * as THREE from "three";
 
 /**
@@ -125,6 +126,7 @@ const SparkGap = () => (
     dpr={[1, 1.75]}
     style={{ pointerEvents: "none" }}
   >
+      <AdaptiveQuality />
     <Scene />
   </Canvas>
 );

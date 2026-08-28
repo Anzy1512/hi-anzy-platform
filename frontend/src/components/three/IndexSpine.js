@@ -1,5 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { AdaptiveQuality } from "@/components/three/AdaptiveQuality";
 import * as THREE from "three";
 
 /**
@@ -136,6 +137,7 @@ export default function IndexSpine({ progressRef }) {
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
       style={{ background: "transparent", pointerEvents: "none" }}
     >
+      <AdaptiveQuality />
       <Rail progressRef={progressRef} />
       <Motes progressRef={progressRef} />
       <Head progressRef={progressRef} />

@@ -1,5 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { AdaptiveQuality } from "@/components/three/AdaptiveQuality";
 import * as THREE from "three";
 
 /**
@@ -106,6 +107,7 @@ const LensField = () => (
     dpr={[1, 1.75]}
     style={{ pointerEvents: "none" }}
   >
+      <AdaptiveQuality />
     <Field />
   </Canvas>
 );

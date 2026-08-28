@@ -1,5 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { AdaptiveQuality } from "@/components/three/AdaptiveQuality";
 import { Html, QuadraticBezierLine } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -286,6 +287,7 @@ const SceneInner = ({ categories, active, subs, onSelect }) => {
 const Constellation = ({ categories = [], active = null, subs = null, onSelect = null }) => (
   <div className="h-full w-full" data-testid="network-constellation-canvas">
     <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 7.6], fov: 46 }} gl={{ antialias: true, alpha: true }} style={{ background: "transparent" }}>
+      <AdaptiveQuality />
       <SceneInner categories={categories} active={active} subs={subs} onSelect={onSelect} />
     </Canvas>
   </div>
