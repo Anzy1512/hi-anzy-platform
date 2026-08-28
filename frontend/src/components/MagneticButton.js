@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { gsap, prefersReducedMotion } from "@/lib/motion";
 
@@ -16,7 +16,24 @@ import { gsap, prefersReducedMotion } from "@/lib/motion";
  * wherever the button was actually pressed, and it has to be retriggerable
  * mid-flight — replaying a CSS animation means removing it and forcing a
  * reflow, which is a lot of ceremony for a ring.
+ *
+ * The hoverText layer reveals character-by-character rather than as one
+ * block. `children` stays a single unit deliberately — it is often text plus
+ * an icon (`Explore the Network <ArrowRight/>`), and a per-character split
+ * only makes sense on hoverText, which this codebase only ever passes as a
+ * plain string. currentColor throughout, no new colour introduced; the only
+ * thing this changes is *how* the copy arrives, not what it looks like once
+ * it has.
  */
+const splitChars = (text) =>
+  String(text)
+    .split("")
+    .map((ch, i) => (
+      <span key={i} className="btn-char" style={{ "--i": i }}>
+        {ch === " " ? " " : ch}
+      </span>
+    ));
+
 export const MagneticButton = ({
   children,
   hoverText,
@@ -32,6 +49,12 @@ export const MagneticButton = ({
   const pulseRef = useRef(null);
   const pull = useRef({ x: 0, y: 0 });
   const [hover, setHover] = useState(false);
+  const reduced = prefersReducedMotion();
+
+  const hoverChars = useMemo(
+    () => (hoverText && !reduced ? splitChars(hoverText) : null),
+    [hoverText, reduced]
+  );
 
   const paint = useCallback((pressed) => {
     const el = ref.current;
@@ -95,11 +118,18 @@ export const MagneticButton = ({
         </span>
         {hoverText && (
           <span
-            className="col-start-1 row-start-1 inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all duration-300"
+            className={`col-start-1 row-start-1 inline-flex items-center justify-center whitespace-nowrap ${
+              hoverChars ? "btn-char-row" : "transition-all duration-300 gap-2"
+            }`}
             aria-hidden="true"
-            style={{ opacity: hover ? 1 : 0, transform: hover ? "none" : "translateY(110%)" }}
+            data-hover={hover ? "true" : "false"}
+            style={
+              hoverChars
+                ? undefined
+                : { opacity: hover ? 1 : 0, transform: hover ? "none" : "translateY(110%)" }
+            }
           >
-            {hoverText}
+            {hoverChars || hoverText}
           </span>
         )}
       </span>

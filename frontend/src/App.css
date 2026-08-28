@@ -237,6 +237,44 @@ html {
   transition-duration: 0.25s;
 }
 
+/* ---------- CTA hover-text: per-character reveal ---------- */
+/* The hoverText layer ("Good start.", "Meet the minds.") used to swap in as
+   one block, translating 110% and fading as a unit. Splitting it into spans
+   with a stagger — each character delayed by its own index — reads as the
+   copy arriving rather than being swapped, which is the one idea worth
+   keeping from a much louder reference: no colour change, no blur beyond a
+   soft 3px, no overshoot. currentColor throughout, so it inherits whatever
+   ground the button itself is already on (ink, paper or orange).
+   `children` (often text plus an icon) is deliberately left on the old
+   whole-block swap — a per-character split only makes sense on plain text. */
+.btn-char-row {
+  gap: 0;
+}
+.btn-char {
+  display: inline-block;
+  transform: translateY(55%);
+  opacity: 0;
+  filter: blur(3px);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.3s ease,
+              filter 0.34s ease;
+  transition-delay: calc(var(--i, 0) * 14ms);
+}
+[data-hover="true"] .btn-char {
+  transform: translateY(0);
+  opacity: 1;
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-char {
+    transition: none;
+    transform: none;
+    opacity: 1;
+    filter: none;
+  }
+}
+
 /* ---------- Button motion ---------- */
 /* Three additions, all of which stay off `transform` on the button itself,
    because MagneticButton owns that property and an inline style would win. */
@@ -498,8 +536,16 @@ html {
    There the top padding is not spacing between sections — it is the inset
    that keeps content off the edge of the colour, and removing it would crop
    the block rather than tighten the page. */
-.section-pad + .section-pad:not([class*="bg-"]):not(.panel-dark):not(.panel-paper),
-.section-pad-b + .section-pad:not([class*="bg-"]):not(.panel-dark):not(.panel-paper) {
+/* Only collapses between two PLAIN sections — the selector used to check
+   only the second section's own classes, so a plain section landed with
+   zero top padding even when the section before it was a full-bleed colored
+   panel (bg-[#1D2424], bg-[#D8CFB4]/60). A hard color-block edge is a strong
+   visual event; it needs the section's own top padding as breathing room on
+   the far side, not less than the panel's internal bottom padding already
+   gave it. Measured on Home: "HOW TRUST GETS BUILT" sat 26px below the dark
+   network panel's edge instead of the intended ~122px section-y gap. */
+.section-pad:not([class*="bg-"]):not(.panel-dark):not(.panel-paper) + .section-pad:not([class*="bg-"]):not(.panel-dark):not(.panel-paper),
+.section-pad-b:not([class*="bg-"]):not(.panel-dark):not(.panel-paper) + .section-pad:not([class*="bg-"]):not(.panel-dark):not(.panel-paper) {
   padding-top: 0;
 }
 
@@ -1575,6 +1621,35 @@ a.link-draw.sys-chip {
 @media (prefers-reduced-motion: reduce) {
   .cmdk-backdrop, .cmdk-panel { animation: none; }
   .cmdk-row { transition: none; }
+}
+
+/* ---------- Theme transition (View Transitions API) ---------- */
+/* ThemeToggle drives this with document.startViewTransition + a manual
+   clip-path animate() on ::view-transition-new(root). Without overriding the
+   browser's own default here, that default is a 250ms cross-fade of old and
+   new root snapshots running *at the same time* as the clip-path expand —
+   the two fight and the circle reads as a smear instead of a clean reveal.
+   The old snapshot is frozen (no fade, no animation) so it just sits there
+   while the new one's circle grows over it; duration:0 on both is what hands
+   control entirely to the animate() call in JS. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  /* clip-path is JS-driven per click, so no fixed radius belongs here — this
+     only has to exist so the browser creates the pseudo-element with a
+     defined starting clip before the animate() call takes over. */
+  clip-path: circle(0px at 50% 50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
 }
 
 /* ---------- Touch target minimums ---------- */
