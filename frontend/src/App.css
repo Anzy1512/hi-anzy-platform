@@ -1369,8 +1369,17 @@ html {
 .hero-core-fade-in {
   animation: cmdk-fade 0.6s ease-out both;
 }
+/* The other half of that reveal: once the canvas has had time to actually
+   land, the static diagram underneath is dismissed outright rather than left
+   mounted forever — the canvas is transparent by design, so an un-hidden
+   diagram would show through every gap in the 3D scene indefinitely. */
+.hero-core-fallback-out {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 @media (prefers-reduced-motion: reduce) {
   .hero-core-fade-in { animation: none; }
+  .hero-core-fallback-out { transition: none; }
 }
 
 /* The breadcrumb back-link on every detail page ("ALL WORK", "ALL NOTES",
@@ -1779,38 +1788,38 @@ button.link-draw::after {
   );
   filter: blur(2px);
 }
-.banner-figure img { animation: banner-float 9s ease-in-out infinite; }
-/* Colour-on-hover for a genuinely monochrome asset. mix-blend-mode: color
-   takes hue/saturation from this layer and luminance from the image beneath
-   it — the halftone shading survives the tint completely intact, which is
-   what makes it read as "the art gaining colour" rather than "a orange box
-   appearing over a photo". Ink-to-orange so it still reads as ink in the
-   shadows, the way the rest of the brand's dark grounds do. */
-.banner-figure-duotone {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(155deg, var(--ink, #232A2A) 0%, var(--orange, #F19020) 100%);
-  mix-blend-mode: color;
-  opacity: 0;
-  transition: opacity 0.45s ease;
-  pointer-events: none;
+.banner-figure svg { animation: banner-float 9s ease-in-out infinite; }
+
+/* The art itself is bold gradient colour now, not a grayscale photo with a
+   colour effect layered on top of it — so hover no longer needs to "reveal"
+   anything. It intensifies what is already there instead: a lift, a
+   saturation and contrast push, and the halo brightening behind it. */
+.banner-figure-bold svg {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease;
 }
-.banner-figure-tint:hover .banner-figure-duotone,
-.banner-figure-tint:focus-within .banner-figure-duotone {
-  opacity: 0.82;
+.banner-figure-bold:hover svg,
+.banner-figure-bold:focus-within svg {
+  transform: scale(1.045);
+  filter: saturate(1.35) contrast(1.06) brightness(1.04);
+}
+.banner-figure-bold .banner-figure-halo {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.banner-figure-bold:hover .banner-figure-halo,
+.banner-figure-bold:focus-within .banner-figure-halo {
+  transform: scale(1.12);
 }
 @media (prefers-reduced-motion: reduce) {
-  .banner-figure-duotone { transition: none; }
+  .banner-figure-bold svg { transition: none; }
+  .banner-figure-bold .banner-figure-halo { transition: none; }
 }
-
 
 @keyframes banner-float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50%      { transform: translateY(-10px) rotate(-1deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .banner-figure img { animation: none; }
+  .banner-figure svg { animation: none; }
 }
 
 /* ---------- Heading-sized link ---------- */

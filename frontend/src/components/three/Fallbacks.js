@@ -18,28 +18,46 @@ export class ThreeSafe extends React.Component {
 
 /**
  * Static system diagram — shown while the 3D core loads, when WebGL is
- * unavailable, or when the user prefers reduced motion. Content-complete:
- * same nodes, same route, same resolution to ROI.
+ * unavailable, or when the user prefers reduced motion. Same concept as the
+ * WebGL scene it stands in for: a scattered network of business functions,
+ * meshed together and unified by one core — not a literal frame-by-frame
+ * match (a static picture cannot orbit or pulse), but the same idea.
  */
+const CORE_SPOKES = [
+  [65.0, 55.5], [44.5, 65.0], [34.9, 44.5], [55.5, 34.9],
+];
+const MESH_EDGES = [
+  // ring A -> ring B
+  [[65.0, 55.5], [79.0, 57.8]], [[65.0, 55.5], [57.8, 79.0]],
+  [[44.5, 65.0], [57.8, 79.0]], [[44.5, 65.0], [28.8, 71.2]],
+  [[34.9, 44.5], [21.0, 42.2]], [[34.9, 44.5], [42.2, 21.0]],
+  [[55.5, 34.9], [42.2, 21.0]], [[55.5, 34.9], [71.2, 28.8]],
+  // ring B -> ring C
+  [[79.0, 57.8], [79, 79]], [[57.8, 79.0], [79, 79]],
+  [[28.8, 71.2], [21, 79]], [[21.0, 42.2], [21, 21]],
+  [[42.2, 21.0], [21, 21]], [[71.2, 28.8], [79, 21]],
+  // ring C outer loop
+  [[79, 79], [21, 79]], [[21, 79], [21, 21]], [[21, 21], [79, 21]], [[79, 21], [79, 79]],
+];
 const NODES = [
-  { l: "BRAND", x: 24, y: 30 }, { l: "CUSTOMER", x: 66, y: 20 }, { l: "SALES", x: 82, y: 44 },
-  { l: "TECH", x: 30, y: 56 }, { l: "CONTENT", x: 58, y: 50 }, { l: "DATA", x: 18, y: 78 },
-  { l: "OPERATIONS", x: 48, y: 78 }, { l: "GROWTH", x: 78, y: 72 },
+  ...CORE_SPOKES, [79.0, 57.8], [57.8, 79.0], [28.8, 71.2], [21.0, 42.2], [42.2, 21.0], [71.2, 28.8],
+  [79, 79], [21, 79], [21, 21], [79, 21],
 ];
 const STAGES = ["AUDIT", "ARCHITECT", "BUILD", "CONNECT", "SCALE"];
 
 export const SystemCoreFallback = () => (
   <div className="relative h-full w-full" data-testid="hero-system-core-fallback">
-    <svg viewBox="0 0 100 100" className="h-full w-full" role="img" aria-label="Diagram: disconnected business functions — brand, customer, sales, tech, content, data, operations, growth — connected by one orange route resolving to ROI">
-      <path d="M6,14 C 20,26 18,34 24,30 C 40,34 60,12 66,20 C 80,26 88,36 82,44 C 70,54 40,50 30,56 C 20,64 12,72 18,78 C 30,86 40,82 48,78 C 60,74 70,70 78,72 C 86,74 92,80 94,86" fill="none" stroke="#F19020" strokeWidth="1.6" strokeLinecap="round" />
-      {NODES.map((n) => (
-        <g key={n.l}>
-          <rect x={n.x - 9} y={n.y - 4} width="18" height="8" rx="1.6" fill="#F7F5EE" stroke="#232A2A" strokeWidth="0.4" />
-          <text x={n.x} y={n.y + 1.3} textAnchor="middle" fontSize="3.1" fontFamily="'Rajdhani', sans-serif" fill="#232A2A" fontWeight="600">{n.l}</text>
-        </g>
+    <svg viewBox="0 0 100 100" className="h-full w-full" role="img" aria-label="Diagram: a scattered network of business functions, meshed together and unified by one central system">
+      {MESH_EDGES.map(([[x1, y1], [x2, y2]], i) => (
+        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#232A2A" strokeWidth="0.5" opacity="0.32" />
       ))}
-      <circle cx="94" cy="86" r="4.4" fill="#E54A25" />
-      <text x="94" y="87.4" textAnchor="middle" fontSize="3.4" fontFamily="'Rajdhani', sans-serif" fill="#F7F5EE" fontWeight="700">ROI</text>
+      {CORE_SPOKES.map(([x, y], i) => (
+        <line key={i} x1="50" y1="50" x2={x} y2={y} stroke="#F19020" strokeWidth="0.9" opacity="0.85" />
+      ))}
+      {NODES.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r="2.4" fill="#F7F5EE" stroke="#232A2A" strokeWidth="0.5" />
+      ))}
+      <circle cx="50" cy="50" r="5.6" fill="#F19020" />
       {STAGES.map((s, i) => (
         <text key={s} x={8 + i * 20} y="97" fontSize="2.6" fontFamily="'Rajdhani', sans-serif" fill="#F7F5EE" opacity="0.75">{`0${i + 1} ${s}`}</text>
       ))}

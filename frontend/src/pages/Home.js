@@ -43,6 +43,23 @@ const Hero = ({ show3d }) => {
     return () => tween.kill();
   }, []);
 
+  // The diagram underneath is only a placeholder once the canvas is actually
+  // painting over it — the canvas itself has a transparent background (by
+  // design, so it can sit on this panel in either theme), which means the
+  // diagram would otherwise stay visible forever *through* it, doubled up
+  // with whatever the scene draws. Hiding it once the fade-in has had time
+  // to finish is what actually removes it from the page, not an assumption
+  // that the canvas paints over every pixel.
+  const [coreReady, setCoreReady] = useState(false);
+  useEffect(() => {
+    if (!show3d) {
+      setCoreReady(false);
+      return undefined;
+    }
+    const t = setTimeout(() => setCoreReady(true), 650);
+    return () => clearTimeout(t);
+  }, [show3d]);
+
   return (
     <section className="relative container-page pb-10 pt-[124px] lg:pb-14 lg:pt-[148px]" data-testid="home-hero-section">
       <div className="grid items-center gap-10 lg:grid-cols-12">
@@ -82,13 +99,17 @@ const Hero = ({ show3d }) => {
         <div className="lg:col-span-5">
           <Reveal delay={200}>
             <div className="panel-dark relative overflow-hidden" style={{ aspectRatio: "4/4.6" }} data-testid="hero-core-frame">
-              {/* The diagram is the permanent base layer, not a placeholder swapped
-                  away — the same layering .motif-frame already uses for its deck
-                  scenes. The canvas only ever gets added on top once it is truly
-                  ready to paint, and fades in there instead of popping in over
-                  what had been an empty frame. */}
+              {/* The diagram paints first — same layering .motif-frame uses for its
+                  deck scenes — and the canvas fades in on top once it is truly
+                  ready, instead of popping in over what had been an empty frame.
+                  Once that fade has had time to land, the diagram is hidden
+                  outright: the canvas is transparent by design, so leaving the
+                  diagram mounted underneath forever would let it show through
+                  every gap in the scene, doubled up with whatever draws there. */}
               <div className="absolute inset-0">
-                <SystemCoreFallback />
+                <div className={coreReady ? "hero-core-fallback-out" : undefined}>
+                  <SystemCoreFallback />
+                </div>
                 {show3d && (
                   <ThreeSafe fallback={null}>
                     <Suspense fallback={null}>
