@@ -10,6 +10,7 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { CollapseOnScroll } from "@/components/CollapseOnScroll";
 import { SectionIndex } from "@/components/SectionIndex";
 import { StickyCta } from "@/components/StickyCta";
+import { CommandPalette } from "@/components/CommandPalette";
 import { Toaster } from "@/components/ui/sonner";
 
 import Home from "@/pages/Home";
@@ -51,6 +52,7 @@ const Shell = () => {
       <Nav />
       <SectionIndex />
       <StickyCta />
+      <CommandPalette />
       <main id="main" tabIndex={-1} key={location.pathname} className="page-enter">
         <Suspense fallback={<PageFallback />}>
           <Routes location={location}>

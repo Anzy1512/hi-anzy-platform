@@ -103,6 +103,20 @@ export const Nav = () => {
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* Discoverable entry point for the palette. A shortcut nobody is
+              told about is a shortcut nobody uses, and this is the site's
+              main search. Hidden on touch, where there is no key to press. */}
+          <button
+            type="button"
+            className="cmdk-trigger"
+            onClick={() => window.__openCommandPalette && window.__openCommandPalette()}
+            aria-label="Search this site"
+            data-testid="nav-command-trigger"
+          >
+            Search
+            <kbd className="cmdk-kbd">&#8984;K</kbd>
+          </button>
+
           {/* Emergent managed Google sign-in */}
           {!loading && !user && (
             <button

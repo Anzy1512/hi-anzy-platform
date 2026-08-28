@@ -1398,6 +1398,184 @@ a.link-draw.sys-chip {
   .sticky-cta.is-in { transition: opacity 0.2s ease, visibility 0s linear 0s; }
 }
 
+/* ---------- Command palette ---------- */
+/* Ink and paper, same as everything else. A site that sells "technology
+   without theatre" does not get a neon search box. */
+.cmdk-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: max(12vh, 64px) 16px 16px;
+  background: rgba(20, 26, 26, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: cmdk-fade 0.16s ease-out both;
+}
+@keyframes cmdk-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.cmdk-panel {
+  width: min(640px, 100%);
+  max-height: min(66vh, 560px);
+  display: flex;
+  flex-direction: column;
+  background: var(--white-d);
+  border: 1px solid rgba(35, 42, 42, 0.22);
+  border-radius: 16px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.32);
+  overflow: hidden;
+  animation: cmdk-rise 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes cmdk-rise {
+  from { opacity: 0; transform: translateY(-8px) scale(0.99); }
+  to   { opacity: 1; transform: none; }
+}
+
+.cmdk-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(35, 42, 42, 0.14);
+  flex: none;
+}
+.cmdk-search-icon { color: rgba(35, 42, 42, 0.45); flex: none; }
+.cmdk-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  /* 16px so iOS does not zoom the page on focus */
+  font-size: 16px;
+  font-family: var(--font-editorial);
+  color: var(--ink);
+}
+.cmdk-input::placeholder { color: rgba(35, 42, 42, 0.42); }
+
+.cmdk-kbd {
+  font-family: var(--font-system);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: rgba(35, 42, 42, 0.55);
+  background: rgba(35, 42, 42, 0.07);
+  border: 1px solid rgba(35, 42, 42, 0.14);
+  border-radius: 5px;
+  padding: 3px 6px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.cmdk-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+.cmdk-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 9px 11px;
+  border-radius: 9px;
+  cursor: pointer;
+  /* colour only — moving rows on hover in a list you are arrowing through
+     makes the target shift under the pointer */
+  transition: background-color 0.12s ease;
+}
+.cmdk-row.is-active { background: rgba(241, 144, 32, 0.16); }
+.cmdk-row-label {
+  font-family: var(--font-editorial);
+  font-size: 15.5px;
+  color: var(--ink);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cmdk-row-meta { display: flex; align-items: baseline; gap: 10px; flex: none; }
+.cmdk-row-hint {
+  font-family: var(--font-system);
+  font-size: 12px;
+  color: rgba(35, 42, 42, 0.5);
+  max-width: 22ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cmdk-row-group {
+  font-family: var(--font-system);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(35, 42, 42, 0.4);
+  border: 1px solid rgba(35, 42, 42, 0.16);
+  border-radius: 999px;
+  padding: 2px 7px;
+}
+
+.cmdk-empty {
+  margin: 0;
+  padding: 22px 18px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(35, 42, 42, 0.7);
+}
+
+.cmdk-foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 14px;
+  border-top: 1px solid rgba(35, 42, 42, 0.12);
+  font-family: var(--font-system);
+  font-size: 11.5px;
+  color: rgba(35, 42, 42, 0.5);
+  flex: none;
+}
+.cmdk-foot-right { margin-left: auto; }
+
+/* The nav trigger. Hidden on touch, where there is no key to press and the
+   burger already leads everywhere. */
+.cmdk-trigger {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 10px 0 12px;
+  border-radius: 9px;
+  border: 1px solid rgba(35, 42, 42, 0.22);
+  background: none;
+  color: rgba(35, 42, 42, 0.6);
+  font-family: var(--font-system);
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.cmdk-trigger:hover { border-color: var(--orange); color: var(--ink); }
+@media (min-width: 1024px) and (pointer: fine) {
+  .cmdk-trigger { display: inline-flex; }
+}
+/* On the dark-header pages the nav flips to light ink. */
+.nav-shell--dark .cmdk-trigger { border-color: rgba(247, 245, 238, 0.28); color: rgba(247, 245, 238, 0.72); }
+.nav-shell--dark .cmdk-trigger:hover { border-color: var(--orange); color: var(--white-d); }
+.nav-shell--dark .cmdk-trigger .cmdk-kbd {
+  color: rgba(247, 245, 238, 0.7);
+  background: rgba(247, 245, 238, 0.1);
+  border-color: rgba(247, 245, 238, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmdk-backdrop, .cmdk-panel { animation: none; }
+  .cmdk-row { transition: none; }
+}
+
 /* ---------- Touch target minimums ---------- */
 /* WCAG 2.5.8 asks for 24x24 CSS px of pointer target. Several controls here
    are deliberately small as *marks* — a 10px pagination dot, a 16px footer
