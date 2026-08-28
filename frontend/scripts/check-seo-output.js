@@ -36,7 +36,11 @@ const FAKE_PATH = "/business-audit-strategy";
 const Seo = ({ title, description, jsonLd, image }) => {
   const blocks = [ORG, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [])];
   const url = FAKE_ORIGIN + FAKE_PATH;
-  const ogImage = image ? FAKE_ORIGIN + (image.startsWith("/") ? image : "/" + image) : undefined;
+  // Every page now gets a card, so this is unconditional — no caller was
+  // passing `image`, which meant og:image was never emitted at all and
+  // twitter:card quietly degraded to "summary".
+  const src = image || "/og-default.png";
+  const ogImage = FAKE_ORIGIN + (src.startsWith("/") ? src : "/" + src);
 
   return React.createElement(
     Helmet,
@@ -49,8 +53,8 @@ const Seo = ({ title, description, jsonLd, image }) => {
     React.createElement("meta", { property: "og:description", content: description }),
     React.createElement("meta", { property: "og:type", content: "website" }),
     React.createElement("meta", { property: "og:url", content: url }),
-    ogImage ? React.createElement("meta", { property: "og:image", content: ogImage }) : null,
-    React.createElement("meta", { name: "twitter:card", content: ogImage ? "summary_large_image" : "summary" }),
+    React.createElement("meta", { property: "og:image", content: ogImage }),
+    React.createElement("meta", { name: "twitter:card", content: "summary_large_image" }),
     React.createElement("meta", { name: "twitter:title", content: title }),
     React.createElement("meta", { name: "twitter:description", content: description }),
     ...blocks.map((b, i) =>
