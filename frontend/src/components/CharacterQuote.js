@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { CHARACTERS } from "@/data/content";
+import { Picture } from "@/components/Picture";
 
 /**
  * Mini marketing-character quote strip — fills quiet page regions with the
@@ -76,7 +77,7 @@ export const CharacterQuote = ({ startIndex, testId = "character-quote-strip" })
       <div className="flex items-center gap-5 rounded-[18px] border border-[#232A2A]/12 bg-[#D8CFB4]/45 p-5 sm:p-6">
         {char && (
           <div className="h-16 w-14 shrink-0 overflow-hidden rounded-[10px] border-2 border-[#232A2A]/15 sm:h-20 sm:w-16">
-            <img src={char.img} alt={`${line.who} — collage figure`} loading="lazy" className="h-full w-full object-cover object-top" />
+            <Picture src={char.img} alt={`${line.who} — collage figure`} loading="lazy" className="h-full w-full object-cover object-top" />
           </div>
         )}
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(6px)", transition: "opacity 0.3s ease, transform 0.3s ease" }}>

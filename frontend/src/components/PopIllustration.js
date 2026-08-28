@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { ScrollTrigger, prefersReducedMotion, subscribeScroll } from "@/lib/motion";
+import { Picture } from "@/components/Picture";
 
 /**
  * Animated pop illustration — the deck's halftone collage figures, brought in
@@ -90,7 +91,7 @@ export const PopIllustration = ({
       <div ref={liftRef} className="pop-illustration-lift" style={{ willChange: "transform, opacity" }}>
         <div className="pop-illustration-figure">
           {halo && <span className="pop-illustration-halo" aria-hidden="true" />}
-          <img
+          <Picture
             src={src}
             alt={alt}
             loading="lazy"

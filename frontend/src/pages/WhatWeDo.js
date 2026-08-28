@@ -11,6 +11,7 @@ import { CATEGORIES } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
 import { Packages } from "@/components/Packages";
 import { PackageBuilder } from "@/components/PackageBuilder";
+import { Picture } from "@/components/Picture";
 
 export default function WhatWeDo() {
   const ref = useRevealObserver();
@@ -52,7 +53,7 @@ export default function WhatWeDo() {
                   see .banner-figure-tint. */}
               <figure className="banner-figure banner-figure-tint relative mx-auto max-w-[380px]" data-parallax="16">
                 <span className="banner-figure-halo" aria-hidden="true" />
-                <img
+                <Picture
                   src="/brand/art-cube-head.png"
                   alt="Halftone collage — a person with a puzzle cube for a head"
                   loading="lazy"

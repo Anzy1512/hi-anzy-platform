@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
+import { Picture } from "@/components/Picture";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
@@ -379,7 +380,7 @@ const Diagnostic = () => (
               </ol>
             </div>
             <Reveal delay={200} className="hidden shrink-0 xl:block">
-              <img src="/brand/art-thinker.png" width="354" height="354" alt="Etched illustration — a person thinking, surrounded by question marks" loading="lazy" className="w-[170px] opacity-90" data-parallax="12" />
+              <Picture src="/brand/art-thinker.png" width="354" height="354" alt="Etched illustration — a person thinking, surrounded by question marks" loading="lazy" className="w-[170px] opacity-90" data-parallax="12" />
             </Reveal>
           </div>
         </div>

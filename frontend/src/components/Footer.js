@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { NAV_LINKS, FOOTER_LINKS } from "@/data/content";
 import { prefersReducedMotion } from "@/lib/motion";
+import { Picture } from "@/components/Picture";
 
 /**
  * Footer with a contextual micro-interaction: the brand tagline as a live route.
@@ -121,7 +122,7 @@ export const Footer = () => {
 
         <div className="mt-14 grid gap-10 border-t border-[#F7F5EE]/12 pt-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <img src="/brand/logo-light.png" alt="hiAnzy" width="667" height="220" className="h-12 w-auto" />
+            <Picture src="/brand/logo-light.png" alt="hiAnzy" width="667" height="220" className="h-12 w-auto" />
             <p className="mt-4 max-w-[260px] font-editorial text-[16.5px] leading-[1.5] text-[#F7F5EE]/60">Business Systems & Transformation Consultancy.</p>
           </div>
           <nav aria-label="Footer primary">

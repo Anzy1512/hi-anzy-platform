@@ -714,7 +714,11 @@ html {
   color: var(--ink);
 }
 
-/* Cross-fade the two wordmark lockups instead of hard-swapping the src. */
+/* Cross-fade the two wordmark lockups instead of hard-swapping the src.
+   Each logo is a <Picture> now (webp/avif + the png fallback), which puts a
+   <picture> between .nav-logo-stack and the <img> — so the sibling this
+   positions is the picture, not the img inside it; `img + img` stopped
+   matching anything the moment a second element sat between the two images. */
 .nav-logo-stack {
   position: relative;
   display: inline-block;
@@ -722,9 +726,10 @@ html {
 .nav-logo-stack img {
   transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.nav-logo-stack img + img {
+.nav-logo-stack picture + picture {
   position: absolute;
   inset: 0;
+  display: block;
 }
 
 /* ---------- Accent colours as text ----------

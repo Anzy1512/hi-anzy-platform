@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, LogIn, LogOut } from "lucide-react";
 import { NAV_LINKS } from "@/data/content";
+import { Picture } from "@/components/Picture";
 import { MagneticButton } from "@/components/MagneticButton";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -80,8 +81,8 @@ export const Nav = () => {
       <div className="container-page flex h-[84px] items-center justify-between">
         <Link to="/" className="flex items-center gap-3" data-testid="nav-logo" aria-label="hiAnzy — home">
           <span className="nav-logo-stack">
-            <img src="/brand/logo-dark.png" alt="hiAnzy" width="1167" height="388" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" style={{ opacity: onDark ? 0 : 1 }} />
-            <img src="/brand/logo-light.png" alt="" aria-hidden="true" width="667" height="220" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" style={{ opacity: onDark ? 1 : 0 }} />
+            <Picture src="/brand/logo-dark.png" alt="hiAnzy" width="1167" height="388" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" style={{ opacity: onDark ? 0 : 1 }} />
+            <Picture src="/brand/logo-light.png" alt="" aria-hidden="true" width="667" height="220" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" style={{ opacity: onDark ? 1 : 0 }} />
           </span>
         </Link>
 
