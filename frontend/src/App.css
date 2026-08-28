@@ -1312,6 +1312,92 @@ a.link-draw.sys-chip {
   min-height: 24px;
 }
 
+/* ---------- Sticky CTA ---------- */
+/* A quiet bar for the long pages. It reserves nothing in the layout, sits
+   above the section-index rail but below the nav, and translates rather than
+   toggling display so it can ease in and out. */
+.sticky-cta {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: nowrap;
+  max-width: min(760px, calc(100vw - 32px));
+  padding: 12px 14px 12px 20px;
+  border-radius: 14px;
+  background: rgba(29, 36, 36, 0.94);
+  border: 1px solid rgba(247, 245, 238, 0.14);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  /* Off-screen and inert until shown. visibility keeps it out of the tab order
+     and off the accessibility tree while it is parked. */
+  transform: translate(-50%, calc(100% + 28px));
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.35s ease, visibility 0s linear 0.45s;
+}
+.sticky-cta.is-in {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  visibility: visible;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.35s ease, visibility 0s linear 0s;
+}
+.sticky-cta-copy {
+  font-family: var(--font-system);
+  font-size: 15.5px;
+  line-height: 1.35;
+  color: var(--white-d);
+  margin: 0;
+  /* auto basis, not a 240px one — a fixed basis plus the actions overflowed
+     the content-sized bar and forced a wrap. */
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.sticky-cta-sub {
+  display: block;
+  font-size: 13px;
+  color: rgba(247, 245, 238, 0.6);
+}
+.sticky-cta-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+.sticky-cta-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(247, 245, 238, 0.2);
+  background: none;
+  color: rgba(247, 245, 238, 0.7);
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.sticky-cta-close:hover {
+  color: var(--white-d);
+  border-color: rgba(247, 245, 238, 0.45);
+}
+
+@media (max-width: 640px) {
+  .sticky-cta { gap: 10px; padding: 12px 12px 12px 16px; bottom: 12px; flex-wrap: wrap; }
+  .sticky-cta-copy { font-size: 14.5px; flex-basis: 100%; }
+  .sticky-cta-sub { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-cta { transition: opacity 0.2s ease, visibility 0s linear 0.2s; }
+  .sticky-cta.is-in { transition: opacity 0.2s ease, visibility 0s linear 0s; }
+}
+
 /* ---------- Touch target minimums ---------- */
 /* WCAG 2.5.8 asks for 24x24 CSS px of pointer target. Several controls here
    are deliberately small as *marks* — a 10px pagination dot, a 16px footer
