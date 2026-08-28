@@ -11,7 +11,6 @@ import { CATEGORIES } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
 import { Packages } from "@/components/Packages";
 import { PackageBuilder } from "@/components/PackageBuilder";
-import { DisciplineOrbit } from "@/components/art/DisciplineOrbit";
 
 export default function WhatWeDo() {
   const ref = useRevealObserver();
@@ -48,8 +47,17 @@ export default function WhatWeDo() {
           </div>
           <div className="lg:col-span-5">
             <Reveal delay={200}>
-              <figure className="banner-figure banner-figure-bold relative mx-auto max-w-[380px]" data-parallax="16">
-                <DisciplineOrbit className="relative w-full" />
+              {/* The deck's own collage, not a redrawn stand-in for it. The
+                  colour on hover is a duotone applied to the image itself —
+                  see .banner-figure-tint. */}
+              <figure className="banner-figure banner-figure-tint relative mx-auto max-w-[380px]" data-parallax="16">
+                <span className="banner-figure-halo" aria-hidden="true" />
+                <img
+                  src="/brand/art-cube-head.png"
+                  alt="Halftone collage — a person with a puzzle cube for a head"
+                  loading="lazy"
+                  className="relative w-full"
+                />
               </figure>
             </Reveal>
           </div>

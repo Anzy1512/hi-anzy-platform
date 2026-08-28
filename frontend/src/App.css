@@ -1775,113 +1775,61 @@ button.link-draw::after {
   }
 }
 
-/* ---------- Banner figure (page-hero art) ---------- */
-/* A slow float so a static hero has some life without demanding attention.
-   The glow behind the art is drawn inside the SVG now (DisciplineOrbit's own
-   radial gradient), so there is no separate halo element to style here. */
+/* ---------- Banner figure (page-hero collage) ---------- */
+/* A soft ground behind the cut-out so it reads as placed rather than pasted,
+   and a slow float so a static hero has some life without demanding attention. */
+/* overflow-clip: the halo is drawn wider than the figure so the glow reads as
+   ground rather than a badge, but at 375px that bleed pushed the document 5px
+   wider than the viewport. Clipping keeps the effect and drops the overflow. */
 .banner-figure { isolation: isolate; overflow: hidden; }
-.banner-figure svg { animation: banner-float 9s ease-in-out infinite; }
-
-/* The art itself is bold gradient colour now, not a grayscale photo with a
-   colour effect layered on top of it — so hover no longer needs to "reveal"
-   anything. It intensifies what is already there instead: a lift plus a
-   saturation and contrast push. The diagram's own halo is drawn inside the
-   SVG (see DisciplineOrbit), so it scales up together with everything else
-   rather than needing a separate rule.
-
-   The lift is a `scale` custom property consumed by the banner-float
-   keyframes, NOT a `transform` on this element. banner-float is an infinite
-   animation already driving `transform` here, and a running animation beats
-   a transition on the same property outright — a `transform: scale()` hover
-   rule would have been silently discarded every frame. `scale` is its own
-   animatable property, so it composes with the animated transform instead of
-   fighting it, and still transitions. */
-.banner-figure-bold svg {
-  scale: 1;
-  transition: scale 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease;
+.banner-figure-halo {
+  position: absolute;
+  inset: 4% -6% -4% -6%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(241, 144, 32, 0.28),
+    rgba(241, 144, 32, 0.09) 62%,
+    transparent 100%
+  );
+  filter: blur(2px);
 }
-.banner-figure-bold:hover svg,
-.banner-figure-bold:focus-within svg {
-  scale: 1.045;
-  filter: saturate(1.35) contrast(1.06) brightness(1.04);
+.banner-figure img { animation: banner-float 9s ease-in-out infinite; }
+
+/* Colour on hover for a scan that has none. The source is fully monochrome, so
+   there is nothing underneath to uncover — a grayscale(0) toggle would be a
+   silent no-op. This is a duotone press run instead: sepia lays a single ink
+   over the full tonal range, and the saturate/hue-rotate pair pulls that ink
+   to hue 32° — measured, the same hue as the amber token, so the artwork is
+   printed in the brand's own accent rather than a colour invented for the
+   effect. Every halftone dot survives, because the tone is remapped rather
+   than covered.
+
+   On the image, not an overlay: the PNG is a cut-out with real transparency,
+   and a wash sitting over the figure box tinted the paper showing through it
+   too — a hard-edged rectangle around the collage. A filter only ever touches
+   pixels the artwork actually has.
+
+   `filter`, while banner-float already animates `transform` on this same
+   element. Different properties compose; the same property would not — a
+   running animation beats a transition outright. */
+.banner-figure-tint img {
+  transition: filter 0.5s ease;
+}
+.banner-figure-tint:hover img,
+.banner-figure-tint:focus-within img {
+  filter: sepia(1) saturate(2.4) hue-rotate(-8deg) brightness(1.02);
 }
 @media (prefers-reduced-motion: reduce) {
-  .banner-figure-bold svg { transition: none; }
+  .banner-figure-tint img { transition: none; }
 }
-
-/* ---------- Discipline orbit (What We Do banner) ---------- */
-.do-cluster {
-  transform-box: view-box;
-  transform-origin: 100px 120px;
-  animation: do-drift 90s linear infinite;
-}
-.do-connector {
-  stroke-dasharray: 75;
-  stroke-dashoffset: 75;
-  animation: do-draw 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.do-node {
-  transform-box: fill-box;
-  transform-origin: center;
-  opacity: 0;
-  animation: do-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both, do-bob 4.5s ease-in-out infinite;
-}
-.do-core {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: do-core-breathe 3.2s ease-in-out infinite;
-}
-.do-pulse {
-  offset-rotate: 0deg;
-  opacity: 0;
-  animation: do-pulse-travel 2.6s ease-in-out infinite;
-}
-@keyframes do-drift {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-@keyframes do-draw {
-  from { stroke-dashoffset: 75; }
-  to { stroke-dashoffset: 0; }
-}
-/* do-pop drives `scale`, do-bob drives `transform` — deliberately different
-   properties. Both run on .do-node at once, and two concurrent animations
-   targeting the same property means the last one listed simply wins: written
-   as two transforms, the bob would have erased the pop's overshoot entirely
-   and the nodes would only ever have faded in. */
-@keyframes do-pop {
-  0% { opacity: 0; scale: 0.4; }
-  60% { opacity: 1; scale: 1.08; }
-  100% { opacity: 1; scale: 1; }
-}
-@keyframes do-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-}
-@keyframes do-core-breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.07); }
-}
-@keyframes do-pulse-travel {
-  0% { offset-distance: 0%; opacity: 0; }
-  8% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { offset-distance: 100%; opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .do-cluster { animation: none; }
-  .do-connector { animation: none; stroke-dashoffset: 0; }
-  .do-node { animation: none; opacity: 1; transform: none; }
-  .do-core { animation: none; }
-  .do-pulse { animation: none; opacity: 0; }
-}
-
 @keyframes banner-float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50%      { transform: translateY(-10px) rotate(-1deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .banner-figure svg { animation: none; }
+  .banner-figure img { animation: none; }
 }
 
 /* ---------- Heading-sized link ---------- */
