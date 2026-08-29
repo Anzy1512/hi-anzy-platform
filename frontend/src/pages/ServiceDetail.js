@@ -51,6 +51,55 @@ export default function ServiceDetail() {
   const ref = useRevealObserver();
   const c = CATEGORY_BY_SLUG[slug];
 
+  // Memoized on c (i.e. on slug), and — Rules of Hooks — called before the
+  // `!c` early return below rather than after it, even though c is exactly
+  // what it depends on. c is guarded inside instead. Without the memo, the
+  // case-studies fetch above resolving after mount would re-render this
+  // component with nothing about the service data changed, but still hand
+  // <Seo> a brand-new jsonLd array reference — a needless extra effect run
+  // downstream for no actual content change.
+  const jsonLd = React.useMemo(() => {
+    if (!c) return [];
+    const blocks = [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        name: `${c.title} — hiAnzy`,
+        serviceType: c.title,
+        description: c.lede,
+        provider: { "@type": "Organization", name: "hiAnzy" },
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: `${c.title} capabilities`,
+          itemListElement: c.capabilities.map((cap) => ({
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: cap },
+          })),
+        },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "What We Do", item: abs("/what-we-do") },
+          { "@type": "ListItem", position: 2, name: c.title, item: abs(`/what-we-do/${c.slug}`) },
+        ],
+      },
+    ];
+    if (c.faqs && c.faqs.length) {
+      blocks.push({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: c.faqs.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      });
+    }
+    return blocks;
+  }, [c]);
+
   if (!c) {
     return (
       <div className="flex min-h-[70vh] flex-col items-center justify-center gap-6 px-4 text-center pt-[84px]" data-testid="service-not-found">
@@ -64,45 +113,6 @@ export default function ServiceDetail() {
   }
 
   const others = CATEGORIES.filter((x) => x.slug !== c.slug);
-
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      name: `${c.title} — hiAnzy`,
-      serviceType: c.title,
-      description: c.lede,
-      provider: { "@type": "Organization", name: "hiAnzy" },
-      hasOfferCatalog: {
-        "@type": "OfferCatalog",
-        name: `${c.title} capabilities`,
-        itemListElement: c.capabilities.map((cap) => ({
-          "@type": "Offer",
-          itemOffered: { "@type": "Service", name: cap },
-        })),
-      },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "What We Do", item: abs("/what-we-do") },
-        { "@type": "ListItem", position: 2, name: c.title, item: abs(`/what-we-do/${c.slug}`) },
-      ],
-    },
-  ];
-
-  if (c.faqs && c.faqs.length) {
-    jsonLd.push({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: c.faqs.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
-    });
-  }
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="service-detail-page">

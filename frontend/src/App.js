@@ -5,7 +5,6 @@ import "@/App.css";
 import "@/dark.generated.css";
 import "@/dark.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
 import { LenisProvider, ScrollToTop } from "@/lib/motion";
 import { AuthProvider, AuthCallback } from "@/lib/auth";
 import { Nav } from "@/components/Nav";
@@ -89,20 +88,18 @@ const Shell = () => {
 
 function App() {
   return (
-    <HelmetProvider>
-      {/* Opt in to the v7 behaviours now: both are already how this app expects
-          routing to work, and without the flags React Router logs a future
-          warning on every load, which buries anything real in the console. */}
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <AuthProvider>
-          <LenisProvider>
-            <ScrollToTop />
-            <CollapseOnScroll />
-            <Shell />
-          </LenisProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </HelmetProvider>
+    // Opt in to the v7 behaviours now: both are already how this app expects
+    // routing to work, and without the flags React Router logs a future
+    // warning on every load, which buries anything real in the console.
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <AuthProvider>
+        <LenisProvider>
+          <ScrollToTop />
+          <CollapseOnScroll />
+          <Shell />
+        </LenisProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
