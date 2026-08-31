@@ -536,3 +536,107 @@ PORTFOLIO_GROUPS = [
             {"name": "Jotun Paints Arabia", "url": "https://www.instagram.com/jotunpaintsarabia/"},
         ]},
 ]
+
+
+# ── The Hi Anzy Orbit ────────────────────────────────────────────────────────
+# ecosystem_items is not hand-authored: it is derived from CASE_STUDIES and
+# NETWORK_RESOURCES above at import time, so the Orbit shows real, already-
+# verified relationships instead of a second, parallel dataset someone has to
+# remember to keep in sync. Two source enums collapse into one canonical
+# provenance value here (see PROVENANCE_MAP) -- case_studies.provenance and
+# network_resources.relationshipType have always meant the same thing
+# (who is actually accountable for the work) but were never spelled the
+# same way.
+#
+# hiAnzy's own five core studios (relationshipType == "HI ANZY DIRECT") are
+# deliberately excluded below. They are not network relationships -- they are
+# hiAnzy itself -- and folding them into a "collaborator" roster would blur
+# exactly the client/network line this classification exists to keep clear,
+# in the opposite direction from the usual risk (making hiAnzy's own team
+# read as outside talent, rather than making outside talent read as hiAnzy's
+# own team).
+PROVENANCE_MAP = {
+    "HI ANZY": "HI_ANZY_DIRECT",
+    "HI ANZY + PARTNER": "HI_ANZY_COLLABORATOR",
+    "COLLABORATOR WORK": "COLLABORATOR_CREDENTIAL",
+    "HI ANZY + COLLABORATOR": "HI_ANZY_COLLABORATOR",
+    "COLLABORATOR CREDENTIAL": "COLLABORATOR_CREDENTIAL",
+    "NETWORK ACCESS": "NETWORK_ACCESS",
+}
+
+
+def _ecosystem_category_for(resource: dict) -> str:
+    """category is the finer-grained discipline (Strategy, Media, Venues, ...);
+    the Orbit's six buckets are coarser. Creators and Venues already name
+    themselves. Everything else splits on relationshipType, which is what
+    actually distinguishes "we brief them directly" collaborators from
+    "we can open the door to them" partners -- category alone can't: Events
+    and Media both contain both kinds."""
+    if resource["category"] == "Creators":
+        return "creator"
+    if resource["category"] == "Venues":
+        return "venue"
+    if resource["relationshipType"] in ("HI ANZY + COLLABORATOR", "COLLABORATOR CREDENTIAL"):
+        return "collaborator"
+    return "partner"  # NETWORK ACCESS, once Creators/Venues/collaborator are ruled out
+
+
+def _build_ecosystem_items() -> list:
+    items = []
+
+    for i, cs in enumerate(CASE_STUDIES):
+        items.append({
+            "id": cs["slug"],
+            "slug": cs["slug"],
+            "name": cs["title"],
+            "category": "built_here" if cs["provenance"] == "HI ANZY" else "built_together",
+            "relationshipType": cs["provenance"],
+            "title": cs["title"],
+            "shortDescription": cs["summary"],
+            "longDescription": cs["situation"],
+            "image": None,
+            "gallery": [],
+            "capabilities": cs["services"],
+            "geography": [],
+            "links": [],
+            "featured": cs["featured"],
+            "publicStatus": "public" if cs["published"] else "draft",
+            "lastVerified": cs["year"],
+            "provenance": PROVENANCE_MAP[cs["provenance"]],
+            "sortOrder": (0 if cs["featured"] else 1, i),
+        })
+
+    for i, r in enumerate(NETWORK_RESOURCES):
+        if r["relationshipType"] == "HI ANZY DIRECT":
+            continue  # hiAnzy's own studios -- see module docstring above
+        items.append({
+            "id": r["slug"],
+            "slug": r["slug"],
+            "name": r["name"],
+            "category": _ecosystem_category_for(r),
+            "relationshipType": r["relationshipType"],
+            "title": r["name"],
+            "shortDescription": r["note"],
+            "longDescription": None,
+            "image": None,
+            "gallery": [],
+            "capabilities": r["capabilities"],
+            "geography": [r["geography"]] if r.get("geography") else [],
+            "links": [r["portfolioUrl"]] if r.get("portfolioUrl") else [],
+            "featured": r["featured"],
+            "publicStatus": r["publicStatus"],
+            "lastVerified": r["lastVerified"],
+            "provenance": PROVENANCE_MAP[r["relationshipType"]],
+            "sortOrder": (0 if r["featured"] else 1, i),
+        })
+
+    # sortOrder was a (featured, original-position) tuple purely to compute a
+    # stable order without a second pass; flatten it to the plain int the
+    # schema promises before this is ever seeded.
+    items.sort(key=lambda d: d["sortOrder"])
+    for rank, item in enumerate(items):
+        item["sortOrder"] = rank
+    return items
+
+
+ECOSYSTEM_ITEMS = _build_ecosystem_items()

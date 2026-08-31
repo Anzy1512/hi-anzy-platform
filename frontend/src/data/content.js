@@ -616,11 +616,72 @@ export const PROVENANCE_STYLES = {
   "HI ANZY DIRECT": { cls: "bg-[#232A2A] text-[#F7F5EE]", bar: false },
   "HI ANZY + PARTNER": { cls: "bg-[#F19020]/15 text-[#232A2A] border border-[#F19020]", bar: false },
   "HI ANZY + COLLABORATOR": { cls: "bg-[#F19020]/15 text-[#232A2A] border border-[#F19020]", bar: false },
+  // Alias: ecosystem_items.provenance values arrive as the backend's
+  // HI_ANZY_COLLABORATOR enum member, space-normalized before this lookup
+  // (see ProvenanceTag) — lands here rather than on the "+" key above.
+  "HI ANZY COLLABORATOR": { cls: "bg-[#F19020]/15 text-[#232A2A] border border-[#F19020]", bar: false },
   "COLLABORATOR WORK": { cls: "bg-[#F7F5EE] text-[#232A2A] border border-[#232A2A]/30", bar: true },
   "COLLABORATOR CREDENTIAL": { cls: "bg-[#F7F5EE] text-[#232A2A] border border-[#232A2A]/30", bar: true },
   NETWORK: { cls: "bg-transparent text-[#232A2A] border border-dashed border-[#232A2A]/40", bar: false },
   "NETWORK ACCESS": { cls: "bg-transparent text-[#232A2A] border border-dashed border-[#232A2A]/40", bar: false },
 };
+
+/* The Hi Anzy Orbit — six categories, one deck, on /work. `key` matches the
+   backend's EcosystemCategory enum exactly, so it doubles as the ?category=
+   filter value for getEcosystem() on each category's own index page. */
+export const ORBIT_CATEGORIES = [
+  {
+    num: "01",
+    key: "built_here",
+    name: "BUILT HERE",
+    descriptor: "In-house projects",
+    copy: "Where we put our own thinking to work.",
+    route: "/work/built-here",
+  },
+  {
+    num: "02",
+    key: "built_together",
+    name: "BUILT TOGETHER",
+    descriptor: "Collaborations & joint work",
+    copy: "Good work rarely asks who deserves all the credit.",
+    route: "/work/built-together",
+  },
+  {
+    num: "03",
+    key: "collaborator",
+    name: "MINDS IN THE MIX",
+    descriptor: "Collaborators & specialists",
+    copy: "Expertise, without the unnecessary payroll theatre.",
+    route: "/network/collaborators",
+  },
+  {
+    num: "04",
+    key: "creator",
+    name: "FACES & VOICES",
+    descriptor: "Artists & creators",
+    copy: "Sometimes the right message needs the right messenger.",
+    route: "/network/artists-creators",
+  },
+  {
+    num: "05",
+    key: "venue",
+    name: "PLACES WITH POSSIBILITY",
+    descriptor: "Venues & institutions",
+    copy: "Some ideas need more than a screen.",
+    // Not /network/venues — that slug is already the Events & Venue
+    // Production discipline page (see disciplines.js). This is a roster of
+    // partner venues, a different thing from that capability page.
+    route: "/network/venue-partners",
+  },
+  {
+    num: "06",
+    key: "partner",
+    name: "PARTNERS IN PROGRESS",
+    descriptor: "Media, production & strategic partners",
+    copy: "When the work needs to travel, scale or get specialised.",
+    route: "/network/partners",
+  },
+];
 
 
 /* ── Engagement model ────────────────────────────────────────────────────────

@@ -14,6 +14,7 @@ import time
 import logging
 import asyncio
 import smtplib
+from enum import Enum
 from email.mime.text import MIMEText
 from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr, field_validator
@@ -22,7 +23,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 import requests as http_requests
 
-from seed_data import CASE_STUDIES, NETWORK_RESOURCES, INSIGHTS, PORTFOLIO_GROUPS
+from seed_data import CASE_STUDIES, NETWORK_RESOURCES, INSIGHTS, PORTFOLIO_GROUPS, ECOSYSTEM_ITEMS
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
@@ -153,6 +154,61 @@ class AnalyticsEvent(BaseModel):
         if len(json.dumps(v, default=str)) > ANALYTICS_META_MAX_BYTES:
             raise ValueError("meta payload too large")
         return v
+
+
+class EcosystemCategory(str, Enum):
+    """The Hi Anzy Orbit's six categories. Deliberately coarser than
+    network_resources.category (Strategy/Media/Venues/...) -- see
+    seed_data.py's _ecosystem_category_for() for how one derives from the
+    other."""
+    built_here = "built_here"
+    built_together = "built_together"
+    collaborator = "collaborator"
+    creator = "creator"
+    venue = "venue"
+    partner = "partner"
+
+
+class Provenance(str, Enum):
+    """The strict public relationship classification: never let a reader
+    come away thinking network access is a client relationship, or that a
+    collaborator's own past work is something hiAnzy delivered directly."""
+    HI_ANZY_DIRECT = "HI_ANZY_DIRECT"
+    HI_ANZY_COLLABORATOR = "HI_ANZY_COLLABORATOR"
+    COLLABORATOR_CREDENTIAL = "COLLABORATOR_CREDENTIAL"
+    NETWORK_ACCESS = "NETWORK_ACCESS"
+
+
+class EcosystemItem(BaseModel):
+    """Response shape for GET /api/ecosystem. Used as a response_model, not a
+    request body -- there is no write endpoint; every record is derived from
+    CASE_STUDIES/NETWORK_RESOURCES at seed time (seed_data.py). Validating on
+    the way out still matters: it's what actually guarantees a public
+    endpoint never serves a field nobody intended to expose."""
+    id: str
+    slug: str
+    name: str
+    category: EcosystemCategory
+    relationshipType: str
+    title: str
+    shortDescription: str
+    longDescription: Optional[str] = None
+    image: Optional[str] = None
+    gallery: List[str] = Field(default_factory=list)
+    capabilities: List[str] = Field(default_factory=list)
+    geography: List[str] = Field(default_factory=list)
+    links: List[str] = Field(default_factory=list)
+    featured: bool = False
+    publicStatus: str
+    lastVerified: str
+    provenance: Provenance
+    sortOrder: int
+    # Escape hatch for Phase N's richer per-category detail fields (photo/
+    # discipline for collaborators, capacity for venues, ...) once individual
+    # detail routes exist -- avoids a schema migration to add them later.
+    details: Optional[Dict[str, Any]] = None
+    createdAt: Optional[str] = None
+    updatedAt: Optional[str] = None
 
 
 # ── Email ────────────────────────────────────────────────────────────────────
@@ -299,6 +355,19 @@ async def network_categories():
         if cat and cat not in seen:
             seen.append(cat)
     return {"categories": seen}
+
+
+@api_router.get("/ecosystem", response_model=List[EcosystemItem])
+async def list_ecosystem(category: Optional[EcosystemCategory] = None):
+    """The Hi Anzy Orbit. Same publicStatus=="public" gating as /network;
+    sortOrder (featured first, then original seed position) rather than a
+    Mongo-side sort on "featured", since curatorial order is now baked into
+    the field itself."""
+    query: Dict[str, Any] = {"publicStatus": "public"}
+    if category:
+        query["category"] = category.value
+    cursor = db.ecosystem_items.find(query, {"_id": 0}).sort("sortOrder", 1)
+    return await cursor.to_list(length=100)
 
 
 @api_router.get("/insights")
@@ -641,10 +710,21 @@ async def upsert_all(collection, docs: List[dict], key: str) -> int:
     An all-or-nothing `count == 0` guard means new editorial content is never
     picked up once a collection exists. Upserting on the natural key keeps
     seeding safe to re-run while still publishing additions and edits.
+
+    createdAt/updatedAt are stamped here rather than carried in the seed
+    dicts themselves — $setOnInsert for createdAt, $set for updatedAt, the
+    same split /subscribe already uses for its own upsert. A document's
+    first-seen time should survive every later re-seed, not reset to
+    "whenever the server last restarted".
     """
     written = 0
+    now = now_iso()
     for doc in docs:
-        result = await collection.update_one({key: doc[key]}, {"$set": doc}, upsert=True)
+        result = await collection.update_one(
+            {key: doc[key]},
+            {"$set": {**doc, "updatedAt": now}, "$setOnInsert": {"createdAt": now}},
+            upsert=True,
+        )
         if result.upserted_id is not None or result.modified_count:
             written += 1
     return written
@@ -656,6 +736,7 @@ async def seed():
         (db.network_resources, NETWORK_RESOURCES, "slug", "network resources"),
         (db.insights, INSIGHTS, "slug", "insights"),
         (db.portfolio_groups, PORTFOLIO_GROUPS, "category", "portfolio groups"),
+        (db.ecosystem_items, ECOSYSTEM_ITEMS, "slug", "ecosystem items"),
     ):
         written = await upsert_all(collection, docs, key)
         if written:

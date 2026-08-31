@@ -24,6 +24,7 @@ const Work = lazy(() => import("@/pages/Work"));
 const WorkDetail = lazy(() => import("@/pages/WorkDetail"));
 const Network = lazy(() => import("@/pages/Network"));
 const Discipline = lazy(() => import("@/pages/Discipline"));
+const EcosystemCategoryPage = lazy(() => import("@/pages/ecosystem/EcosystemCategoryPage"));
 const WhyHiAnzy = lazy(() => import("@/pages/WhyHiAnzy"));
 const Insights = lazy(() => import("@/pages/Insights"));
 const InsightDetail = lazy(() => import("@/pages/InsightDetail"));
@@ -63,8 +64,20 @@ const Shell = () => {
             <Route path="/what-we-do/:slug" element={<ServiceDetail />} />
             <Route path="/how-we-work" element={<HowWeWork />} />
             <Route path="/work" element={<Work />} />
+            {/* Literal segments outrank :slug in react-router v6's own route
+                ranking regardless of declaration order, so these two do not
+                get shadowed by /work/:slug below — verified live, not just
+                assumed, during Milestone 3 testing. */}
+            <Route path="/work/built-here" element={<EcosystemCategoryPage category="built_here" />} />
+            <Route path="/work/built-together" element={<EcosystemCategoryPage category="built_together" />} />
             <Route path="/work/:slug" element={<WorkDetail />} />
             <Route path="/network" element={<Network />} />
+            <Route path="/network/collaborators" element={<EcosystemCategoryPage category="collaborator" />} />
+            <Route path="/network/artists-creators" element={<EcosystemCategoryPage category="creator" />} />
+            {/* Not /network/venues — that slug is already the Events & Venue
+                Production discipline page below (see data/disciplines.js). */}
+            <Route path="/network/venue-partners" element={<EcosystemCategoryPage category="venue" />} />
+            <Route path="/network/partners" element={<EcosystemCategoryPage category="partner" />} />
             <Route path="/network/:slug" element={<Discipline />} />
             <Route path="/why-hi-anzy" element={<WhyHiAnzy />} />
             <Route path="/insights" element={<Insights />} />

@@ -133,6 +133,44 @@ def main():
     r = requests.get(f"{API}/insights/{islug}", timeout=10)
     check("insight detail with body", r.status_code == 200 and len(r.json().get("body", [])) > 3)
 
+    # 6b. Ecosystem (Phase M/N/O/P) — derived collection, publicStatus-gated
+    r = requests.get(f"{API}/ecosystem", timeout=10)
+    ecosystem = r.json() if r.status_code == 200 else []
+    expected_categories = {"built_here", "built_together", "collaborator", "creator", "venue", "partner"}
+    seen_categories = {x["category"] for x in ecosystem}
+    check(
+        "ecosystem seeded, only public records, all 6 categories present",
+        r.status_code == 200
+        and len(ecosystem) > 0
+        and all(x["publicStatus"] == "public" for x in ecosystem)
+        and expected_categories.issubset(seen_categories),
+        f"count={len(ecosystem)} categories={sorted(seen_categories)}",
+    )
+    # The 5 NETWORK_RESOURCES with relationshipType "HI ANZY DIRECT" are
+    # hiAnzy's own internal studios, not external network entities — they
+    # must never surface as ecosystem items. (Case studies hiAnzy built
+    # itself DO legitimately carry provenance HI_ANZY_DIRECT under the
+    # built_here category — that's a different, correct use of the same
+    # enum value, not what this check is about.)
+    internal_studio_slugs = {
+        "hi-anzy-strategy-desk", "hi-anzy-brand-studio", "hi-anzy-systems-web-studio",
+        "hi-anzy-automation-lab", "hi-anzy-ai-practice",
+    }
+    ecosystem_slugs = {x["slug"] for x in ecosystem}
+    check(
+        "hiAnzy-internal studios excluded from ecosystem",
+        ecosystem_slugs.isdisjoint(internal_studio_slugs),
+        f"overlap={ecosystem_slugs & internal_studio_slugs}",
+    )
+    r = requests.get(f"{API}/ecosystem?category=creator", timeout=10)
+    check(
+        "ecosystem category filter",
+        r.status_code == 200 and len(r.json()) > 0 and all(x["category"] == "creator" for x in r.json()),
+        f"count={len(r.json()) if r.status_code == 200 else 'n/a'}",
+    )
+    r = requests.get(f"{API}/ecosystem?category=not_a_real_category", timeout=10)
+    check("ecosystem invalid category rejected (422)", r.status_code == 422, str(r.status_code))
+
     # 7. Analytics hardening (Phase A)
     r = requests.post(f"{API}/analytics/event", json={"name": "cta_primary_click", "path": "/poc"}, timeout=10)
     check("known analytics event accepted", r.status_code == 200 and r.json().get("ok") is True)

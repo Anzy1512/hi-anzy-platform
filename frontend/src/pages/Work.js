@@ -9,6 +9,7 @@ import { CardCarousel } from "@/components/CardCarousel";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { RouteLine } from "@/components/RouteLine";
 import { CaseAnatomy } from "@/components/CaseAnatomy";
+import { OrbitSection } from "@/components/OrbitSection";
 import { announceExpanded, onCollapse } from "@/components/CollapseOnScroll";
 import { useRevealObserver } from "@/lib/motion";
 import { getCaseStudies, getCaseStudy, track, API } from "@/lib/api";
@@ -286,9 +287,13 @@ export default function Work() {
         <div className="mt-8 flex justify-end pr-[6%]">
           <PunPop text="Proof beats promise. Every time." rot={2} variant="dark" testId="pun-work" />
         </div>
+      </section>
 
+      <OrbitSection />
+
+      <section className="container-page section-pad-b" data-index-label="PORTFOLIO ARCHIVE">
         {/* ============ THE PORTFOLIO WALL — migrated from the deck ============ */}
-        <div className="mt-20" data-testid="work-portfolio-wall">
+        <div data-testid="work-portfolio-wall">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
               <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
