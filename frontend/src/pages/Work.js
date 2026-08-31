@@ -168,8 +168,6 @@ export default function Work() {
         </div>
       </section>
 
-      <OrbitSection />
-
       <section className="container-page section-pad-b" data-index-label="CASE STUDIES">
         {error && <p className="panel-paper p-6 text-[14px] text-[#232A2A]/75" data-testid="work-error">The case files are being stubborn. Refresh, or just say hi and we will walk you through them in person.</p>}
         {!cases && !error && (
@@ -290,6 +288,8 @@ export default function Work() {
           <PunPop text="Proof beats promise. Every time." rot={2} variant="dark" testId="pun-work" />
         </div>
       </section>
+
+      <OrbitSection />
 
       <section className="container-page section-pad-b" data-index-label="PORTFOLIO ARCHIVE">
         {/* ============ THE PORTFOLIO WALL — migrated from the deck ============ */}

@@ -7,10 +7,10 @@ import { ORBIT_CATEGORIES } from "@/data/content";
 import { ORBIT_GLYPHS } from "@/components/deck/OrbitGlyphs";
 
 /**
- * "The Hi Anzy Orbit" — now sits right after the Work page's own heading,
- * ahead of the case studies. Starting the page with a full 3D fan-deck felt
- * like too much too soon that high up, so it starts collapsed behind a
- * single tappable bar and expands into the full section in place.
+ * "The Hi Anzy Orbit" — sits between the verified case studies and the
+ * portfolio archive on /work. Opens collapsed behind a single tappable bar
+ * and expands into the full section in place, rather than dropping the full
+ * 3D fan-deck on the reader outright.
  */
 export const OrbitSection = () => {
   const [expanded, setExpanded] = useState(false);
@@ -20,11 +20,12 @@ export const OrbitSection = () => {
   );
 
   // mt-10, not more section-pad: this section's own top padding is
-  // deliberately zeroed by App.css's adjacent-.section-pad rule so it
-  // doesn't double up with the hero section's bottom padding — but that left
-  // zero visible breathing room between the two. A small explicit margin
-  // (untouched by that rule, which only zeroes padding-top) restores a real
-  // gap without re-introducing the double one the rule exists to prevent.
+  // deliberately zeroed by App.css's adjacent-.section-pad-b rule so it
+  // doesn't double up with the Case Studies section's bottom padding — but
+  // that left zero visible breathing room between the two. A small explicit
+  // margin (untouched by that rule, which only zeroes padding-top) restores
+  // a real gap without re-introducing the double one the rule exists to
+  // prevent.
   return (
     <section className="container-page section-pad mt-10 lg:mt-14" data-index-label="THE HI ANZY ORBIT" data-testid="orbit-section">
       <button
