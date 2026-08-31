@@ -54,7 +54,6 @@ const Shell = () => {
       {location.pathname !== "/" && <div className="halftone-static pointer-events-none fixed inset-0 -z-10" aria-hidden="true" />}
       <Nav />
       <SectionIndex />
-      <StickyCta />
       <CommandPalette />
       <main id="main" tabIndex={-1} key={location.pathname} className="page-enter">
         <Suspense fallback={<PageFallback />}>

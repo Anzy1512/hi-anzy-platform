@@ -5,7 +5,7 @@ import { BRAND_REFS, ROTATING_QUOTES } from "@/data/content";
 
 /**
  * PROOF STRIP — fills the band under the hero.
- * Left: rotating brand-voice quotes (Figtree, human voice).
+ * Left: rotating brand-voice quotes (Newsreader, human voice).
  * Right rail below: marquee of campaign / placement / collaboration credits
  * from the original deck, labelled honestly.
  */

@@ -83,5 +83,5 @@ html {
 }
 
 body {
-  font-family: "Figtree", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-editorial);
 }

@@ -9,13 +9,14 @@ from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import re
+import json
 import time
 import logging
 import asyncio
 import smtplib
 from email.mime.text import MIMEText
 from pathlib import Path
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, field_validator
 from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone, timedelta
@@ -66,13 +67,13 @@ class ContactCreate(BaseModel):
     name: str = Field(..., min_length=2, max_length=120)
     email: EmailStr
     message: str = Field(..., min_length=10, max_length=4000)
-    company: Optional[str] = None
-    role: Optional[str] = None
-    website: Optional[str] = None
-    stage: Optional[str] = None
-    investmentRange: Optional[str] = None
-    timeline: Optional[str] = None
-    phone: Optional[str] = None
+    company: Optional[str] = Field(None, max_length=200)
+    role: Optional[str] = Field(None, max_length=200)
+    website: Optional[str] = Field(None, max_length=300)
+    stage: Optional[str] = Field(None, max_length=200)
+    investmentRange: Optional[str] = Field(None, max_length=200)
+    timeline: Optional[str] = Field(None, max_length=200)
+    phone: Optional[str] = Field(None, max_length=40)
     orgField: Optional[str] = None  # honeypot
 
 
@@ -84,10 +85,74 @@ class SubscribeCreate(BaseModel):
     orgField: Optional[str] = None  # honeypot
 
 
+# Every event name the frontend is known to fire, plus the Hi Anzy Orbit /
+# ecosystem / Coming Soon events this branch adds. An unlisted name is
+# rejected (422) rather than silently recorded — the frontend's own track()
+# already swallows non-2xx responses (lib/api.js), so this costs nothing
+# downstream and closes off arbitrary event injection.
+ALLOWED_EVENTS = {
+    # existing, in real use across the site today (grepped from every
+    # track("...") call site)
+    "cta_primary_click", "method_explored", "service_explored", "diagnostic_cta_click",
+    "case_opened", "network_category_selected", "discipline_opened", "network_deep_dive",
+    "network_profile_opened", "resource_requested", "contact_started", "contact_form_abandoned",
+    "contact_validation_failed", "contact_completed", "service_to_case", "portfolio_item_opened",
+    "case_expanded", "case_to_service", "command_palette_opened", "command_palette_navigate",
+    "notes_subscribed", "next_step_click", "package_module_added", "package_brief_sent",
+    "package_stage_opened", "theme_changed", "discipline_cross_link", "article_read_depth",
+    # new — Hi Anzy Orbit / ecosystem / Coming Soon
+    "orbit_viewed", "orbit_category_changed", "orbit_card_dragged", "orbit_category_opened",
+    "ecosystem_index_viewed", "ecosystem_profile_opened", "ecosystem_filter_used",
+    "coming_soon_viewed", "hianzy_ai_teaser_clicked", "imkaan_teaser_clicked",
+}
+
+ANALYTICS_META_MAX_KEYS = 20
+ANALYTICS_META_MAX_KEY_LEN = 60
+ANALYTICS_META_MAX_STR_LEN = 500
+ANALYTICS_META_MAX_BYTES = 4096
+
+
 class AnalyticsEvent(BaseModel):
     name: str
-    path: Optional[str] = None
+    path: Optional[str] = Field(None, max_length=200)
     meta: Optional[Dict[str, Any]] = None
+
+    @field_validator("name")
+    @classmethod
+    def name_must_be_allowed(cls, v: str) -> str:
+        if v not in ALLOWED_EVENTS:
+            raise ValueError("unknown event name")
+        return v
+
+    @field_validator("path")
+    @classmethod
+    def path_must_look_like_a_path(cls, v: Optional[str]) -> Optional[str]:
+        if v is not None and not v.startswith("/"):
+            raise ValueError("path must start with '/'")
+        return v
+
+    @field_validator("meta")
+    @classmethod
+    def meta_must_be_shallow_and_bounded(cls, v: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+        if v is None:
+            return v
+        if len(v) > ANALYTICS_META_MAX_KEYS:
+            raise ValueError(f"meta may carry at most {ANALYTICS_META_MAX_KEYS} keys")
+        for key, value in v.items():
+            if not isinstance(key, str) or len(key) > ANALYTICS_META_MAX_KEY_LEN:
+                raise ValueError("meta key too long")
+            # Scalars only — a nested object/array is exactly the shape that
+            # turns "a bit of context" into an arbitrary write.
+            if isinstance(value, (dict, list)):
+                raise ValueError("meta values must be scalar (no nested objects/arrays)")
+            if isinstance(value, str):
+                if len(value) > ANALYTICS_META_MAX_STR_LEN:
+                    raise ValueError("meta string value too long")
+                if any(ord(c) < 32 or ord(c) == 127 for c in value):
+                    raise ValueError("meta value contains control characters")
+        if len(json.dumps(v, default=str)) > ANALYTICS_META_MAX_BYTES:
+            raise ValueError("meta payload too large")
+        return v
 
 
 # ── Email ────────────────────────────────────────────────────────────────────
@@ -145,20 +210,41 @@ async def send_email(subject: str, text: str) -> bool:
 
 
 # ── Rate limiter ─────────────────────────────────────────────────────────────
+# In-process, in-memory — correct for a single launch-stage worker. If the API
+# is ever scaled to multiple processes the effective ceiling multiplies
+# per-process, which would need a shared store (Redis or similar) at that
+# point; not needed yet, and not worth the added infrastructure for a single
+# worker. Keyed per (bucket, ip) so a chatty-but-legitimate analytics stream
+# from one visitor can never exhaust the much stricter contact-form budget.
 
 _rate: Dict[str, List[float]] = {}
-RATE_MAX: int = 5
-RATE_WINDOW: int = 600
+_RATE_PRUNE_AFTER = 900  # comfortably longer than any bucket's own window
 
 
-def rate_limited(ip: str) -> bool:
+def rate_limited(bucket: str, ip: str, max_hits: int = 5, window_seconds: int = 600) -> bool:
     now = time.time()
-    hits = [t for t in _rate.get(ip, []) if now - t < RATE_WINDOW]
-    _rate[ip] = hits
-    if len(hits) >= RATE_MAX:
+    key = f"{bucket}:{ip}"
+    hits = [t for t in _rate.get(key, []) if now - t < window_seconds]
+    if len(hits) >= max_hits:
+        _rate[key] = hits
         return True
-    _rate[ip].append(now)
+    hits.append(now)
+    _rate[key] = hits
     return False
+
+
+async def _prune_rate_limiter_loop():
+    """A plain dict keyed by every (bucket, ip) ever seen never shrinks on its
+    own — each entry only gets re-filtered on its own next hit, so an IP that
+    visits once and never returns leaves its key behind forever. Sweep out
+    anything idle longer than the longest window any bucket uses, so a
+    long-lived process doesn't grow without bound."""
+    while True:
+        await asyncio.sleep(_RATE_PRUNE_AFTER)
+        now = time.time()
+        stale = [k for k, hits in _rate.items() if not hits or now - hits[-1] >= _RATE_PRUNE_AFTER]
+        for k in stale:
+            _rate.pop(k, None)
 
 
 # ── Routes ───────────────────────────────────────────────────────────────────
@@ -250,7 +336,7 @@ async def create_contact(payload: ContactCreate, request: Request):
         return {"ok": True, "id": None, "emailSent": False}
 
     # Rate limit
-    if rate_limited(ip):
+    if rate_limited("contact", ip):
         return {"ok": True, "id": None, "emailSent": False}
 
     sub_id = str(uuid.uuid4())
@@ -297,7 +383,7 @@ async def create_subscription(payload: SubscribeCreate, request: Request):
     if payload.orgField:
         return {"ok": True, "already": False}
 
-    if rate_limited(ip):
+    if rate_limited("subscribe", ip):
         return {"ok": True, "already": False}
 
     email = payload.email.lower().strip()
@@ -391,7 +477,15 @@ async def list_contact_submissions(request: Request):
 
 
 @api_router.post("/analytics/event")
-async def track_event(evt: AnalyticsEvent):
+async def track_event(evt: AnalyticsEvent, request: Request):
+    # The IP is used only for this rate-limit check — never stored on the
+    # event document. analytics_events intentionally carries no PII.
+    ip = request.client.host if request.client else "unknown"
+    if rate_limited("analytics", ip, max_hits=60, window_seconds=60):
+        # Same quiet accept-and-drop /contact and /subscribe already use on
+        # limit — consistent anti-enumeration posture, and the frontend's
+        # track() ignores the response either way.
+        return {"ok": True}
     await db.analytics_events.insert_one({
         "name": evt.name,
         "path": evt.path,
@@ -573,6 +667,7 @@ async def seed():
 @app.on_event("startup")
 async def on_startup():
     await seed()
+    asyncio.create_task(_prune_rate_limiter_loop())
     logger.info("hiAnzy API started")
 
 

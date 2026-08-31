@@ -24,13 +24,13 @@ import os
 import re
 import urllib.request
 
-FAMILIES = "family=Rajdhani:wght@400;500;600;700&family=Figtree:ital,wght@0,300..900;1,300..900&family=IBM+Plex+Mono:wght@400;500&family=Amaranth:ital@0;1"
+FAMILIES = "family=Rajdhani:wght@400;500;600;700&family=Figtree:ital,wght@0,300..900;1,300..900&family=Newsreader:ital,wght@0,200..800;1,200..800&family=IBM+Plex+Mono:wght@400;500&family=Amaranth:ital@0;1"
 CSS_ENDPOINT = f"https://fonts.googleapis.com/css2?{FAMILIES}&display=swap"
 # A modern desktop UA is required -- Google serves woff2 only to UAs it
 # recognises as supporting it; curl's default UA gets legacy ttf/eot.
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
-FAMILY_SLUG = {"Rajdhani": "rajdhani", "Figtree": "figtree", "IBM Plex Mono": "ibm-plex-mono", "Amaranth": "amaranth"}
+FAMILY_SLUG = {"Rajdhani": "rajdhani", "Figtree": "figtree", "Newsreader": "newsreader", "IBM Plex Mono": "ibm-plex-mono", "Amaranth": "amaranth"}
 
 FACE_RE = re.compile(
     r"font-family:\s*'([^']+)';\s*"

@@ -1,9 +1,11 @@
 /* ============ hiAnzy - Analog Intelligence global styles ============ */
-/* Typography system (locked): Rajdhani = System Voice · Figtree = Human Voice (sans) */
+/* Typography system (locked): Rajdhani = System Voice · Newsreader = Human Voice (serif) */
 
 :root {
   --font-system: "Rajdhani", "Arial Narrow", system-ui, sans-serif;
-  --font-editorial: "Figtree", "Helvetica Neue", Arial, sans-serif;
+  --font-editorial: "Newsreader", Georgia, "Times New Roman", serif;
+  /* Figtree stays fetched (fetch-fonts.py) purely as this stack's fallback --
+     nothing sets it as a primary face anymore. */
   --font-pun: "Amaranth", "Figtree", sans-serif;
 }
 
