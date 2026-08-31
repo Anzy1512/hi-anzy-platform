@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -131,21 +131,32 @@ export default function Work() {
 
   const expandedCase = cases && cases.find((cs) => cs.slug === expanded);
 
+  // Keyed to `cases` alone, not rebuilt on every render: expanding a case or
+  // loading the portfolio would otherwise hand Seo a fresh object and make it
+  // rewrite the entire document head for content that has not changed.
+  const jsonLd = useMemo(
+    () =>
+      cases && cases.length
+        ? {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            itemListElement: cases.map((cs, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: cs.title,
+              url: abs(`/work/${cs.slug}`),
+            })),
+          }
+        : undefined,
+    [cases]
+  );
+
   return (
     <div ref={ref} className="pt-[84px]" data-testid="work-page">
       <Seo
         title="Work | Proof, With Context | hiAnzy"
         description="Case studies with business context: situation, gap, insight, decision, build, result, and what happened next."
-        jsonLd={cases && cases.length ? {
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          itemListElement: cases.map((cs, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            name: cs.title,
-            url: abs(`/work/${cs.slug}`),
-          })),
-        } : undefined}
+        jsonLd={jsonLd}
       />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">

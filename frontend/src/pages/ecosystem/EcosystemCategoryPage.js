@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { Seo } from "@/components/Seo";
@@ -38,30 +38,35 @@ export const EcosystemCategoryPage = ({ category }) => {
     track("ecosystem_index_viewed", { category });
   }, [category]);
 
-  if (!meta) return null;
+  // Hooks must run before the early return below, and the memo keeps Seo from
+  // rewriting the document head on renders where nothing indexable changed.
+  const jsonLd = useMemo(() => {
+    if (!meta) return undefined;
+    return [
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "The Hi Anzy Orbit", item: abs("/work") },
+          { "@type": "ListItem", position: 2, name: meta.name, item: abs(meta.route) },
+        ],
+      },
+      ...(items && items.length
+        ? [{
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            itemListElement: items.map((item, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: item.name,
+              url: isCaseStudy ? abs(`/work/${item.slug}`) : item.links?.[0] || undefined,
+            })),
+          }]
+        : []),
+    ];
+  }, [meta, items, isCaseStudy]);
 
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "The Hi Anzy Orbit", item: abs("/work") },
-        { "@type": "ListItem", position: 2, name: meta.name, item: abs(meta.route) },
-      ],
-    },
-    ...(items && items.length
-      ? [{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          itemListElement: items.map((item, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            name: item.name,
-            url: isCaseStudy ? abs(`/work/${item.slug}`) : item.links?.[0] || undefined,
-          })),
-        }]
-      : []),
-  ];
+  if (!meta) return null;
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid={`ecosystem-page-${category}`}>

@@ -62,6 +62,15 @@ export default function Contact() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  // Memoised deliberately: Seo re-runs its whole head-write effect whenever
+  // the jsonLd reference changes, and this page re-renders on every
+  // keystroke in the form. An inline object literal here would rewrite the
+  // title, ten meta tags and both JSON-LD blocks on each character typed.
+  const jsonLd = useMemo(
+    () => ({ "@context": "https://schema.org", "@type": "ContactPage", name: "Contact hiAnzy", url: abs("/contact") }),
+    []
+  );
+
   const started = () => {
     if (!startedRef.current) {
       startedRef.current = true;
@@ -142,7 +151,7 @@ export default function Contact() {
       <Seo
         title="Say Hi | hiAnzy"
         description="Tell us what you are building, what feels stuck, what changed, or what opportunity refuses to leave your head. A person will read it."
-        jsonLd={{ "@context": "https://schema.org", "@type": "ContactPage", name: "Contact hiAnzy", url: abs("/contact") }}
+        jsonLd={jsonLd}
       />
       <section className="container-page section-pad">
         <div className="grid gap-12 lg:grid-cols-12">

@@ -356,7 +356,7 @@ export const CATEGORIES = [
       "Long-term growth support",
     ],
     methodStage: "SCALE",
-    why: "Scale does not reward the cleverest idea. It rewards whichever version was actually built to hold.",
+    why: "Growth does not break a business. The corners it cut on the way up do. This is where those get closed.",
     lede: "Scale is an excellent stress test. It finds every shortcut you took and introduces them to your customers.",
     body: [
       "Things that work at ten customers behave differently at ten thousand. The manual step someone was doing quietly becomes a queue. The permissive access setting becomes an incident. The process that lived in one person's head becomes a risk with a notice period.",
@@ -639,7 +639,7 @@ export const ORBIT_CATEGORIES = [
     // Longer than `copy` on purpose: `copy` is the on-page tagline, this is
     // what the <Seo> description actually needs to tell a search result or
     // link preview about what the category page contains.
-    seoDescription: "In-house work hiAnzy built and delivered directly — full case studies, not vanity summaries.",
+    seoDescription: "Projects hiAnzy built and delivered directly, each written up as a full case study.",
     route: "/work/built-here",
   },
   {
@@ -675,7 +675,7 @@ export const ORBIT_CATEGORIES = [
     name: "PLACES WITH POSSIBILITY",
     descriptor: "Venues & institutions",
     copy: "Some ideas need more than a screen.",
-    seoDescription: "Partner venues and institutions available for events, launches and experiences that need a physical space.",
+    seoDescription: "Partner venues and institutions the network can activate for events, launches and experiences that need a physical space.",
     // Not /network/venues — that slug is already the Events & Venue
     // Production discipline page (see disciplines.js). This is a roster of
     // partner venues, a different thing from that capability page.

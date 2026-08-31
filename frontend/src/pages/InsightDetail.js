@@ -5,6 +5,7 @@ import { Seo } from "@/components/Seo";
 import { abs } from "@/lib/absoluteUrl";
 import { NotesSubscribe } from "@/components/NotesSubscribe";
 import { MagneticButton } from "@/components/MagneticButton";
+import { NextSteps } from "@/components/NextSteps";
 import { useRevealObserver } from "@/lib/motion";
 import { getInsight, getInsights, track } from "@/lib/api";
 
@@ -200,6 +201,11 @@ export default function InsightDetail() {
           </div>
         )}
       </article>
+      {/* Outside the <article>, because an onward journey is not part of the
+          piece. Without it this page linked only to other insights and
+          /contact: a reader arriving on an article could reach more articles,
+          but never a capability or a case study. */}
+      <NextSteps from="/insights" />
     </div>
   );
 }

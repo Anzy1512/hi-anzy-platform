@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { Maximize2, Minimize2, ArrowRight } from "lucide-react";
@@ -106,22 +106,30 @@ export default function Network() {
     };
   }, [fullscreen]);
 
+  // Built from a static import, so it never needs rebuilding — without the
+  // memo, selecting a category or toggling fullscreen would rewrite the whole
+  // document head via Seo's effect.
+  const jsonLd = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "The hiAnzy Network",
+      hasPart: DISCIPLINES.map((d) => ({
+        "@type": "Service",
+        name: d.name,
+        serviceType: d.name,
+        url: abs(`/network/${d.slug}`),
+      })),
+    }),
+    []
+  );
+
   return (
     <div ref={ref} className="pt-[84px]" data-testid="network-page">
       <Seo
         title="The hiAnzy Network | Strategists, Creators, Technologists, Operators"
         description="A consultancy doesn't need to own every skill. It needs to know what the problem demands and who is exceptionally good at solving it."
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          name: "The hiAnzy Network",
-          hasPart: DISCIPLINES.map((d) => ({
-            "@type": "Service",
-            name: d.name,
-            serviceType: d.name,
-            url: abs(`/network/${d.slug}`),
-          })),
-        }}
+        jsonLd={jsonLd}
       />
       <section className="bg-[#1D2424] pb-14 pt-16 lg:pt-24">
         <div className="container-page">
