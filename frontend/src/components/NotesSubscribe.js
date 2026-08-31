@@ -24,6 +24,10 @@ export const NotesSubscribe = ({
   source = "insights",
   className = "",
   testId = "notes-subscribe",
+  heading = "GET THE NOTES",
+  body = "One note when there is something worth saying.",
+  bodyDetail = "Business systems, brand clarity and the occasional argument about why the funnel is not the problem. No schedule, because we would rather send nothing than send filler.",
+  ctaLabel = "Send Me the Notes",
 }) => {
   const [email, setEmail] = useState("");
   const [state, setState] = useState("idle"); // idle | sending | done | error
@@ -86,13 +90,12 @@ export const NotesSubscribe = ({
         className={`panel-paper p-6 sm:p-7 ${className}`}
         data-testid={testId}
       >
-        <p className="sys-chip text-[#232A2A]/55">GET THE NOTES</p>
+        <p className="sys-chip text-[#232A2A]/55">{heading}</p>
         <p className="font-display mt-2 max-w-[24ch] text-[clamp(1.35rem,2vw,1.75rem)] leading-[1.14] text-[#232A2A]">
-          One note when there is something worth saying.
+          {body}
         </p>
         <p className="mt-2.5 max-w-[46ch] text-[15.5px] leading-[1.55] text-[#232A2A]/72">
-          Business systems, brand clarity and the occasional argument about why the funnel is not the
-          problem. No schedule, because we would rather send nothing than send filler.
+          {bodyDetail}
         </p>
 
         {/* `sm:flex-1`, never a bare `flex-1`. Below sm this is a column, and
@@ -126,7 +129,7 @@ export const NotesSubscribe = ({
             disabled={state === "sending"}
             data-testid={`${testId}-submit`}
           >
-            {state === "sending" ? "Sending…" : "Send Me the Notes"}
+            {state === "sending" ? "Sending…" : ctaLabel}
             <ArrowRight size={15} />
           </button>
         </div>

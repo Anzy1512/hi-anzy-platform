@@ -42,6 +42,7 @@ const STATIC_ROUTES = [
   ["/careers", 0.5, "monthly"],
   ["/resources", 0.6, "monthly"],
   ["/contact", 0.7, "yearly"],
+  ["/coming-soon", 0.5, "monthly"],
 ];
 
 /** Pull `slug: "…"` out of a data module without needing to evaluate it. */

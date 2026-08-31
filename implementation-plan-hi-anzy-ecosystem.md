@@ -244,3 +244,32 @@ Changes stay on `feat/work-ecosystem-coming-soon`; nothing merges to `main`, not
 | Footer/Coming Soon | `frontend/src/components/Footer.js` | New teaser row |
 | Footer/Coming Soon | `frontend/src/pages/ComingSoon.js` | *new* |
 | Footer/Coming Soon | `frontend/src/components/NotesSubscribe.js` | Additive optional props only |
+
+---
+
+## Delivery record
+
+All four milestones shipped on `feat/work-ecosystem-coming-soon`, cut from `bd55f23`. Nothing merged or pushed. Commits: `703d91c` (Milestone 1), `736af15` (Milestone 2), `6bea67f` (Milestone 3), plus Milestone 4's commit closing this branch out for review.
+
+### What shipped, exactly as planned
+Phases A–S all landed as designed above: analytics/contact hardening, sitewide Newsreader, the Home.js decomposition with `MethodSection` deleted, the Orbit's six categories on `/work` via `EvidenceDeck`, the `ecosystem_items` derivation and `GET /api/ecosystem`, the Footer teaser, `/coming-soon`, and all 10 new analytics events.
+
+### Deviations from the plan, and why
+- **`/network/venues` → `/network/venue-partners`**: flagged during planning as a genuine routing collision (that slug already belongs to the Events & Venue Production discipline page) and resolved before any code was written. Confirmed live: `/network/venue-partners` resolves correctly, the discipline page at `/network/venues` is untouched.
+- **Phase K's `layoutId` shared-layout card→page transition**: not attempted. The plan framed this as a gated stretch goal behind a reliable baseline, specifically because it would be this codebase's first-ever use of the pattern. Shipped the reliable `<Link>`-based baseline instead — confirmed working, including that a drag gesture does not accidentally trigger it.
+- **`built_here`/`built_together` ecosystem cards link to the existing case-study detail pages** (`/work/:slug`) rather than staying purely informational — these categories are derived from real case studies that already have a full write-up, so linking through uses what already exists instead of dead-ending. The other four categories, which have no detail route yet, stay informational per Phase M's own framing of detail pages as future work.
+- **`ecosystem_filter_used`**: allow-listed backend-side (Phase S asked for the name to exist) but nothing on the category index pages fires it — no secondary filter UI was requested or built.
+- **`PinnedSequence` connective route-line polish** (optional, named in Phase D): not attempted — time went to the larger required phases instead.
+
+### Verification performed
+- `tests/test_contact_poc.py`: 24/24 passing (added ecosystem checks: public-only gating, all 6 categories present, category filter, invalid category → 422, internal-studio exclusion).
+- `npm run build`: compiles clean at every milestone boundary, no new warnings.
+- Docker rebuild + live browser testing at every milestone: all 6 ecosystem routes plus `/coming-soon` and both its anchors render correctly; `EvidenceDeck`'s fan geometry verified against computed transform matrices; autoplay confirmed ticking and then permanently stopping on interaction; click-to-select, click-to-navigate, keyboard nav with focus movement, the progress control, and drag (via synthetic pointer events, confirmed it does not also trigger navigation) all confirmed; mobile geometry fork confirmed (3 visible cards, reduced perspective); the `/work/:slug` and `/network/:slug` routing-collision avoidance confirmed for both new static routes that sit next to a dynamic one; console stayed clean across the entire test session (only the pre-existing, unrelated `/api/auth/me` 401).
+- `git diff bd55f23 --stat`: 38 files changed, zero touches to `package.json`, `requirements.txt`, or `docker-compose.yml` — no dependency additions, no infrastructure changes, across all four milestones.
+
+### Known gaps
+- **`prefers-reduced-motion` was not live-tested.** The browser tool available in this environment emulates `prefers-color-scheme` but not `prefers-reduced-motion`, so `EvidenceDeck`'s reduced-motion fallback (a plain accessible list, same `useReducedMotion` hook already proven correct elsewhere on this site) is code-reviewed but not watched rendering live.
+- **Screenshot/visual compositing was unavailable** in this environment for both Milestone 2 and Milestone 3/4 testing. All verification used DOM structure, computed styles, console/network inspection, and dispatched-event interaction tests instead — a real limitation, disclosed rather than papered over.
+
+### Deferred, out of this branch's charter
+`RouteLine.js`/`SectionConnector.js`'s duplicated scroll-scrubbed SVG path logic (noted during Phase C, sitewide in scope, not Home.js-specific); a first-ever `@testing-library/react` suite (this branch fixed and extended the existing smoke-script pattern instead of introducing a new test framework mid-task); per-category detail-page schemas beyond the `details: Dict[str, Any]` escape hatch (Phase N's richer field lists, deferred exactly as Phase M itself frames them — future work).

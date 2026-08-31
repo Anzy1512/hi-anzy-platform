@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import { NAV_LINKS, FOOTER_LINKS } from "@/data/content";
 import { prefersReducedMotion } from "@/lib/motion";
+import { track } from "@/lib/api";
 import { Picture } from "@/components/Picture";
 
 /**
@@ -180,6 +182,51 @@ export const Footer = () => {
                 </ul>
               </div>
             )}
+          </div>
+        </div>
+
+        <div className="mt-14 border-t border-[#F7F5EE]/12 pt-10" data-testid="footer-coming-into-view">
+          <p className="sys-chip text-[#F7F5EE]/45">COMING INTO VIEW</p>
+          <p className="font-editorial mt-3 max-w-[46ch] text-[16px] italic leading-[1.5] text-[#F7F5EE]/70">
+            Two ideas are quietly becoming something more.
+          </p>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2">
+            <div className="rounded-[14px] border border-[#F7F5EE]/15 bg-[#F7F5EE]/[0.03] p-5" data-testid="footer-teaser-hianzy-ai">
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-display text-[17px] text-[#F7F5EE]">HI ANZY AI</span>
+                <span className="sys-chip shrink-0 rounded-full border border-[#F19020]/50 px-2.5 py-0.5 accent-orange-text">IN DEVELOPMENT</span>
+              </div>
+              <p className="mt-2.5 text-[14.5px] leading-[1.5] text-[#F7F5EE]/65">
+                Business intelligence, diagnostics and execution systems — the parts of a business that
+                used to need someone watching them all day.
+              </p>
+              <Link
+                to="/coming-soon#hi-anzy-ai"
+                onClick={() => track("hianzy_ai_teaser_clicked", {})}
+                className="link-draw mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold accent-orange-text"
+                data-testid="footer-teaser-hianzy-ai-cta"
+              >
+                See What&rsquo;s Coming <ArrowRight size={13} />
+              </Link>
+            </div>
+            <div className="rounded-[14px] border border-[#F7F5EE]/15 bg-[#F7F5EE]/[0.03] p-5" data-testid="footer-teaser-imkaan">
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-display text-[17px] text-[#F7F5EE]">IMKAAN</span>
+                <span className="sys-chip shrink-0 rounded-full border border-[#F7F5EE]/30 px-2.5 py-0.5 text-[#F7F5EE]/60">RETURNING SOON</span>
+              </div>
+              <p className="mt-2.5 text-[14.5px] leading-[1.5] text-[#F7F5EE]/65">
+                Culture, community, talent and live experience — the side of the system built for
+                people, not pipelines.
+              </p>
+              <Link
+                to="/coming-soon#imkaan"
+                onClick={() => track("imkaan_teaser_clicked", {})}
+                className="link-draw mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#F7F5EE]"
+                data-testid="footer-teaser-imkaan-cta"
+              >
+                Meet Imkaan <ArrowRight size={13} />
+              </Link>
+            </div>
           </div>
         </div>
 

@@ -144,19 +144,47 @@ export const resyncScroll = () => {
   ScrollTrigger.refresh();
 };
 
-/** Scroll restoration + ScrollTrigger refresh on route change. */
+/** Scroll restoration + ScrollTrigger refresh on route change. A #hash lands
+ *  on that element instead of the top, once it exists — lazy routes mount
+ *  their content after this effect's first tick, so a hash target may not
+ *  be in the DOM yet and is worth a brief retry rather than one lookup. */
 export const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    // Drive whichever scroller is actually in charge — calling both makes
-    // Lenis and the browser fight over the same frame.
-    if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true });
-    else window.scrollTo(0, 0);
+    let tries = 0;
+    let retry = null;
+
+    const toTop = () => {
+      // Drive whichever scroller is actually in charge — calling both makes
+      // Lenis and the browser fight over the same frame.
+      if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true });
+      else window.scrollTo(0, 0);
+    };
+
+    const toHash = () => {
+      const el = document.getElementById(hash.slice(1));
+      if (!el) {
+        tries += 1;
+        if (tries < 20) retry = setTimeout(toHash, 50);
+        else toTop();
+        return;
+      }
+      const top = el.getBoundingClientRect().top + window.scrollY - 96;
+      if (window.__lenis) window.__lenis.scrollTo(top, { immediate: true });
+      else window.scrollTo(0, top);
+    };
+
+    if (hash) toHash();
+    else toTop();
+
     // Lazy routes mount their content after this tick, so the document height
     // is still stale here — re-measure once it has settled.
     const t = setTimeout(resyncScroll, 250);
-    return () => clearTimeout(t);
-  }, [pathname]);
+    return () => {
+      clearTimeout(t);
+      if (retry) clearTimeout(retry);
+    };
+  }, [pathname, hash]);
   return null;
 };
 

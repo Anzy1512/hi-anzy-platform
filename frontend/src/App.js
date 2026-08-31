@@ -33,6 +33,7 @@ const WhoWeWorkWith = lazy(() => import("@/pages/WhoWeWorkWith"));
 const Collaborate = lazy(() => import("@/pages/Collaborate"));
 const Careers = lazy(() => import("@/pages/Careers"));
 const Resources = lazy(() => import("@/pages/Resources"));
+const ComingSoon = lazy(() => import("@/pages/ComingSoon"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 const PageFallback = () => (
@@ -87,6 +88,7 @@ const Shell = () => {
             <Route path="/collaborate" element={<Collaborate />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/resources" element={<Resources />} />
+            <Route path="/coming-soon" element={<ComingSoon />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
