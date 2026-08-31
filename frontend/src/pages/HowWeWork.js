@@ -17,7 +17,7 @@ export default function HowWeWork() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="how-we-work-page">
-      <Seo title="How We Work — hiAnzy" description="The hiAnzy operating model: Audit, Architect, Build, Connect, Scale. Less ceremony. More consequence." />
+      <Seo title="How We Work | hiAnzy" description="The hiAnzy operating model: Audit, Architect, Build, Connect, Scale. Less ceremony. More consequence." />
       <section className="container-page section-pad">
        <div className="grid items-center gap-10 lg:grid-cols-12">
         <div className="lg:col-span-7">

@@ -90,9 +90,9 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
     // A rough shape, not a quote. One system is usually a focused piece of
     // work; three or more is a programme and should be described as one.
     let shape = "Nothing selected yet";
-    if (cats.length === 1) shape = "Focused engagement — one system";
-    else if (cats.length === 2) shape = "Paired engagement — two systems";
-    else if (cats.length >= 3) shape = `Programme — ${cats.length} systems`;
+    if (cats.length === 1) shape = "Focused engagement: one system";
+    else if (cats.length === 2) shape = "Paired engagement: two systems";
+    else if (cats.length >= 3) shape = `Programme: ${cats.length} systems`;
 
     return { cats, modules, stages, shape };
   }, [picked]);
@@ -118,10 +118,10 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
         className="max-w-3xl"
       />
       <Reveal delay={80} as="p" className="mt-5 max-w-[62ch] text-[17.5px] leading-[1.6] text-[#232A2A]/80">
-        Everything we and the network actually do, in one list — {TOTAL_MODULES} of them.
+        Everything we and the network actually do, in one list: {TOTAL_MODULES} of them.
         No prices, because an honest number needs a conversation first and anything else
         is a guess with a currency symbol on it. Pick the pieces that sound like your
-        problem and send it over — it beats writing the email from scratch.
+        problem and send it over. It beats writing the email from scratch.
       </Reveal>
 
       {/* At this length a list needs a way in, so it gets a filter. Typing
@@ -145,7 +145,7 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
         {q && (
           <p className="font-mono-sys mt-2 text-[12.5px] text-[#232A2A]/60" data-testid="builder-filter-count">
             {visibleCount === 0
-              ? "Nothing by that name. Say it in your own words instead — the form takes prose."
+              ? "Nothing by that name. Say it in your own words instead: the form takes prose."
               : `${visibleCount} service${visibleCount === 1 ? "" : "s"} match`}
           </p>
         )}

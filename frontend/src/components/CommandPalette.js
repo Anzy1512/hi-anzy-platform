@@ -168,7 +168,7 @@ export const CommandPalette = () => {
 
         {results.length === 0 ? (
           <p className="cmdk-empty" data-testid="command-palette-empty">
-            Nothing matches “{query}”. Try a problem rather than a product — “pricing”, “retention”,
+            Nothing matches “{query}”. Try a problem rather than a product: “pricing”, “retention”,
             “dashboard”.
           </p>
         ) : (

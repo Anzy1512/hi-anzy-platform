@@ -380,7 +380,7 @@ const Diagnostic = () => (
               </ol>
             </div>
             <Reveal delay={200} className="hidden shrink-0 xl:block">
-              <Picture src="/brand/art-thinker.png" width="354" height="354" alt="Etched illustration — a person thinking, surrounded by question marks" loading="lazy" className="w-[170px] opacity-90" data-parallax="12" />
+              <Picture src="/brand/art-thinker.png" width="354" height="354" alt="Etched illustration of a person thinking, surrounded by question marks" loading="lazy" className="w-[240px] opacity-90" data-parallax="12" />
             </Reveal>
           </div>
         </div>
@@ -427,8 +427,8 @@ const WorkPreview = () => {
               <h3 className="font-display mt-4 text-3xl leading-[0.95] text-[#232A2A]">{cs.title}</h3>
               <p className="sys-chip mt-2 text-[#232A2A]/50">{cs.client} · {cs.industry}</p>
               <div className="mt-4 space-y-2.5 border-t border-[#232A2A]/10 pt-4">
-                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="font-mono-sys text-[12.5px] accent-signal-text">GAP — </span>{cs.gap.slice(0, 110)}…</p>
-                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="accent-orange-text font-mono-sys text-[12.5px] font-bold">RESULT — </span>{cs.result.slice(0, 110)}…</p>
+                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="font-mono-sys text-[12.5px] accent-signal-text">GAP: </span>{cs.gap.slice(0, 110)}…</p>
+                <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/75"><span className="accent-orange-text font-mono-sys text-[12.5px] font-bold">RESULT: </span>{cs.result.slice(0, 110)}…</p>
               </div>
               <span className="link-draw mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#232A2A]">
                 Read the thinking <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
@@ -479,7 +479,18 @@ const NetworkPreview = ({ show3d }) => {
             </Reveal>
           </div>
           <div className="lg:col-span-7">
-            <div className="relative overflow-hidden rounded-[18px] border border-[#F7F5EE]/12" style={{ aspectRatio: "16/10" }}>
+            {/* The teaser diagram used to be inert — a button beside it did
+                the only linking. The diagram is the more obvious click target,
+                so it now leads to the same place: the real, full galaxy on
+                /network. */}
+            <Link
+              to="/network"
+              className="group relative block overflow-hidden rounded-[18px] border border-[#F7F5EE]/12 transition-colors hover:border-[#F19020]/60"
+              style={{ aspectRatio: "16/10" }}
+              aria-label="Explore the full network constellation"
+              data-testid="network-teaser-link"
+              onClick={() => track("network_category_selected", { category: "teaser_diagram", from: "home" })}
+            >
               <div className="absolute inset-0">
                 {show3d ? (
                   <ThreeSafe fallback={<ConstellationFallback categories={NETWORK_CATEGORIES_HOME.map((c) => c[0] + c.slice(1).toLowerCase())} />}>
@@ -491,7 +502,12 @@ const NetworkPreview = ({ show3d }) => {
                   <ConstellationFallback categories={NETWORK_CATEGORIES_HOME.map((c) => c[0] + c.slice(1).toLowerCase())} />
                 )}
               </div>
-            </div>
+              <span className="pointer-events-none absolute inset-0 flex items-end justify-end p-4 opacity-0 transition-opacity group-hover:opacity-100">
+                <span className="sys-chip inline-flex items-center gap-1.5 rounded-full border border-[#F19020]/60 bg-[#1D2424]/85 px-3 py-1.5 text-[#F7F5EE]/90 backdrop-blur-sm">
+                  Open the full network <ArrowRight size={12} />
+                </span>
+              </span>
+            </Link>
           </div>
         </div>
       </div>
@@ -505,7 +521,7 @@ const Trust = () => (
     <SectionHeading kicker="HOW TRUST GETS BUILT" title={<>Creative enough to find another answer.<br />Practical enough to make it work.</>} testId="trust-heading" className="max-w-4xl" />
 
     <Reveal delay={80} as="p" className="mt-6 max-w-[60ch] text-[17.5px] leading-[1.6] text-[#232A2A]/80">
-      Nine promises. Open any of them and you will find what it actually costs us to keep it —
+      Nine promises. Open any of them and you will find what it actually costs us to keep it,
       because a principle nobody has to pay for is just a poster.
     </Reveal>
 
@@ -534,10 +550,12 @@ const Trust = () => (
       testId="trust-progress-rule"
     />
 
-    {/* The closing line ran the full width with a lot of empty paper to its
-        right — the figure fills it without crowding the sentence. */}
-    <div className="mt-6 flex items-end justify-between gap-10">
-      <Reveal delay={120} as="p" className="font-display max-w-[24ch] text-3xl text-[#232A2A] sm:text-4xl">
+    {/* Reads as a quote now, matching the rotating-quote treatment used under
+        the hero: same paper panel, decorative mark and Amaranth italic, so a
+        line this declarative does not sit as a plain unstyled sentence. */}
+    <div className="relative mt-6 flex items-end justify-between gap-10 rounded-[18px] border border-[#232A2A]/14 bg-[#F7F5EE]/60 p-7 sm:p-9">
+      <span className="font-editorial absolute -top-5 left-7 text-[64px] leading-none accent-orange-text" aria-hidden="true">&ldquo;</span>
+      <Reveal delay={120} as="p" className="font-pun max-w-[24ch] text-[clamp(1.5rem,2.6vw,2.3rem)] font-medium italic leading-[1.2] text-[#232A2A]">
         Clever ideas get attention. <span className="hl-marker hl-marker-draw">Reliable execution gets remembered.</span>
       </Reveal>
       <PopIllustration
@@ -617,7 +635,7 @@ const Closing = () => (
       <RouteLine d="M0,80 C 20,20 45,95 65,45 C 80,10 92,60 100,30" viewBox="0 0 100 100" strokeWidth={1.6} className="pointer-events-none absolute inset-0 h-full w-full opacity-30" />
       {/* Copy is capped at 24ch, so the right half of this panel was empty:
           the ticker takes the top corner, the figure takes the bottom. */}
-      <TouchpointTicker className="absolute right-8 top-8 hidden w-[380px] xl:block xl:right-16" testId="closing-ticker" />
+      <TouchpointTicker className="absolute right-8 top-8 hidden w-[300px] lg:block lg:w-[340px] xl:right-16 xl:w-[380px]" testId="closing-ticker" />
       <PopIllustration
         src="/brand/pop-hat-balloon.png"
         width={260}
@@ -634,7 +652,7 @@ const Closing = () => (
           </p>
         </Reveal>
         <Reveal delay={120} as="p" className="font-mono-sys mt-6 max-w-2xl text-[15px] leading-[1.5] text-[#F7F5EE]/55">
-          The website. The salesperson. The delivery. The reply that came fast — or didn&rsquo;t. The checkout.
+          The website. The salesperson. The delivery. The reply that came fast, or didn&rsquo;t. The checkout.
           The invoice. The follow-up. When those things work together, the brand feels effortless.
         </Reveal>
         <Reveal delay={180} as="p" className="font-accent mt-5 text-2xl accent-orange-text">
@@ -705,7 +723,7 @@ export default function Home() {
         <HalftoneStatic />
       )}
       <Seo
-        title="hiAnzy — We Build Brand Operating Systems"
+        title="hiAnzy | We Build Brand Operating Systems"
         description="hiAnzy is a Business Systems & Transformation Consultancy. We find what is disconnected in your business, figure out what belongs together and build the system around it. From ABC to ROI."
       />
       <Hero show3d={show3d} />

@@ -79,7 +79,7 @@ export const Nav = () => {
         Skip to content
       </a>
       <div className="container-page flex h-[84px] items-center justify-between">
-        <Link to="/" className="flex items-center gap-3" data-testid="nav-logo" aria-label="hiAnzy — home">
+        <Link to="/" className="flex items-center gap-3" data-testid="nav-logo" aria-label="hiAnzy home">
           <span className="nav-logo-stack">
             <Picture src="/brand/logo-dark.png" alt="hiAnzy" width="1167" height="388" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" style={{ opacity: onDark ? 0 : 1 }} />
             <Picture src="/brand/logo-light.png" alt="" aria-hidden="true" width="667" height="220" className="nav-logo-img h-[34px] w-auto sm:h-[40px]" style={{ opacity: onDark ? 1 : 0 }} />

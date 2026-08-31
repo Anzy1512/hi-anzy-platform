@@ -1,4 +1,4 @@
-/* ============ hiAnzy — Analog Intelligence global styles ============ */
+/* ============ hiAnzy - Analog Intelligence global styles ============ */
 /* Typography system (locked): Rajdhani = System Voice · Figtree = Human Voice (sans) */
 
 :root {
@@ -1461,6 +1461,15 @@ a.link-draw.sys-chip {
   align-items: center;
   gap: 8px;
   flex: none;
+}
+/* A compact floating bar reusing the full-size primary button (the same one
+   the nav and footer use for a page's main call to action) read heavier than
+   a quiet, dismissible nudge should. Scoped down here only. */
+.sticky-cta-actions .btn-orange {
+  padding: 0.55rem 1.1rem;
+  font-size: 14px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(241, 144, 32, 0.28);
 }
 .sticky-cta-close {
   width: 32px;

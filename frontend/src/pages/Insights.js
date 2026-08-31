@@ -23,7 +23,7 @@ export default function Insights() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="insights-page">
-      <Seo title="Notes From the Work — hiAnzy Insights" description="Business systems, brand clarity, technology without theatre and growth with receipts. Useful first. Search engine second." />
+      <Seo title="Notes From the Work | hiAnzy Insights" description="Business systems, brand clarity, technology without theatre and growth with receipts. Useful first. Search engine second." />
       <section className="container-page section-pad relative">
        <div className="grid items-center gap-10 lg:grid-cols-12">
         <div className="lg:col-span-7">

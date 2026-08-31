@@ -19,7 +19,7 @@ export default function Collaborate() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="collaborate-page">
-      <Seo title="Collaborate — Join the hiAnzy Network" description="Specialists, creators, media and venues: the hiAnzy network runs on honest classification and real credit. Introduce yourself." />
+      <Seo title="Collaborate | Join the hiAnzy Network" description="Specialists, creators, media and venues: the hiAnzy network runs on honest classification and real credit. Introduce yourself." />
       <section className="container-page section-pad">
        <div className="grid items-center gap-10 lg:grid-cols-12">
         <div className="lg:col-span-7">

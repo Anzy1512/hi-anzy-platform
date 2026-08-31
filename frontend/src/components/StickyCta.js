@@ -18,11 +18,17 @@ import { track } from "@/lib/api";
  *  - Only on pages long enough to need it (2.5 viewports), so short routes
  *    like /careers never grow one.
  *  - Appears after the hero is genuinely gone, not on the first flick.
- *  - Retreats near the footer, which has its own CTA — two competing calls to
- *    action stacked on top of each other is worse than neither.
+ *  - Stays up for one section's worth of scroll, then retreats. Earlier this
+ *    stayed mounted all the way to the footer, which meant it kept floating
+ *    over every section for the rest of a long page (screenshots caught it
+ *    sitting on top of unrelated sections it had nothing to do with). A
+ *    fixed-length window keeps it tied to the moment it was meant for.
+ *  - Retreats near the footer too, which has its own CTA — two competing
+ *    calls to action stacked on top of each other is worse than neither.
  *  - Dismissible, and it stays dismissed for the session.
  */
 const SHOW_AFTER = 1.4;   // viewports scrolled before it appears
+const HIDE_AFTER = 3.2;   // viewports scrolled before it retreats on its own
 const MIN_PAGE   = 2.5;   // viewports of page before it is worth having
 const FOOTER_GAP = 900;   // px from the bottom where it stands down
 
@@ -46,9 +52,9 @@ export const StickyCta = () => {
         setVisible(false);
         return;
       }
-      const past = y > vh * SHOW_AFTER;
+      const inWindow = y > vh * SHOW_AFTER && y < vh * HIDE_AFTER;
       const nearFooter = y + vh > docH - FOOTER_GAP;
-      setVisible(past && !nearFooter);
+      setVisible(inWindow && !nearFooter);
     });
     return () => off && off();
   }, [pathname, dismissed]);

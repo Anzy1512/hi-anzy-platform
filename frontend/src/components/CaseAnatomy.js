@@ -77,7 +77,7 @@ export const CaseAnatomy = ({ steps = [], className = "", testId = "case-anatomy
       </ol>
 
       <figcaption className="font-mono-sys mt-4 text-[12.5px] leading-[1.5] text-[#232A2A]/60">
-        Same order every time. The boring part is the point — it is what makes
+        Same order every time. The boring part is the point: it is what makes
         two cases comparable.
       </figcaption>
     </figure>

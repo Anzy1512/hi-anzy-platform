@@ -29,7 +29,7 @@ export const Packages = ({ heading = true }) => {
       )}
 
       <Reveal delay={80} as="p" className="mt-5 max-w-[62ch] text-[17.5px] leading-[1.6] text-[#232A2A]/80">
-        Most wasted budget is not the wrong service — it is the right service bought in the
+        Most wasted budget is not the wrong service. It is the right service bought in the
         wrong order. Each stage below can be run on its own, or paired with the one beside it.
       </Reveal>
 
@@ -159,7 +159,7 @@ export const Packages = ({ heading = true }) => {
         <Link to="/insights/why-we-package-services" className="link-draw font-semibold text-[#232A2A]">
           sequencing note
         </Link>{" "}
-        is for — or read{" "}
+        is for. Or read{" "}
         <Link to="/how-we-work" className="link-draw font-semibold text-[#232A2A]">
           how we work
         </Link>{" "}

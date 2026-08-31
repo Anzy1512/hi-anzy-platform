@@ -121,7 +121,7 @@ export default function Work() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="work-page">
-      <Seo title="Work — hiAnzy" description="Case studies with business context: situation, gap, insight, decision, build, result, and what happened next." />
+      <Seo title="Work | hiAnzy" description="Case studies with business context: situation, gap, insight, decision, build, result, and what happened next." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WORK
@@ -142,7 +142,7 @@ export default function Work() {
                 numbers, not footnotes doing the work a real answer should. */}
             <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
               No unexplained numbers. No tiny footnotes doing heavy lifting. Every case here
-              reads the same way: situation, gap, insight, decision, build, result — and what happened next.
+              reads the same way: situation, gap, insight, decision, build, result, and what happened next.
             </Reveal>
             <Reveal delay={220} as="p" className="font-mono-sys mt-4 text-[13px] text-[#232A2A]/55">
               Provenance is labelled honestly. Network credentials are not dressed up as client work.
@@ -183,8 +183,8 @@ export default function Work() {
                     <p className="sys-chip mt-3 text-[#232A2A]/55">{cs.client}</p>
                     <p className="mt-4 text-[17px] leading-[1.6] text-[#232A2A]/80">{cs.summary}</p>
                     <div className="mt-5 grid gap-2 border-t border-[#232A2A]/10 pt-5 sm:grid-cols-2">
-                      <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="font-mono-sys text-[12.5px] accent-signal-text">GAP — </span>{cs.gap.slice(0, 100)}…</p>
-                      <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="accent-orange-text font-mono-sys text-[12.5px] font-bold">RESULT — </span>{cs.result.slice(0, 100)}…</p>
+                      <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="font-mono-sys text-[12.5px] accent-signal-text">GAP: </span>{cs.gap.slice(0, 100)}…</p>
+                      <p className="text-[15.5px] leading-[1.55] text-[#232A2A]/72"><span className="accent-orange-text font-mono-sys text-[12.5px] font-bold">RESULT: </span>{cs.result.slice(0, 100)}…</p>
                     </div>
                     <span className="link-draw mt-5 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#232A2A]">
                       {expanded === cs.slug ? "Close case" : "Read the full case"}
@@ -285,7 +285,7 @@ export default function Work() {
               </Reveal>
             </div>
             <Reveal delay={140} as="p" className="font-editorial max-w-[38ch] text-[17px] italic leading-[1.5] text-[#232A2A]/70">
-              Brand decks, packaging, web builds, commerce, motion, audio, social and film — delivered by hiAnzy and collaborator studios in the network. Credited honestly, as always.
+              Brand decks, packaging, web builds, commerce, motion, audio, social and film, delivered by hiAnzy and collaborator studios in the network. Credited honestly, as always.
             </Reveal>
           </div>
 
@@ -339,7 +339,7 @@ export default function Work() {
                           <p className="sys-chip accent-orange-text">THE LONG TAIL</p>
                           <h3 className="font-display mt-2 text-[clamp(1.8rem,3.2vw,2.9rem)] leading-none text-[#F7F5EE]">{g.category}</h3>
                           <p className="font-mono-sys mt-3 max-w-[52ch] text-[13px] leading-[1.5] text-[#F7F5EE]/60">
-                            The largest single body of work here — running accounts, not one-off posts.
+                            The largest single body of work here, running accounts, not one-off posts.
                             Every name below is a brand whose feed we have actually had to fill on a Monday.
                           </p>
                         </div>

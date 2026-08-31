@@ -19,7 +19,7 @@ export default function Careers() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="careers-page">
-      <Seo title="Careers — hiAnzy" description="We hire slowly and deliberately. If you notice things other people miss, introduce yourself anyway." />
+      <Seo title="Careers | hiAnzy" description="We hire slowly and deliberately. If you notice things other people miss, introduce yourself anyway." />
       <section className="container-page section-pad">
        <div className="grid items-center gap-10 lg:grid-cols-12">
         <div className="lg:col-span-7">

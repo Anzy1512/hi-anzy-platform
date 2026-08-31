@@ -41,7 +41,7 @@ export default function Discipline() {
       <div className="flex min-h-[70vh] flex-col items-center justify-center gap-6 px-4 text-center pt-[84px]" data-testid="discipline-not-found">
         <p className="font-display text-5xl text-[#232A2A]">We do a lot. Not that, though.</p>
         <p className="max-w-md text-[17px] text-[#232A2A]/75">
-          That discipline is not one of ours — which is either a typo or a very interesting brief.
+          That discipline is not one of ours, which is either a typo or a very interesting brief.
         </p>
         <MagneticButton to="/network" className="btn-ink">Back to the network</MagneticButton>
       </div>
@@ -55,7 +55,7 @@ export default function Discipline() {
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      name: `${d.name} — hiAnzy`,
+      name: `${d.name} | hiAnzy`,
       serviceType: d.name,
       description: d.lede,
       provider: { "@type": "Organization", name: "hiAnzy" },
@@ -78,7 +78,7 @@ export default function Discipline() {
   return (
     <div ref={ref} className="pt-[84px]" data-testid={`discipline-page-${d.slug}`}>
       <Seo
-        title={`${d.name} — hiAnzy Network`}
+        title={`${d.name} | hiAnzy Network`}
         description={d.lede}
         jsonLd={jsonLd}
       />
@@ -135,7 +135,7 @@ export default function Discipline() {
                   </div>
                   <div className="flex items-baseline justify-between gap-4 border-b border-[#232A2A]/10 pb-3">
                     <dt className="font-mono-sys text-[12.5px] text-[#232A2A]/55">Specialisms covered</dt>
-                    <dd className="font-display text-[20px] leading-none accent-orange-text tabular-nums">{subs.length || "—"}</dd>
+                    <dd className="font-display text-[20px] leading-none accent-orange-text tabular-nums">{subs.length || "–"}</dd>
                   </div>
                   <div className="flex items-baseline justify-between gap-4 border-b border-[#232A2A]/10 pb-3">
                     <dt className="font-mono-sys text-[12.5px] text-[#232A2A]/55">Specialists listed</dt>
@@ -146,7 +146,7 @@ export default function Discipline() {
                   <div className="flex items-baseline justify-between gap-4">
                     <dt className="font-mono-sys text-[12.5px] text-[#232A2A]/55">Usually paired with</dt>
                     <dd className="text-right text-[15px] font-semibold text-[#232A2A]/85">
-                      {related.length ? related.map((r) => r.name).join(", ") : "—"}
+                      {related.length ? related.map((r) => r.name).join(", ") : "–"}
                     </dd>
                   </div>
                 </dl>
@@ -218,7 +218,7 @@ export default function Discipline() {
 
         {members && members.length === 0 && (
           <p className="panel-paper mt-6 p-6 text-[15px] leading-relaxed text-[#232A2A]/75" data-testid="discipline-empty">
-            Nothing public listed under {d.name} yet. The relationships exist — the write-ups are still being
+            Nothing public listed under {d.name} yet. The relationships exist. The write-ups are still being
             verified, and we would rather be slow than inventive.
           </p>
         )}
@@ -246,7 +246,7 @@ export default function Discipline() {
             <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> RARELY TRAVELS ALONE
           </Reveal>
           <p className="mt-3 max-w-[60ch] text-[16.5px] leading-[1.6] text-[#232A2A]/80">
-            {d.name} usually arrives holding hands with these. Not upselling — just what the problem tends to
+            {d.name} usually arrives holding hands with these. Not upselling, just what the problem tends to
             drag in behind it.
           </p>
           <div className="mt-6 grid gap-4 lg:grid-cols-3">

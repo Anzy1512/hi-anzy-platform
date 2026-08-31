@@ -64,7 +64,7 @@ export default function ServiceDetail() {
       {
         "@context": "https://schema.org",
         "@type": "Service",
-        name: `${c.title} — hiAnzy`,
+        name: `${c.title} | hiAnzy`,
         serviceType: c.title,
         description: c.lede,
         provider: { "@type": "Organization", name: "hiAnzy" },
@@ -105,7 +105,7 @@ export default function ServiceDetail() {
       <div className="flex min-h-[70vh] flex-col items-center justify-center gap-6 px-4 text-center pt-[84px]" data-testid="service-not-found">
         <p className="font-display text-5xl text-[#232A2A]">Not one of the six.</p>
         <p className="max-w-md text-[17px] text-[#232A2A]/75">
-          That service is not something we run — which is either a typo or a genuinely intriguing brief.
+          That service is not something we run, which is either a typo or a genuinely intriguing brief.
         </p>
         <MagneticButton to="/what-we-do" className="btn-ink">See what we do</MagneticButton>
       </div>
@@ -116,7 +116,7 @@ export default function ServiceDetail() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="service-detail-page">
-      <Seo title={`${c.title} — hiAnzy`} description={c.lede} jsonLd={jsonLd} />
+      <Seo title={`${c.title} | hiAnzy`} description={c.lede} jsonLd={jsonLd} />
 
       {/* Hero */}
       <section className="container-page section-pad">

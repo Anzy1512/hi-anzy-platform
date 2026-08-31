@@ -124,7 +124,7 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
             carries what the reader wants at exactly this moment — what the
             stage needs from them and what it leaves behind — so the showcase
             is real detail rather than filler, cross-fading with the step. */}
-        <div className="mt-8 grid gap-10 lg:min-h-[46vh] lg:grid-cols-12" data-testid={`${testId}-panels`}>
+        <div className="mt-8 grid gap-10 lg:min-h-[46vh] lg:grid-cols-12 lg:items-center" data-testid={`${testId}-panels`}>
           <div className="relative grid lg:col-span-7">
             {steps.map((s, i) => (
               <article
@@ -168,7 +168,7 @@ export const PinnedSequence = ({ steps = [], kicker, title, testId = "pinned-seq
 
                 {s.inputs && s.inputs.length > 0 && (
                   <div className="mt-4">
-                    <p className="sys-chip text-[#F7F5EE]/45">WHAT IT NEEDS FROM YOU</p>
+                    <p className="sys-chip text-[#F7F5EE]/45">WHAT THIS STAGE NEEDS FROM YOU</p>
                     <ul className="mt-2.5 space-y-1.5">
                       {s.inputs.map((it) => (
                         <li key={it} className="flex items-start gap-3 text-[16px] leading-[1.55] text-[#F7F5EE]/85">

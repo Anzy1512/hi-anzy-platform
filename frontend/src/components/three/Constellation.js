@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { AdaptiveQuality } from "@/components/three/AdaptiveQuality";
 import { Html, QuadraticBezierLine } from "@react-three/drei";
@@ -33,6 +33,11 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
   // Hover lives in a ref, not state — a re-render per pointer move would stall
   // the whole scene, and the frame loop reads it anyway.
   const hovered = useRef(false);
+  // A second, state-backed flag just for the hover branch line below: it only
+  // needs to mount/unmount on pointer enter/leave (not on every frame), so a
+  // couple of re-renders per hover is cheap — nothing like the per-move cost
+  // the ref above is avoiding.
+  const [hoverBranch, setHoverBranch] = useState(false);
   const angle = (index / total) * Math.PI * 2 - Math.PI / 2;
   const base = useMemo(() => new THREE.Vector3(Math.cos(angle) * RING_X, Math.sin(angle) * RING_Y, 0), [angle]);
   const dots = useMemo(() => {
@@ -74,12 +79,27 @@ const Cluster = ({ name, index, total, active, anyActive, subs = [], onSelect })
         <mesh
           userData={{ hit: true }}
           onClick={(e) => { e.stopPropagation(); onSelect(name); }}
-          onPointerOver={(e) => { e.stopPropagation(); hovered.current = true; document.body.style.cursor = "pointer"; }}
-          onPointerOut={() => { hovered.current = false; document.body.style.cursor = ""; }}
+          onPointerOver={(e) => { e.stopPropagation(); hovered.current = true; setHoverBranch(true); document.body.style.cursor = "pointer"; }}
+          onPointerOut={() => { hovered.current = false; setHoverBranch(false); document.body.style.cursor = ""; }}
         >
           <sphereGeometry args={[0.75, 8, 8]} />
           <meshBasicMaterial transparent opacity={0} depthWrite={false} />
         </mesh>
+      )}
+      {/* Answers the pointer before a click: the same branch a selection draws
+          (in SceneInner, in world space) previewed here on hover, in this
+          cluster's own local space so it does not need the parent's layout
+          math. Skipped once active — the real branch is already on screen. */}
+      {hoverBranch && !active && (
+        <QuadraticBezierLine
+          start={[0, 0, 0]}
+          end={[-base.x, -base.y, 0.6]}
+          mid={[-base.x * 0.4, -base.y * 0.4 + 0.5, 0.3]}
+          color="#F19020"
+          lineWidth={1.6}
+          transparent
+          opacity={0.5}
+        />
       )}
       {dots.map((d, i) => (
         <mesh key={i} position={d}>

@@ -106,7 +106,7 @@ export default function Network() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="network-page">
-      <Seo title="The hiAnzy Network — Strategists, Creators, Technologists, Operators" description="A consultancy doesn't need to own every skill. It needs to know what the problem demands and who is exceptionally good at solving it." />
+      <Seo title="The hiAnzy Network | Strategists, Creators, Technologists, Operators" description="A consultancy doesn't need to own every skill. It needs to know what the problem demands and who is exceptionally good at solving it." />
       <section className="bg-[#1D2424] pb-14 pt-16 lg:pt-24">
         <div className="container-page">
           <div className="grid items-end gap-10 lg:grid-cols-12">
@@ -120,8 +120,8 @@ export default function Network() {
                 </h1>
               </Reveal>
               <Reveal delay={160} as="p" className="mt-6 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#F7F5EE]/85">
-                A consultancy doesn&rsquo;t need to own every skill. It needs to know exactly what the problem demands
-                — and who is exceptionally good at solving it. These are the minds we bring into the room.
+                A consultancy doesn&rsquo;t need to own every skill. It needs to know exactly what the problem demands,
+                and who is exceptionally good at solving it. These are the minds we bring into the room.
               </Reveal>
             </div>
             <div className="lg:col-span-5">
@@ -135,11 +135,11 @@ export default function Network() {
                     </div>
                     <div data-testid="network-stat-specialisms">
                       <p className="font-display text-[clamp(2.1rem,3.2vw,3rem)] leading-none text-[#F7F5EE]">{subTotal}+</p>
-                      <p className="sys-chip mt-2 text-[#F7F5EE]/50">SPECIALISMS</p>
+                      <p className="sys-chip mt-2 text-[#F7F5EE]/50">SPECIALIST SKILLS</p>
                     </div>
                     <div data-testid="network-stat-tiers">
                       <p className="font-display text-[clamp(2.1rem,3.2vw,3rem)] leading-none text-[#F7F5EE]">{LEGEND.length}</p>
-                      <p className="sys-chip mt-2 text-[#F7F5EE]/50">PROVENANCE LABELS</p>
+                      <p className="sys-chip mt-2 text-[#F7F5EE]/50">RELATIONSHIP TYPES</p>
                     </div>
                   </div>
                   <p className="font-mono-sys mt-5 border-t border-[#F7F5EE]/10 pt-4 text-[12px] leading-relaxed text-[#F7F5EE]/45">Assembled per problem. Never a fixed bench. Every relationship labelled honestly below.
@@ -187,7 +187,7 @@ export default function Network() {
               >
                 <Minimize2 size={13} /> EXIT
               </button>
-              <span className="sys-chip absolute left-5 top-5 z-20 text-[#F7F5EE]/50">THE <span className="brand-mark">hiAnzy</span> NETWORK — CONSTELLATION</span>
+              <span className="sys-chip absolute left-5 top-5 z-20 text-[#F7F5EE]/50">THE <span className="brand-mark">hiAnzy</span> NETWORK · CONSTELLATION</span>
               <div className="absolute inset-0">
                 {show3d && categories.length > 0 ? (
                   <ThreeSafe fallback={<ConstellationFallback categories={categories} />}>
@@ -205,9 +205,9 @@ export default function Network() {
 
           {/* The service map — every specialism in the room */}
           <div className="mt-6" data-testid="network-service-marquee">
-            <p className="sys-chip text-[#F7F5EE]/45">THE SERVICE MAP — {subTotal}+ SPECIALISMS ACROSS {categories.length || 12} DISCIPLINES</p>
+            <p className="sys-chip text-[#F7F5EE]/45">THE SERVICE MAP · {subTotal}+ SPECIALISMS ACROSS {categories.length || 12} DISCIPLINES</p>
             <div className="relative mt-3 overflow-hidden border-y border-[#F7F5EE]/12 py-3">
-              <div className="marquee-track items-center gap-x-6" aria-hidden="true" style={{ animationDuration: "70s" }}>
+              <div className="marquee-track items-center gap-x-6" aria-hidden="true" style={{ animationDuration: "115s" }}>
                 {[...allServices, ...allServices].map((s, i) => (
                   <React.Fragment key={`${s}-${i}`}>
                     <span className="font-display whitespace-nowrap text-[16px] font-semibold tracking-[0.04em] text-[#F7F5EE]/65 transition-colors hover:text-[#F19020]">{s}</span>
@@ -244,7 +244,7 @@ export default function Network() {
         </Reveal>
         <div className="flex items-end justify-between gap-10">
           <Reveal delay={130} as="p" className="mt-4 max-w-[62ch] text-[17px] leading-[1.6] text-[#232A2A]/80">
-            You do not need to know what to call it. Read the line that sounds like your Tuesday and follow it —
+            You do not need to know what to call it. Read the line that sounds like your Tuesday and follow it:
             each one explains what the work actually is, and how you would know you need it.
           </Reveal>
           <PopIllustration
@@ -289,7 +289,7 @@ export default function Network() {
         </div>
 
         {!resources && <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="panel-paper h-[190px] animate-pulse" />)}</div>}
-        {resources && resources.length === 0 && <p className="panel-paper p-6 text-[14px] text-[#232A2A]/70" data-testid="network-empty">Nothing public in this category yet. The relationships exist — the write-ups are being verified.</p>}
+        {resources && resources.length === 0 && <p className="panel-paper p-6 text-[14px] text-[#232A2A]/70" data-testid="network-empty">Nothing public in this category yet. The relationships exist. The write-ups are being verified.</p>}
         {resources && resources.length > 0 && (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-testid="network-resource-grid">
             {resources.map((r, i) => (
@@ -316,7 +316,7 @@ export default function Network() {
           </div>
         )}
         <p className="font-mono-sys mt-8 max-w-2xl text-[12.5px] leading-relaxed text-[#232A2A]/55">
-          A network relationship is not the same thing as hiAnzy-delivered client work — which is why every card says which one it is.
+          A network relationship is not the same thing as hiAnzy-delivered client work, which is why every card says which one it is.
         </p>
         <div className="mt-8 flex justify-end pr-[8%]">
           <PunPop text="It's not who you know. It's who you can activate." rot={-1.5} variant="orange" testId="pun-network" />

@@ -77,15 +77,15 @@ export const CharacterQuote = ({ startIndex, testId = "character-quote-strip" })
       <div className="flex items-center gap-5 rounded-[18px] border border-[#232A2A]/12 bg-[#D8CFB4]/45 p-5 sm:p-6">
         {char && (
           <div className="h-16 w-14 shrink-0 overflow-hidden rounded-[10px] border-2 border-[#232A2A]/15 sm:h-20 sm:w-16">
-            <Picture src={char.img} alt={`${line.who} — collage figure`} loading="lazy" className="h-full w-full object-cover object-top" />
+            <Picture src={char.img} alt={`${line.who}, collage figure`} loading="lazy" className="h-full w-full object-cover object-top" />
           </div>
         )}
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(6px)", transition: "opacity 0.3s ease, transform 0.3s ease" }}>
           <p className="font-pun text-[clamp(1.05rem,1.35vw,1.3rem)] italic leading-[1.4] text-[#232A2A]/85">“{line.quote}”</p>
           {/* Orange stays as the decorative dash; the name itself needs ink to
-              clear AA on the paper ground — orange on paper is only 1.7:1. */}
+              clear AA on the paper ground, since orange on paper is only 1.7:1. */}
           <p className="sys-chip mt-2 text-[#232A2A]/75">
-            <span className="accent-orange-text" aria-hidden="true">— </span>
+            <span className="accent-orange-text" aria-hidden="true">- </span>
             {line.who.toUpperCase()}
           </p>
         </div>

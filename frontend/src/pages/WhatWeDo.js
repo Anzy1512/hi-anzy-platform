@@ -17,7 +17,7 @@ export default function WhatWeDo() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="what-we-do-page">
-      <Seo title="What We Do — hiAnzy" description="Business audit and strategy, brand and experience, technology and automation, growth, media and creators, advisory and scale — run as one connected system." />
+      <Seo title="What We Do | hiAnzy" description="Business audit and strategy, brand and experience, technology and automation, growth, media and creators, advisory and scale, run as one connected system." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHAT WE DO
@@ -55,7 +55,7 @@ export default function WhatWeDo() {
                 <span className="banner-figure-halo" aria-hidden="true" />
                 <Picture
                   src="/brand/art-cube-head.png"
-                  alt="Halftone collage — a person with a puzzle cube for a head"
+                  alt="Halftone collage of a person with a puzzle cube for a head"
                   loading="lazy"
                   className="relative w-full"
                 />
@@ -84,7 +84,7 @@ export default function WhatWeDo() {
                 </h2>
                 <p className={`font-editorial mt-2 text-[clamp(1.2rem,1.5vw,1.5rem)] font-medium ${i % 2 === 0 ? "text-[#232A2A]/65" : "text-[#F7F5EE]/65"}`}>{c.title}</p>
                 <p className={`mt-4 text-[17px] leading-[1.6] ${i % 2 === 0 ? "text-[#232A2A]/80" : "text-[#F7F5EE]/80"}`}>{c.copy}</p>
-                <p className={`mt-4 text-[16.5px] leading-[1.58] ${i % 2 === 0 ? "text-[#232A2A]/70" : "text-[#F7F5EE]/70"}`}><span className={`font-mono-sys text-[12.5px] font-bold tracking-widest ${i % 2 === 0 ? "text-[#A8351A]" : "text-[#FF7A52]"}`}>Why it matters — </span>{c.why}</p>
+                <p className={`mt-4 text-[16.5px] leading-[1.58] ${i % 2 === 0 ? "text-[#232A2A]/70" : "text-[#F7F5EE]/70"}`}><span className={`font-mono-sys text-[12.5px] font-bold tracking-widest ${i % 2 === 0 ? "text-[#A8351A]" : "text-[#FF7A52]"}`}>Why it matters: </span>{c.why}</p>
               </div>
               <div className="relative lg:col-span-7">
                 <p className={`sys-chip ${i % 2 === 0 ? "text-[#232A2A]/45" : "text-[#F7F5EE]/45"}`}>CAPABILITIES</p>

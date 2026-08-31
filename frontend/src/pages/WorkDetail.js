@@ -71,7 +71,7 @@ export default function WorkDetail() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="work-detail-page">
-      <Seo title={`${cs.title} — hiAnzy Work`} description={cs.summary} jsonLd={jsonLd} />
+      <Seo title={`${cs.title} | hiAnzy Work`} description={cs.summary} jsonLd={jsonLd} />
       <article className="mx-auto max-w-[980px] px-[var(--page-x)] py-14 lg:py-20">
         <Link to="/work" className="link-draw sys-chip inline-flex items-center gap-2 text-[#232A2A]/60" data-testid="work-detail-back">
           <ArrowLeft size={13} /> ALL WORK

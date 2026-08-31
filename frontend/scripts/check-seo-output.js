@@ -84,13 +84,13 @@ const runSeoEffect = ({ title, description, jsonLd, image }) => {
 // Run twice with different data, the way client-side route changes do, to
 // also catch the "stale tags never removed" class of bug.
 runSeoEffect({
-  title: "Home — hiAnzy",
+  title: "Home | hiAnzy",
   description: "placeholder",
   image: "/brand/logo-dark.png",
   jsonLd: [{ "@context": "https://schema.org", "@type": "Organization", name: "should not survive" }],
 });
 runSeoEffect({
-  title: "Business Audit & Strategy — hiAnzy",
+  title: "Business Audit & Strategy | hiAnzy",
   description: "Most businesses do not have an information problem.",
   image: "/brand/logo-dark.png",
   jsonLd: [
@@ -104,11 +104,11 @@ const scriptTexts = [...document.head.querySelectorAll("script[data-seo-jsonld]"
 const metaHtml = document.head.innerHTML;
 
 const checks = [
-  ["document.title updated", document.title === "Business Audit & Strategy — hiAnzy"],
+  ["document.title updated", document.title === "Business Audit & Strategy | hiAnzy"],
   ["description meta rendered", /name="description"/.test(metaHtml)],
   ["canonical link rendered", document.head.querySelector('link[rel="canonical"]')?.href === "https://example.test/business-audit-strategy"],
   ["og:site_name rendered", /property="og:site_name"/.test(metaHtml)],
-  ["og:title rendered", document.head.querySelector('meta[property="og:title"]')?.content === "Business Audit & Strategy — hiAnzy"],
+  ["og:title rendered", document.head.querySelector('meta[property="og:title"]')?.content === "Business Audit & Strategy | hiAnzy"],
   ["og:url rendered", /property="og:url"/.test(metaHtml)],
   ["og:image rendered", /property="og:image"/.test(metaHtml)],
   ["twitter:card rendered", /name="twitter:card"/.test(metaHtml)],

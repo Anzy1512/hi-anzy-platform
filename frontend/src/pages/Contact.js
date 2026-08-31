@@ -79,7 +79,7 @@ export default function Contact() {
     const er = {};
     if (!form.name || form.name.trim().length < 2) er.name = "A name helps. Even a nickname works.";
     if (!form.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) er.email = "That email looks off. One more try?";
-    if (!form.message || form.message.trim().length < 10) er.message = "Give us a little more — ten characters of chaos minimum.";
+    if (!form.message || form.message.trim().length < 10) er.message = "Give us a little more: ten characters of chaos minimum.";
     setErrors(er);
     return er;
   };
@@ -129,7 +129,7 @@ export default function Contact() {
       submittedRef.current = true;
       track("contact_completed");
     } catch (err) {
-      const msg = err?.response?.status === 429 ? "Too many messages in a row. Give it a few minutes — we are not going anywhere." : "That didn't send. The irony is not lost on us. Please try again.";
+      const msg = err?.response?.status === 429 ? "Too many messages in a row. Give it a few minutes, we are not going anywhere." : "That didn't send. The irony is not lost on us. Please try again.";
       toast.error(msg);
     } finally {
       setSubmitting(false);
@@ -138,7 +138,7 @@ export default function Contact() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="contact-page">
-      <Seo title="Say Hi — hiAnzy" description="Tell us what you are building, what feels stuck, what changed, or what opportunity refuses to leave your head. A person will read it." />
+      <Seo title="Say Hi | hiAnzy" description="Tell us what you are building, what feels stuck, what changed, or what opportunity refuses to leave your head. A person will read it." />
       <section className="container-page section-pad">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
@@ -159,7 +159,7 @@ export default function Contact() {
             <Reveal delay={280}>
               <figure className="float-el mt-10 hidden max-w-[250px] lg:block" style={{ "--rot": "-1.5deg" }} data-testid="contact-walkers-art">
                 <div className="scrap">
-                  <Picture src="/brand/char-walkers.jpg" width="522" height="980" alt="Two camera-headed figures walking in — halftone collage" loading="lazy" />
+                  <Picture src="/brand/char-walkers.jpg" width="522" height="980" alt="Two camera-headed figures walking in, halftone collage" loading="lazy" />
                 </div>
               </figure>
             </Reveal>
@@ -202,7 +202,7 @@ export default function Contact() {
                   </div>
                   <div className="sm:col-span-2">
                     <FieldLabel htmlFor="cf-website">WEBSITE (OPTIONAL)</FieldLabel>
-                    <Input id="cf-website" data-testid="contact-form-field-website" value={form.website} onChange={set("website")} placeholder="https:// — if it exists yet" className="h-11 border-[#232A2A]/30 bg-[#F7F5EE]" />
+                    <Input id="cf-website" data-testid="contact-form-field-website" value={form.website} onChange={set("website")} placeholder="https://, if it exists yet" className="h-11 border-[#232A2A]/30 bg-[#F7F5EE]" />
                   </div>
                   <div className="sm:col-span-2">
                     <FieldLabel htmlFor="cf-message" required>WHAT IS GOING ON?</FieldLabel>
@@ -253,7 +253,7 @@ export default function Contact() {
                   <MagneticButton type="submit" className="btn-ink" testId="contact-form-submit-button">
                     {submitting ? "Sending…" : "Send It"} <ArrowRight size={15} />
                   </MagneticButton>
-                  <p className="font-mono-sys text-[12.5px] text-[#232A2A]/50">Read by a person. Replied to by the same person.</p>
+                  <p className="font-mono-sys text-[12.5px] text-[#232A2A]/50">A real person reads this and writes the reply. No ticket queue, no bot.</p>
                 </div>
               </form>
             )}

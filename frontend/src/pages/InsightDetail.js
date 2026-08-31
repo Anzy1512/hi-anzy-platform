@@ -107,7 +107,7 @@ export default function InsightDetail() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="insight-detail-page">
-      <Seo title={post.seo?.title || `${post.title} — hiAnzy`} description={post.seo?.description || post.excerpt} jsonLd={jsonLd} />
+      <Seo title={post.seo?.title || `${post.title} | hiAnzy`} description={post.seo?.description || post.excerpt} jsonLd={jsonLd} />
       <article className="mx-auto max-w-[780px] px-[var(--page-x)] py-14 lg:py-20">
         <Link to="/insights" className="link-draw sys-chip inline-flex items-center gap-2 text-[#232A2A]/60" data-testid="insight-back">
           <ArrowLeft size={13} /> ALL NOTES

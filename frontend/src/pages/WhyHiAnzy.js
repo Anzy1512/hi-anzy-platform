@@ -15,7 +15,7 @@ export default function WhyHiAnzy() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="why-hi-anzy-page">
-      <Seo title="Why hiAnzy — The Name, The Instinct, The Work" description="Anzy began as a signature under poems. It grew into a way of seeing businesses: see differently, make thoughtfully." />
+      <Seo title="Why hiAnzy | The Name, The Instinct, The Work" description="Anzy began as a signature under poems. It grew into a way of seeing businesses: see differently, make thoughtfully." />
       <section className="container-page section-pad">
         <div className="grid items-start gap-12 lg:grid-cols-12">
           <div className="lg:col-span-7">
@@ -28,7 +28,7 @@ export default function WhyHiAnzy() {
               </h1>
             </Reveal>
             <Reveal delay={160} as="p" className="mt-7 max-w-[48ch] font-editorial text-[clamp(1.15rem,1.5vw,1.45rem)] leading-[1.45] text-[#232A2A]/85">
-              Anzy began as a signature under poems. A name for the part of a person that notices things — the
+              Anzy began as a signature under poems. A name for the part of a person that notices things: the
               detail everyone walked past, the question nobody asked. Over the years the signature travelled:
               from verses to stories, from stories to stages, from stages to brands, to technology, to whole
               businesses. The medium kept changing. The instinct never did.
@@ -45,7 +45,7 @@ export default function WhyHiAnzy() {
                   scroll-scrubbed reveal there would either never play or delay
                   the first thing the reader sees. */}
               <figure className="cutout-img rounded-[18px]" style={{ aspectRatio: "4/5" }}>
-                  <img src="https://images.unsplash.com/flagged/photo-1559487098-6174e343345c?auto=format&fit=crop&w=1200&q=80" alt="Black and white editorial portrait — a person mid-thought" loading="lazy" />
+                  <img src="https://images.unsplash.com/flagged/photo-1559487098-6174e343345c?auto=format&fit=crop&w=1200&q=80" alt="Black and white editorial portrait of a person mid-thought" loading="lazy" />
                 </figure>
               </Reveal>
           </div>
@@ -64,7 +64,7 @@ export default function WhyHiAnzy() {
               <div className="lg:col-span-8">
                 <p className="text-[17px] leading-[1.6] text-[#F7F5EE]/85">
                   Because most good things begin with a conversation. A partnership. A new idea. A question someone
-                  finally asked out loud. “Hi” is the smallest possible unit of beginning — and beginnings are our
+                  finally asked out loud. “Hi” is the smallest possible unit of beginning, and beginnings are our
                   favourite part of the work.
                 </p>
                 <p className="mt-4 text-[17px] leading-[1.6] text-[#F7F5EE]/85">
@@ -95,7 +95,7 @@ export default function WhyHiAnzy() {
                 <p className="mt-5 text-[17px] leading-[1.6] text-[#232A2A]/82">
                   The compass finds direction. The engine creates movement. Direction without movement is theory.
                   Movement without direction is <span className="accent-signal-text font-semibold">expensive</span>.
-                  Every engagement carries both — which is why the strategy deck and the shipped system come from
+                  Every engagement carries both, which is why the strategy deck and the shipped system come from
                   the same accountable place.
                 </p>
               </article>
@@ -137,7 +137,7 @@ export default function WhyHiAnzy() {
                     <div style={{ aspectRatio: "3/4" }}>
                       <DissolveImage
                         src={c.img}
-                        alt={`${c.name} — halftone collage figure`}
+                        alt={`${c.name}, halftone collage figure`}
                         className="h-full w-full"
                         maxScale={70}
                         start="top 92%"

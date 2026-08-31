@@ -168,7 +168,7 @@ export const SystemDiagnostic = ({ className = "", testId = "system-diagnostic" 
       </svg>
 
       <figcaption className="font-mono-sys mt-3 text-[12.5px] leading-[1.5] text-[#232A2A]/60">
-        <span className="accent-signal-text font-bold">Fault — </span>
+        <span className="accent-signal-text font-bold">Fault: </span>
         Every part is working. The handover between two of them is not. That is
         the one that never shows up on a departmental report.
       </figcaption>

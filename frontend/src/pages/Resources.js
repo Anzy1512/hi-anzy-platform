@@ -18,7 +18,7 @@ export default function Resources() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="resources-page">
-      <Seo title="Resources — hiAnzy" description="Worksheets and checklists from the hiAnzy diagnostic practice, plus the privacy and terms fine print in humane language." />
+      <Seo title="Resources | hiAnzy" description="Worksheets and checklists from the hiAnzy diagnostic practice, plus the privacy and terms fine print in humane language." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> RESOURCES
@@ -59,16 +59,16 @@ export default function Resources() {
                   accurate as written: /api/analytics/event records name, path
                   and timestamp, and deliberately no IP. */}
               <p className="mt-4 text-[16.5px] leading-[1.58] text-[#232A2A]/78">
-                When you write to us, we store what you send so a person can read it and reply — your name, your
+                When you write to us, we store what you send so a person can read it and reply: your name, your
                 email, anything else you chose to fill in, and the IP address the message arrived from. The IP is
                 kept for one reason only: stopping the form being abused by bots. We do not sell any of it, rent
                 it, or feed it to a mailing list you never asked for. Analytics on this site record which pages
-                were used and when, and never your IP address — they measure what is useful, not who you are.
+                were used and when, and never your IP address. They measure what is useful, not who you are.
               </p>
               <p className="mt-4 text-[16.5px] leading-[1.58] text-[#232A2A]/78">
                 Want a copy of what we hold, or want it deleted? Say the word and it is done. Write to the address
                 in the footer{/* TODO(hiAnzy): once a real inbox is published, name it here explicitly. */} and a
-                person will action it — no ticket queue, no form to fill in twice.
+                person will action it. No ticket queue, no form to fill in twice.
               </p>
               <p className="font-mono-sys mt-4 text-[12.5px] leading-relaxed text-[#232A2A]/55">
                 TODO before launch: this notice is written plainly and honestly, but it is not a substitute for a
@@ -82,7 +82,7 @@ export default function Resources() {
               <p className="sys-chip text-[#232A2A]/55">TERMS</p>
               <h2 className="font-display mt-2 text-3xl text-[#232A2A]">The fine print, humane.</h2>
               <p className="mt-4 text-[16.5px] leading-[1.58] text-[#232A2A]/78">
-                Content on this site is hiAnzy&rsquo;s unless credited otherwise — and network work is always
+                Content on this site is hiAnzy&rsquo;s unless credited otherwise, and network work is always
                 credited otherwise. Case narratives are shared with client consent. Nothing here is formal advice
                 until we have actually looked at your business; every engagement gets its own written scope.
               </p>

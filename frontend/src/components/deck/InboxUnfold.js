@@ -149,20 +149,10 @@ export const InboxUnfold = ({ className = "", testId = "motif-inbox-unfold" }) =
         />
       </g>
 
-      {/* the seal: the "Hi" every engagement starts with */}
+      {/* the seal: a plain wax-seal accent, not a second, smaller wordmark
+          competing with the real hiAnzy mark elsewhere on the page */}
       <g data-seal>
         <circle cx="248" cy="252" r="24" fill="#E54A25" />
-        <text
-          x="248"
-          y="259"
-          textAnchor="middle"
-          fontSize="19"
-          fontFamily="'Rajdhani', sans-serif"
-          fontWeight="700"
-          fill="#F7F5EE"
-        >
-          Hi
-        </text>
       </g>
     </svg>
   );

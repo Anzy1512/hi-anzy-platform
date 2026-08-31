@@ -20,13 +20,13 @@ const JOURNEY = {
   ],
   "/contact": [
     { to: "/how-we-work", label: "What happens after you write", note: "The first two weeks, described honestly." },
-    { to: "/work", label: "Proof, with context", note: "Situation, gap, move, result — every case reads the same." },
+    { to: "/work", label: "Proof, with context", note: "Situation, gap, move, result: every case reads the same." },
     { to: "/insights/how-to-brief-a-project-when-you-dont-know-whats-wrong", label: "Not sure what to write?", note: "How to brief a project when the problem is unclear." },
   ],
   "/what-we-do": [
     { to: "/what-we-do#build", label: "Build your own engagement", note: "Tick the pieces that sound like your problem." },
     { to: "/how-we-work", label: "How the work actually runs", note: "Five stages, and what each one needs from you." },
-    { to: "/work", label: "The same services, applied", note: "Situation, gap, move, result — every case reads the same." },
+    { to: "/work", label: "The same services, applied", note: "Situation, gap, move, result: every case reads the same." },
   ],
   "/how-we-work": [
     { to: "/what-we-do#packages", label: "Which stage you are in", note: "Engagement model, priced by stage." },
