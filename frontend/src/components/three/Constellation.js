@@ -178,6 +178,37 @@ const CenterNode = () => {
   );
 };
 
+/* A small "hi" mark, orbiting close to the core — the one un-labelled thing
+   in the chamber, so it reads as a signature rather than another node. */
+const HiOrbit = () => {
+  const group = useRef(null);
+  useFrame(({ clock }) => {
+    const g = group.current;
+    if (!g) return;
+    const t = clock.getElapsedTime() * 0.42;
+    const r = 1.08;
+    g.position.set(Math.cos(t) * r, Math.sin(t) * r * 0.52 + 0.08, Math.sin(t * 1.7) * 0.3);
+  });
+  return (
+    <group ref={group}>
+      <Html center transform scale={0.2} pointerEvents="none" zIndexRange={[1, 0]}>
+        <div
+          style={{
+            fontFamily: "'Rajdhani', sans-serif",
+            fontWeight: 700,
+            fontSize: 21,
+            color: "#F19020",
+            textShadow: "0 0 9px rgba(241,144,32,0.55)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          hi
+        </div>
+      </Html>
+    </group>
+  );
+};
+
 /* Ambient dust for the dark constellation chamber */
 const Dust = () => {
   const ref = useRef(null);
@@ -294,6 +325,7 @@ const SceneInner = ({ categories, active, subs, onSelect }) => {
       <pointLight position={[-6, -3, 4]} intensity={10} color="#8FB6C4" />
       <Dust />
       <CenterNode />
+      <HiOrbit />
       {categories.map((c, i) => (
         <Cluster key={c} name={c} index={i} total={categories.length} active={active === c} anyActive={!!active} subs={(subs && subs[c]) || []} onSelect={onSelect} />
       ))}
@@ -304,13 +336,25 @@ const SceneInner = ({ categories, active, subs, onSelect }) => {
   );
 };
 
-const Constellation = ({ categories = [], active = null, subs = null, onSelect = null }) => (
-  <div className="h-full w-full" data-testid="network-constellation-canvas">
-    <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 7.6], fov: 46 }} gl={{ antialias: true, alpha: true }} style={{ background: "transparent" }}>
-      <AdaptiveQuality />
-      <SceneInner categories={categories} active={active} subs={subs} onSelect={onSelect} />
-    </Canvas>
-  </div>
-);
+const Constellation = ({ categories = [], active = null, subs = null, onSelect = null }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      className="h-full w-full"
+      // pan-y (not the R3F canvas default of none) so a finger landing on the
+      // diagram still scrolls the page — only a deliberate tap selects a
+      // cluster, so touch scroll never gets swallowed by the chamber.
+      style={{ touchAction: "pan-y" }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      data-testid="network-constellation-canvas"
+    >
+      <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 7.6], fov: 46 }} gl={{ antialias: true, alpha: true }} style={{ background: "transparent", touchAction: "pan-y" }}>
+        <AdaptiveQuality boost={hovered} />
+        <SceneInner categories={categories} active={active} subs={subs} onSelect={onSelect} />
+      </Canvas>
+    </div>
+  );
+};
 
 export default Constellation;

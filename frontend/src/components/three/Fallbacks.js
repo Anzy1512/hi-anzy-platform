@@ -74,6 +74,28 @@ export const SystemCoreFallback = () => (
   </div>
 );
 
+const SIGNAL_CATEGORIES = ["Business, Unpacked", "Brand, Decoded", "Tech, Without Theatre", "Growth, With Receipts", "Things We Noticed"];
+
+export const SignalFieldFallback = () => (
+  <div className="flex h-full w-full items-center justify-center p-6" data-testid="insights-signal-field-fallback">
+    <svg viewBox="0 0 100 60" className="h-full max-h-[300px] w-full" role="img" aria-label="Diagram: a central idea branching into the site's five insight categories">
+      <circle cx="50" cy="30" r="4" fill="#F19020" />
+      {SIGNAL_CATEGORIES.map((c, i) => {
+        const a = (i / SIGNAL_CATEGORIES.length) * Math.PI * 2 - Math.PI / 2;
+        const x = 50 + Math.cos(a) * 32;
+        const y = 30 + Math.sin(a) * 21;
+        return (
+          <g key={c}>
+            <line x1="50" y1="30" x2={x} y2={y} stroke="#F19020" strokeWidth="0.35" opacity="0.4" strokeDasharray="1.4 1.4" />
+            <circle cx={x} cy={y} r="1.4" fill="#F7F5EE" />
+            <text x={x} y={y - 2.8} textAnchor="middle" fontSize="2" fontFamily="'Rajdhani', sans-serif" fill="#F7F5EE" opacity="0.85">{c.toUpperCase()}</text>
+          </g>
+        );
+      })}
+    </svg>
+  </div>
+);
+
 export const ConstellationFallback = ({ categories = [] }) => (
   <div className="flex h-full w-full items-center justify-center p-6" data-testid="network-constellation-fallback">
     <svg viewBox="0 0 100 60" className="h-full max-h-[360px] w-full" role="img" aria-label="Diagram: hiAnzy at the centre of a specialist network">

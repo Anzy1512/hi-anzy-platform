@@ -14,6 +14,7 @@ import { NETWORK_SUBCATS } from "@/data/content";
 
 import { PunPop } from "@/components/PunPop";
 import { NextSteps } from "@/components/NextSteps";
+import { CardCarousel } from "@/components/CardCarousel";
 
 const Constellation = lazy(() => import("@/components/three/Constellation"));
 
@@ -257,24 +258,28 @@ export default function Network() {
           />
         </div>
 
-        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-testid="discipline-grid">
-          {DISCIPLINES.map((d, i) => (
-            <Reveal key={d.slug} delay={(i % 3) * 70}>
+        <div className="mt-9" data-testid="discipline-grid">
+          <CardCarousel label={`DRAG OR SCROLL · ${DISCIPLINES.length} DISCIPLINES`} testId="discipline-carousel">
+            {DISCIPLINES.map((d, i) => (
               <Link
+                key={d.slug}
                 to={`/network/${d.slug}`}
                 onClick={() => track("discipline_opened", { discipline: d.slug, from: "network" })}
                 data-testid={`discipline-card-${d.slug}`}
-                className="cap-tile group flex h-full flex-col rounded-[16px] border border-[#232A2A]/15 bg-[#F7F5EE] p-6 transition-colors hover:border-[#F19020]"
+                className="cap-tile group flex h-full w-[78vw] shrink-0 snap-start flex-col rounded-[16px] border border-[#232A2A]/15 bg-[#F7F5EE] p-6 transition-colors hover:border-[#F19020] sm:w-[320px] lg:w-[336px]"
               >
-                <span className="font-display mt-1.5 text-[26px] leading-none text-[#232A2A]">{d.name}</span>
+                <span className="sys-chip inline-flex w-fit items-center rounded-full border border-[#F19020]/50 px-2.5 py-1 text-[#232A2A]/55">
+                  {String(i + 1).padStart(2, "0")} · {d.category.toUpperCase()}
+                </span>
+                <span className="font-display mt-4 text-[26px] leading-none text-[#232A2A]">{d.name}</span>
                 <span className="mt-3 text-[15.5px] leading-[1.55] text-[#232A2A]/80">{d.hook}</span>
                 <span className="link-draw mt-auto inline-flex items-center gap-1.5 pt-5 text-[13.5px] font-semibold text-[#232A2A]">
                   What this actually means
                   <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                 </span>
               </Link>
-            </Reveal>
-          ))}
+            ))}
+          </CardCarousel>
         </div>
       </section>
 

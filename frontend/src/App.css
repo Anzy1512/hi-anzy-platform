@@ -503,6 +503,16 @@ html {
   text-transform: none;
 }
 
+/* Scroll-snap carousels (CardCarousel): the track scrolls, but the
+   scrollbar itself is a rail the arrows/drag already stand in for. */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* ---------- Shared spacing tokens & container system ---------- */
 :root {
   --page-x: clamp(16px, 4vw, 64px);
@@ -871,7 +881,13 @@ html {
    cut-out reads as placed rather than pasted, and the idle float keeps it from
    looking like a stuck image. Decorative only — never carries information. */
 .pop-illustration {
-  position: relative;
+  /* No position here on purpose. This used to hardcode `relative`, which —
+     being unlayered CSS — beats Tailwind's `@layer utilities` at equal
+     specificity regardless of source order, so every caller passing
+     `absolute` (pop-contact, pop-how-we-work, pop-closing) was silently
+     stuck in normal flow instead of pinned to its corner. The halo's own
+     positioning context is `.pop-illustration-figure` below, which already
+     carries `position: relative`, so nothing here ever depended on this. */
   pointer-events: none;
   user-select: none;
 }

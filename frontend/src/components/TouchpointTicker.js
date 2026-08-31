@@ -12,7 +12,19 @@ import { prefersReducedMotion } from "@/lib/motion";
  *
  * Pauses when off-screen or when the tab is hidden, so it is not animating
  * into an empty room.
+ *
+ * The breakdown at the foot answers the question the ticker raises but
+ * cannot: a rotating example proves the interactions are real, the bars say
+ * roughly where they happen. Folded into this card rather than given one of
+ * its own — the panel's height is set by the copy beside it, and that copy
+ * runs short, which is exactly the room the figure at the bottom of the
+ * panel already needs.
  */
+const MIX = [
+  { label: "DIGITAL TOUCHPOINTS", value: 46 },
+  { label: "HUMAN & IN-PERSON", value: 54 },
+];
+
 const TOUCHPOINTS = [
   "The pricing page at 11pm",
   "The reply that took four days",
@@ -28,9 +40,27 @@ const TOUCHPOINTS = [
 
 export const TouchpointTicker = ({ className = "", testId = "touchpoint-ticker" }) => {
   const wrapRef = useRef(null);
+  const mixRef = useRef(null);
   const [i, setI] = useState(0);
   const [visible, setVisible] = useState(true);
   const [count, setCount] = useState(214);
+  const [mixOn, setMixOn] = useState(false);
+
+  useEffect(() => {
+    const el = mixRef.current;
+    if (!el) return undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMixOn(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -110,6 +140,25 @@ export const TouchpointTicker = ({ className = "", testId = "touchpoint-ticker" 
         <p className="font-mono-sys mt-3 text-[12.5px] leading-[1.45] text-[#F7F5EE]/50">
           A sample. Not the set. Every one of them is the brand.
         </p>
+        <div ref={mixRef} className="mt-4 space-y-2.5 border-t border-[#F7F5EE]/10 pt-4">
+          {MIX.map((m, mi) => (
+            <div key={m.label}>
+              <div className="flex items-center justify-between gap-3 text-[11px]">
+                <span className="font-mono-sys text-[#F7F5EE]/60">{m.label}</span>
+                <span className="font-mono-sys tabular-nums text-[#F7F5EE]/45">{m.value}%</span>
+              </div>
+              <div className="mt-1 h-[4px] w-full overflow-hidden rounded-full bg-[#F7F5EE]/10">
+                <span
+                  className="block h-full rounded-full bg-[#F19020]"
+                  style={{
+                    width: mixOn ? `${m.value}%` : "0%",
+                    transition: `width 0.9s cubic-bezier(0.22,1,0.36,1) ${mi * 120}ms`,
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

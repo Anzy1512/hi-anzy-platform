@@ -35,7 +35,7 @@ const TIERS = {
 };
 const ORDER = ["low", "standard", "high"];
 
-export const AdaptiveQuality = ({ onTier, start = "standard" }) => {
+export const AdaptiveQuality = ({ onTier, start = "standard", boost = false }) => {
   const setDpr = useThree((s) => s.setDpr);
   const [tier, setTier] = useState(start);
 
@@ -57,6 +57,14 @@ export const AdaptiveQuality = ({ onTier, start = "standard" }) => {
     },
     [tier, apply]
   );
+
+  // Hovering a scene is intent to look closely at it — jump straight to full
+  // quality rather than waiting for PerformanceMonitor to notice and ramp up
+  // over several seconds, and hand it back once the pointer leaves.
+  React.useEffect(() => {
+    apply(boost ? "high" : start);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [boost]);
 
   return (
     <PerformanceMonitor

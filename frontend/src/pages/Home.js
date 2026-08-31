@@ -631,14 +631,21 @@ const WhoWith = () => (
 /* ============================ S11 — CLOSING ============================ */
 const Closing = () => (
   <section className="container-page section-pad-b pt-4" data-testid="home-closing-section">
-    <div className="panel-dark relative overflow-hidden p-8 sm:p-12 lg:p-16">
+    <div className="panel-dark relative overflow-hidden p-8 sm:p-12 lg:flex lg:min-h-[820px] lg:flex-col lg:justify-center lg:p-16">
       <RouteLine d="M0,80 C 20,20 45,95 65,45 C 80,10 92,60 100,30" viewBox="0 0 100 100" strokeWidth={1.6} className="pointer-events-none absolute inset-0 h-full w-full opacity-30" />
       {/* Copy is capped at 24ch, so the right half of this panel was empty:
-          the ticker takes the top corner, the figure takes the bottom. */}
+          the ticker takes the top corner, the figure takes the bottom.
+          Fixing PopIllustration's positioning (App.css) revealed the two
+          had never actually shared this corner without colliding — the
+          panel's height was set by the copy alone, which runs short. The
+          breakdown lives inside the ticker card rather than stacked under
+          it, and the panel now reserves enough height (lg:min-h) for both
+          corner pieces to sit clear of each other; justify-center keeps the
+          copy from reading as stranded at the top of the extra room. */}
       <TouchpointTicker className="absolute right-8 top-8 hidden w-[300px] lg:block lg:w-[340px] xl:right-16 xl:w-[380px]" testId="closing-ticker" />
       <PopIllustration
         src="/brand/pop-hat-balloon.png"
-        width={260}
+        width={220}
         rotate={3}
         drift={30}
         halo={false}
