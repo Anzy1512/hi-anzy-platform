@@ -266,7 +266,7 @@ export default function Network() {
                 to={`/network/${d.slug}`}
                 onClick={() => track("discipline_opened", { discipline: d.slug, from: "network" })}
                 data-testid={`discipline-card-${d.slug}`}
-                className="cap-tile group flex h-full w-[78vw] shrink-0 snap-start flex-col rounded-[16px] border border-[#232A2A]/15 bg-[#F7F5EE] p-6 transition-colors hover:border-[#F19020] sm:w-[320px] lg:w-[336px]"
+                className="cap-tile group flex h-[228px] w-[78vw] shrink-0 snap-start flex-col rounded-[16px] border border-[#232A2A]/15 bg-[#F7F5EE] p-6 transition-colors hover:border-[#F19020] sm:w-[320px] lg:w-[336px]"
               >
                 <span className="sys-chip inline-flex w-fit items-center rounded-full border border-[#F19020]/50 px-2.5 py-1 text-[#232A2A]/55">
                   {String(i + 1).padStart(2, "0")} · {d.category.toUpperCase()}
