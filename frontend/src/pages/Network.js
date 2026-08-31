@@ -259,7 +259,7 @@ export default function Network() {
         </div>
 
         <div className="mt-9" data-testid="discipline-grid">
-          <CardCarousel label={`DRAG OR SCROLL · ${DISCIPLINES.length} DISCIPLINES`} testId="discipline-carousel">
+          <CardCarousel label={`${DISCIPLINES.length} DISCIPLINES · DRAG TO EXPLORE`} testId="discipline-carousel" autoPlay>
             {DISCIPLINES.map((d, i) => (
               <Link
                 key={d.slug}

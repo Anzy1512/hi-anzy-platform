@@ -1,8 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import { SectionHeading } from "@/components/SectionHeading";
+import { MagneticButton } from "@/components/MagneticButton";
 import { Reveal } from "@/components/Reveal";
 import { FitQuadrant } from "@/components/FitQuadrant";
-import { AUDIENCES, FILTER_LIST } from "@/data/content";
+import { AUDIENCES } from "@/data/content";
 
 /* ======================== S10 — WHO WE WORK WITH ======================== */
 const MarqueeRow = ({ items, reverse = false }) => (
@@ -18,9 +21,27 @@ const MarqueeRow = ({ items, reverse = false }) => (
   </div>
 );
 
+/**
+ * The full "who this suits" case — the filter list and the plain-prose
+ * explanation — lives on /who-we-work-with, word for word (that page is the
+ * dedicated, fuller version). This teaser used to restate all of it a second
+ * time with no link back, so a reader who'd already read one saw no
+ * acknowledgment they'd seen it before. What stays here is what's actually
+ * unique to Home: the audience marquee and FitQuadrant's scroll-driven
+ * diagram, neither of which the dedicated page has — matching how every
+ * other Home section (Work, Network, What We Do) teases into its own page
+ * rather than fully restating it.
+ */
 export const WhoWith = () => (
   <section className="container-page section-pad relative" data-testid="home-who-section">
-    <SectionHeading kicker="WHO WE WORK WITH" title="People building things that have to work." testId="who-heading" className="max-w-3xl" />
+    <div className="flex flex-wrap items-end justify-between gap-6">
+      <SectionHeading kicker="WHO WE WORK WITH" title="People building things that have to work." testId="who-heading" className="max-w-3xl" />
+      <Reveal delay={150}>
+        <MagneticButton to="/who-we-work-with" className="btn-paper" hoverText="Good filter." testId="who-cta">
+          See Who We Work With <ArrowRight size={15} />
+        </MagneticButton>
+      </Reveal>
+    </div>
     <div className="mt-10 space-y-3" data-testid="who-audience-wall">
       <MarqueeRow items={AUDIENCES.slice(0, 6)} />
       <MarqueeRow items={AUDIENCES.slice(6)} reverse />
@@ -31,33 +52,18 @@ export const WhoWith = () => (
         ))}
       </ul>
     </div>
-    <Reveal delay={160} as="p" className="mt-8 max-w-xl text-[17px] leading-[1.6] text-[#232A2A]/80">
-      We especially like people who ask good questions. You do not need every answer.
-      <span className="font-accent text-[17px]"> That is partly why we are here.</span>
-    </Reveal>
-    {/* The filter panel was capped at max-w-2xl and left the right half of the
-        section empty. The diagram is its counterweight: the panel says when it
-        goes badly, this says when it goes well. */}
-    <div className="mt-10 grid items-start gap-8 lg:grid-cols-12">
-    <Reveal delay={220} className="lg:col-span-7">
-      <div className="panel-paper h-full p-6 sm:p-8" data-testid="who-filter-panel">
-        <p className="accent-signal-text sys-chip flex items-center gap-2 font-bold">
-          <span className="red-bar" /> SMALL FILTER
+    <div className="mt-10 grid items-center gap-8 lg:grid-cols-12">
+      <Reveal delay={180} className="lg:col-span-5">
+        <p className="text-[17px] leading-[1.6] text-[#232A2A]/80">
+          Not every business is the right fit, and we would rather say so early than three months in.{" "}
+          <Link to="/who-we-work-with" className="link-draw font-semibold text-[#232A2A]" data-testid="who-filter-link">
+            The full filter, and where we tend to earn our fee
+          </Link>.
         </p>
-        <p className="mt-3 font-semibold text-[#232A2A]">We probably won&rsquo;t be brilliant together if…</p>
-        <ul className="mt-4 space-y-2.5">
-          {FILTER_LIST.map((f) => (
-            <li key={f} className="flex items-start gap-3 text-[16.5px] leading-[1.58] text-[#232A2A]/78">
-              <span className="font-mono-sys mt-0.5 text-[12.5px] accent-signal-text">✕</span>
-              {f}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Reveal>
-    <Reveal delay={280} className="lg:col-span-5">
-      <FitQuadrant className="panel-paper h-full p-6 sm:p-7" testId="who-fit-quadrant" />
-    </Reveal>
+      </Reveal>
+      <Reveal delay={240} className="lg:col-span-7">
+        <FitQuadrant className="panel-paper h-full p-6 sm:p-7" testId="who-fit-quadrant" />
+      </Reveal>
     </div>
   </section>
 );

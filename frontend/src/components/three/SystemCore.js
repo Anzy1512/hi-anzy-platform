@@ -135,9 +135,9 @@ const Lattice = ({ progressRef, pulseRef }) => {
     for (let i = 0; i < NODE_COUNT; i += 1) {
       const c = current[i];
       c.lerpVectors(SCATTER[i], LATTICE[i], p);
-      c.x += Math.sin(t * 0.5 + i * 1.7) * 0.035 * liveliness;
-      c.y += Math.cos(t * 0.4 + i * 2.3) * 0.035 * liveliness;
-      c.z += Math.sin(t * 0.6 + i * 0.9) * 0.035 * liveliness;
+      c.x += Math.sin(t * 0.5 + i * 1.7) * 0.05 * liveliness;
+      c.y += Math.cos(t * 0.4 + i * 2.3) * 0.05 * liveliness;
+      c.z += Math.sin(t * 0.6 + i * 0.9) * 0.05 * liveliness;
 
       dummy.position.copy(c);
       dummy.scale.setScalar(0.55 + 0.45 * p);
@@ -204,7 +204,7 @@ const Core = ({ progressRef }) => {
     const m = ref.current;
     if (!m) return;
     const p = easeOutBack(clamp01((progressRef.current - 0.3) / 0.7));
-    const breathe = 1 + Math.sin(clock.getElapsedTime() * 1.3) * 0.05;
+    const breathe = 1 + Math.sin(clock.getElapsedTime() * 1.3) * 0.07;
     m.scale.setScalar(Math.max(0.0001, p) * breathe);
   });
   return (
@@ -280,8 +280,8 @@ const SceneInner = ({ progressRef, pointerRef, pulseRef }) => {
     w.scale.setScalar(THREE.MathUtils.lerp(w.scale.x, fit, 0.08));
 
     const t = clock.getElapsedTime();
-    const targetY = t * 0.11 + pointerRef.current.x * 0.28;
-    const targetX = -pointerRef.current.y * 0.16;
+    const targetY = t * 0.16 + pointerRef.current.x * 0.32;
+    const targetX = -pointerRef.current.y * 0.18;
     w.rotation.y = THREE.MathUtils.lerp(w.rotation.y, targetY, 0.045);
     w.rotation.x = THREE.MathUtils.lerp(w.rotation.x, targetX, 0.06);
   });

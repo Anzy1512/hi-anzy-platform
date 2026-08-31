@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
@@ -35,9 +36,9 @@ export const Hero = ({ show3d }) => {
   const handleCoreFailed = useCallback(() => setCoreReady(false), []);
 
   return (
-    <section className="relative container-page pb-10 pt-[124px] lg:pb-14 lg:pt-[148px]" data-testid="home-hero-section">
+    <section className="relative container-page pb-10 pt-[100px] lg:pb-14 lg:pt-[112px]" data-testid="home-hero-section">
       <div className="grid items-center gap-10 lg:grid-cols-12">
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-6">
           <Reveal as="p" className="font-display text-[clamp(0.82rem,1vw,1.06rem)] font-semibold uppercase leading-[1.1] tracking-[0.08em]" testId="hero-kicker">
             <span className="sticker-orange">From ABC to ROI</span>
           </Reveal>
@@ -51,7 +52,7 @@ export const Hero = ({ show3d }) => {
             </span>
           </h1>
           <Reveal delay={160}>
-            <p className="font-editorial mt-7 max-w-[46ch] text-[clamp(1.15rem,1.55vw,1.5rem)] leading-[1.45] text-[#232A2A]/85" data-testid="hero-body">
+            <p className="font-editorial mt-7 max-w-[46ch] text-[clamp(1.25rem,1.7vw,1.65rem)] leading-[1.5] text-[#232A2A]/85" data-testid="hero-body">
               Strategy. Brand. Technology. Growth. Operations. They look like separate departments until you
               realise they are all working on the same business. hiAnzy finds what is disconnected, figures out
               what belongs together and builds the system around it.
@@ -65,14 +66,27 @@ export const Hero = ({ show3d }) => {
               See How It Works
             </MagneticButton>
           </Reveal>
-          <Reveal delay={320} as="p" className="font-accent mt-6 text-[17px] text-[#232A2A]/70" testId="hero-microcopy">
+          <Reveal delay={320} as="p" className="font-accent mt-6 text-[18px] text-[#232A2A]/70" testId="hero-microcopy">
             Bring the brief. Or bring the problem. <span className="accent-orange-text font-semibold">We can start with either.</span>
           </Reveal>
         </div>
 
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-6">
           <Reveal delay={200}>
-            <div className="panel-dark relative overflow-hidden" style={{ aspectRatio: "4/4.6" }} data-testid="hero-core-frame">
+            {/* Widened from col-span-5 and given a shorter aspect ratio (was
+                4/4.6) so SystemCore's own auto-fit — which scales the scene to
+                88% of this panel's rendered size, see SceneInner in
+                SystemCore.js — has visibly more room to fill. A real <Link>,
+                not a click handler on a div: the diagram has no text of its
+                own, so the accessible name has to come from the link itself. */}
+            <Link
+              to="/network"
+              onClick={() => track("cta_primary_click", { cta: "hero_network_visual" })}
+              aria-label="Explore the hiAnzy Network"
+              className="group panel-dark relative block overflow-hidden"
+              style={{ aspectRatio: "4/4" }}
+              data-testid="hero-core-frame"
+            >
               {/* The diagram paints first — same layering .motif-frame uses for its
                   deck scenes — and the canvas fades in on top once it is truly
                   ready, instead of popping in over what had been an empty frame.
@@ -103,7 +117,13 @@ export const Hero = ({ show3d }) => {
                   </ThreeSafe>
                 )}
               </div>
-            </div>
+              <span
+                className="sys-chip pointer-events-none absolute bottom-4 left-4 z-20 inline-flex items-center gap-1.5 rounded-full border border-[#F7F5EE]/30 bg-[#1D2424]/70 px-3 py-1.5 text-[#F7F5EE]/85 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+                aria-hidden="true"
+              >
+                Explore the Network <ArrowRight size={12} />
+              </span>
+            </Link>
           </Reveal>
         </div>
       </div>

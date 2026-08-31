@@ -100,7 +100,7 @@ export default function Insights() {
         {posts && posts.length === 0 && <p className="panel-paper p-6 text-[14px] text-[#232A2A]/70" data-testid="insights-empty">Nothing filed here yet. The notebook is thick; the typing takes time.</p>}
         {posts && posts.length > 0 && (
           <div data-testid="insights-grid">
-            <CardCarousel label={`DRAG OR SCROLL · ${posts.length} NOTE${posts.length === 1 ? "" : "S"}`} testId="insights-carousel">
+            <CardCarousel label={`${posts.length} NOTE${posts.length === 1 ? "" : "S"} · DRAG TO EXPLORE`} testId="insights-carousel" autoPlay>
               {posts.map((p) => (
                 <Link
                   key={p.slug}

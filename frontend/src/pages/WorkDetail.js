@@ -54,7 +54,7 @@ export default function WorkDetail() {
 
   if (!cs) {
     return (
-      <div className="mx-auto max-w-[900px] space-y-6 px-[var(--page-x)] pb-24 pt-[136px]">
+      <div className="mx-auto max-w-[900px] space-y-6 px-[var(--page-x)] pb-24 pt-[84px]">
         <div className="panel-paper h-24 animate-pulse" />
         <div className="panel-paper h-[420px] animate-pulse" />
       </div>

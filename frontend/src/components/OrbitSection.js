@@ -15,8 +15,15 @@ export const OrbitSection = () => {
     []
   );
 
+  // mt-10, not more section-pad: this section's own top padding is
+  // deliberately zeroed by App.css's adjacent-.section-pad-b rule so it
+  // doesn't double up with the Case Studies section's bottom padding — but
+  // that left zero visible breathing room between the two. A small explicit
+  // margin (untouched by that rule, which only zeroes padding-top) restores
+  // a real gap without re-introducing the double one the rule exists to
+  // prevent.
   return (
-    <section className="container-page section-pad" data-index-label="THE HI ANZY ORBIT" data-testid="orbit-section">
+    <section className="container-page section-pad mt-10 lg:mt-14" data-index-label="THE HI ANZY ORBIT" data-testid="orbit-section">
       <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
         <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> THE HI ANZY ORBIT
       </Reveal>
