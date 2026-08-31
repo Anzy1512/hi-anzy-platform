@@ -43,6 +43,20 @@ export const Nav = () => {
     };
   }, [location.pathname]);
 
+  // Radix's Dialog/Sheet locks native scroll (overflow: hidden on <body>),
+  // but Lenis re-implements scrolling in JS on top of that and never checks
+  // it — so with the menu open, a wheel or touch gesture still drove the
+  // page underneath while the panel itself stayed fixed on screen. Stopping
+  // Lenis for the lifetime of the sheet closes that gap the same way the
+  // network page's fullscreen dialog already does.
+  useEffect(() => {
+    if (!open) return undefined;
+    if (window.__lenis) window.__lenis.stop();
+    return () => {
+      if (window.__lenis) window.__lenis.start();
+    };
+  }, [open]);
+
   const positionBar = () => {
     const list = listRef.current;
     if (!list) return;

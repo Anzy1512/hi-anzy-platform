@@ -11,6 +11,12 @@
   font-family: var(--font-system);
   font-weight: 600;
   letter-spacing: -0.02em;
+  /* Every big heading on the site wraps at a width nobody chose — a manual
+     <br> sets where a two-line headline breaks, but whatever remains after
+     it still wraps by the browser's default greedy algorithm, which happily
+     strands a single word ("...Make it grow." -> "grow." alone) on its own
+     line. balance re-distributes those trailing words evenly instead. */
+  text-wrap: balance;
 }
 .font-accent {
   font-family: var(--font-editorial);

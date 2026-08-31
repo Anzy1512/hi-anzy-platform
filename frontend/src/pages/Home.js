@@ -296,7 +296,7 @@ const MethodSection = () => {
     <section className="bg-[#D8CFB4]/60 section-pad" data-testid="home-method-section">
       <div className="container-page">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading kicker={<>THE <span className="brand-mark">hiAnzy</span> METHOD</>} title={<>See it. Shape it. Build it.<br />Bring it together. Make it grow.</>} testId="method-heading" className="max-w-3xl" />
+          <SectionHeading kicker={<>THE <span className="brand-mark">hiAnzy</span> METHOD</>} title={<>See it. Shape it. Build it.<br />Bring it together. Make it&nbsp;grow.</>} testId="method-heading" className="max-w-3xl" />
           <Reveal delay={150}>
             <MagneticButton to="/how-we-work" className="btn-paper" testId="method-cta" onClick={() => track("method_explored", { from: "home_method" })}>
               See the Method <ArrowRight size={15} />
@@ -518,7 +518,7 @@ const NetworkPreview = ({ show3d }) => {
 /* ============================= S09 — TRUST ============================= */
 const Trust = () => (
   <section className="container-page section-pad" data-testid="home-trust-section">
-    <SectionHeading kicker="HOW TRUST GETS BUILT" title={<>Creative enough to find another answer.<br />Practical enough to make it work.</>} testId="trust-heading" className="max-w-4xl" />
+    <SectionHeading kicker="HOW TRUST GETS BUILT" title={<>Creative enough to find another answer.<br />Practical enough to make it&nbsp;work.</>} testId="trust-heading" className="max-w-4xl" />
 
     <Reveal delay={80} as="p" className="mt-6 max-w-[60ch] text-[17.5px] leading-[1.6] text-[#232A2A]/80">
       Nine promises. Open any of them and you will find what it actually costs us to keep it,
@@ -631,7 +631,7 @@ const WhoWith = () => (
 /* ============================ S11 — CLOSING ============================ */
 const Closing = () => (
   <section className="container-page section-pad-b pt-4" data-testid="home-closing-section">
-    <div className="panel-dark relative overflow-hidden p-8 sm:p-12 lg:flex lg:min-h-[820px] lg:flex-col lg:justify-center lg:p-16">
+    <div className="panel-dark relative overflow-hidden p-8 sm:p-12 lg:flex lg:min-h-[760px] lg:flex-col lg:justify-start lg:p-16">
       <RouteLine d="M0,80 C 20,20 45,95 65,45 C 80,10 92,60 100,30" viewBox="0 0 100 100" strokeWidth={1.6} className="pointer-events-none absolute inset-0 h-full w-full opacity-30" />
       {/* Copy is capped at 24ch, so the right half of this panel was empty:
           the ticker takes the top corner, the figure takes the bottom.
@@ -639,9 +639,10 @@ const Closing = () => (
           had never actually shared this corner without colliding — the
           panel's height was set by the copy alone, which runs short. The
           breakdown lives inside the ticker card rather than stacked under
-          it, and the panel now reserves enough height (lg:min-h) for both
-          corner pieces to sit clear of each other; justify-center keeps the
-          copy from reading as stranded at the top of the extra room. */}
+          it, and lg:min-h reserves enough room for both corner pieces to
+          clear each other. Top-aligned (not centred): centring left a dead
+          gap above the copy while the ticker sat flush at the top, so the
+          copy now starts at the same edge the ticker does. */}
       <TouchpointTicker className="absolute right-8 top-8 hidden w-[300px] lg:block lg:w-[340px] xl:right-16 xl:w-[380px]" testId="closing-ticker" />
       <PopIllustration
         src="/brand/pop-hat-balloon.png"

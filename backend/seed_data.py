@@ -474,7 +474,7 @@ PORTFOLIO_GROUPS = [
             {"name": "Tranquilli Tea", "url": "https://drive.google.com/file/d/1_Z8vHSISnYBiTNUQwNvYNngh6Km2U54b/view?usp=sharing"},
         ]},
     {"category": "Web Development", "slug": "web-development", "items": [
-            {"name": "Usual Designer Gifts", "url": "https://unusualdesignergifts.co.uk/"},
+            {"name": "Unusual Designer Gifts", "url": "https://unusualdesignergifts.co.uk/"},
             {"name": "Daily Life Prime", "url": "https://dailylifeprime.shop/"},
             {"name": "Primo Customs", "url": "http://www.primocustoms.co.in/"},
             {"name": "Tasavur", "url": "https://tasavur.com/"},
