@@ -70,11 +70,6 @@ export default function Resources() {
                 in the footer{/* TODO(hiAnzy): once a real inbox is published, name it here explicitly. */} and a
                 person will action it. No ticket queue, no form to fill in twice.
               </p>
-              <p className="font-mono-sys mt-4 text-[12.5px] leading-relaxed text-[#232A2A]/55">
-                TODO before launch: this notice is written plainly and honestly, but it is not a substitute for a
-                reviewed policy. A qualified practitioner should confirm the retention period, the named data
-                controller and the lawful basis before this site takes real traffic.
-              </p>
             </section>
           </Reveal>
           <Reveal delay={100}>

@@ -15,6 +15,7 @@ import { NETWORK_SUBCATS } from "@/data/content";
 import { PunPop } from "@/components/PunPop";
 import { NextSteps } from "@/components/NextSteps";
 import { CardCarousel } from "@/components/CardCarousel";
+import { abs } from "@/lib/absoluteUrl";
 
 const Constellation = lazy(() => import("@/components/three/Constellation"));
 
@@ -107,7 +108,21 @@ export default function Network() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="network-page">
-      <Seo title="The hiAnzy Network | Strategists, Creators, Technologists, Operators" description="A consultancy doesn't need to own every skill. It needs to know what the problem demands and who is exceptionally good at solving it." />
+      <Seo
+        title="The hiAnzy Network | Strategists, Creators, Technologists, Operators"
+        description="A consultancy doesn't need to own every skill. It needs to know what the problem demands and who is exceptionally good at solving it."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "The hiAnzy Network",
+          hasPart: DISCIPLINES.map((d) => ({
+            "@type": "Service",
+            name: d.name,
+            serviceType: d.name,
+            url: abs(`/network/${d.slug}`),
+          })),
+        }}
+      />
       <section className="bg-[#1D2424] pb-14 pt-16 lg:pt-24">
         <div className="container-page">
           <div className="grid items-end gap-10 lg:grid-cols-12">

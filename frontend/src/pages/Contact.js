@@ -12,6 +12,7 @@ import { PopIllustration } from "@/components/PopIllustration";
 import { Picture } from "@/components/Picture";
 import { useRevealObserver } from "@/lib/motion";
 import { submitContact, track } from "@/lib/api";
+import { abs } from "@/lib/absoluteUrl";
 
 const STAGES = ["Idea", "Early", "Growing", "Scaling", "Established", "Turnaround"];
 const RANGES = ["Under ₹2L", "₹2–10L", "₹10–50L", "₹50L+", "Let's discuss"];
@@ -138,7 +139,11 @@ export default function Contact() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="contact-page">
-      <Seo title="Say Hi | hiAnzy" description="Tell us what you are building, what feels stuck, what changed, or what opportunity refuses to leave your head. A person will read it." />
+      <Seo
+        title="Say Hi | hiAnzy"
+        description="Tell us what you are building, what feels stuck, what changed, or what opportunity refuses to leave your head. A person will read it."
+        jsonLd={{ "@context": "https://schema.org", "@type": "ContactPage", name: "Contact hiAnzy", url: abs("/contact") }}
+      />
       <section className="container-page section-pad">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">

@@ -14,6 +14,7 @@ import { announceExpanded, onCollapse } from "@/components/CollapseOnScroll";
 import { useRevealObserver } from "@/lib/motion";
 import { getCaseStudies, getCaseStudy, track, API } from "@/lib/api";
 import { PunPop } from "@/components/PunPop";
+import { abs } from "@/lib/absoluteUrl";
 import axios from "axios";
 
 /**
@@ -132,7 +133,20 @@ export default function Work() {
 
   return (
     <div ref={ref} className="pt-[84px]" data-testid="work-page">
-      <Seo title="Work | hiAnzy" description="Case studies with business context: situation, gap, insight, decision, build, result, and what happened next." />
+      <Seo
+        title="Work | Proof, With Context | hiAnzy"
+        description="Case studies with business context: situation, gap, insight, decision, build, result, and what happened next."
+        jsonLd={cases && cases.length ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListElement: cases.map((cs, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: cs.title,
+            url: abs(`/work/${cs.slug}`),
+          })),
+        } : undefined}
+      />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WORK

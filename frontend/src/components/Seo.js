@@ -63,10 +63,11 @@ const upsertLink = (rel, href) => {
  * an app doesn't need the one thing it does is not worth debugging further
  * when the replacement is four small DOM helpers.
  */
-export const Seo = ({ title, description, jsonLd, image }) => {
+export const Seo = ({ title, description, jsonLd, image, noIndex }) => {
   useEffect(() => {
     document.title = title;
     upsertMeta("name", "description", description);
+    upsertMeta("name", "robots", noIndex ? "noindex,follow" : "index,follow");
 
     const url = window.location.href.split("#")[0];
     upsertLink("canonical", url);
@@ -103,7 +104,7 @@ export const Seo = ({ title, description, jsonLd, image }) => {
       s.textContent = JSON.stringify(b);
       document.head.appendChild(s);
     });
-  }, [title, description, jsonLd, image]);
+  }, [title, description, jsonLd, image, noIndex]);
 
   return null;
 };

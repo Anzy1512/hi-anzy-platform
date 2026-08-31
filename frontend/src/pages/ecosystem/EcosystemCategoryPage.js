@@ -8,6 +8,7 @@ import { useRevealObserver } from "@/lib/motion";
 import { getEcosystem, track } from "@/lib/api";
 import { ORBIT_CATEGORIES } from "@/data/content";
 import { ORBIT_GLYPHS } from "@/components/deck/OrbitGlyphs";
+import { abs } from "@/lib/absoluteUrl";
 
 /**
  * One shared index page for all 6 Orbit category routes — the category
@@ -39,9 +40,32 @@ export const EcosystemCategoryPage = ({ category }) => {
 
   if (!meta) return null;
 
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "The Hi Anzy Orbit", item: abs("/work") },
+        { "@type": "ListItem", position: 2, name: meta.name, item: abs(meta.route) },
+      ],
+    },
+    ...(items && items.length
+      ? [{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListElement: items.map((item, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: item.name,
+            url: isCaseStudy ? abs(`/work/${item.slug}`) : item.links?.[0] || undefined,
+          })),
+        }]
+      : []),
+  ];
+
   return (
     <div ref={ref} className="pt-[84px]" data-testid={`ecosystem-page-${category}`}>
-      <Seo title={`${meta.name} | The Hi Anzy Orbit | hiAnzy`} description={meta.copy} />
+      <Seo title={`${meta.name} | The Hi Anzy Orbit | hiAnzy`} description={meta.seoDescription || meta.copy} jsonLd={jsonLd} />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> THE HI ANZY ORBIT · {meta.num}

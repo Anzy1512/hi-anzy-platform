@@ -21,7 +21,7 @@ export default function ComingSoon() {
   return (
     <div ref={ref} className="pt-[84px]" data-testid="coming-soon-page">
       <Seo
-        title="Coming Soon | hiAnzy"
+        title="Coming Soon: Hi Anzy AI & Imkaan | hiAnzy"
         description="Two ideas quietly becoming something more: Hi Anzy AI, the intelligence layer behind the system, and Imkaan, returning."
       />
 
@@ -80,9 +80,9 @@ export default function ComingSoon() {
           <div className="mt-5 grid items-start gap-10 lg:grid-cols-12">
             <div className="lg:col-span-8">
               <Reveal delay={80}>
-                <h1 className="font-display leading-[0.95] text-[#232A2A] text-[clamp(2.6rem,5.6vw,4.6rem)]" data-testid="coming-soon-imkaan-h1">
+                <h2 className="font-display leading-[0.95] text-[#232A2A] text-[clamp(2.6rem,5.6vw,4.6rem)]" data-testid="coming-soon-imkaan-h1">
                   Imkaan
-                </h1>
+                </h2>
               </Reveal>
               <Reveal delay={140}>
                 <p className="font-editorial mt-4 max-w-[52ch] text-[clamp(1.1rem,1.6vw,1.4rem)] italic leading-[1.4] text-[#232A2A]/85">

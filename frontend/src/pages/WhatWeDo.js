@@ -12,12 +12,13 @@ import { CharacterQuote } from "@/components/CharacterQuote";
 import { Packages } from "@/components/Packages";
 import { PackageBuilder } from "@/components/PackageBuilder";
 import { Picture } from "@/components/Picture";
+import { NextSteps } from "@/components/NextSteps";
 
 export default function WhatWeDo() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="what-we-do-page">
-      <Seo title="What We Do | hiAnzy" description="Business audit and strategy, brand and experience, technology and automation, growth, media and creators, advisory and scale, run as one connected system." />
+      <Seo title="What We Do | Six Capabilities, One System | hiAnzy" description="Business audit and strategy, brand and experience, technology and automation, growth, media and creators, advisory and scale, run as one connected system." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHAT WE DO
@@ -131,6 +132,7 @@ export default function WhatWeDo() {
       <div className="pb-16">
         <CharacterQuote />
       </div>
+      <NextSteps from="/what-we-do" />
     </div>
   );
 }

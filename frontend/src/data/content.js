@@ -356,7 +356,7 @@ export const CATEGORIES = [
       "Long-term growth support",
     ],
     methodStage: "SCALE",
-    why: "Clever ideas get attention. Reliable execution gets remembered. This is the remembered part.",
+    why: "Scale does not reward the cleverest idea. It rewards whichever version was actually built to hold.",
     lede: "Scale is an excellent stress test. It finds every shortcut you took and introduces them to your customers.",
     body: [
       "Things that work at ten customers behave differently at ten thousand. The manual step someone was doing quietly becomes a queue. The permissive access setting becomes an incident. The process that lived in one person's head becomes a risk with a notice period.",
@@ -636,6 +636,10 @@ export const ORBIT_CATEGORIES = [
     name: "BUILT HERE",
     descriptor: "In-house projects",
     copy: "Where we put our own thinking to work.",
+    // Longer than `copy` on purpose: `copy` is the on-page tagline, this is
+    // what the <Seo> description actually needs to tell a search result or
+    // link preview about what the category page contains.
+    seoDescription: "In-house work hiAnzy built and delivered directly — full case studies, not vanity summaries.",
     route: "/work/built-here",
   },
   {
@@ -644,6 +648,7 @@ export const ORBIT_CATEGORIES = [
     name: "BUILT TOGETHER",
     descriptor: "Collaborations & joint work",
     copy: "Good work rarely asks who deserves all the credit.",
+    seoDescription: "Case studies built alongside collaborators and partners, credited honestly rather than claimed as solo work.",
     route: "/work/built-together",
   },
   {
@@ -652,6 +657,7 @@ export const ORBIT_CATEGORIES = [
     name: "MINDS IN THE MIX",
     descriptor: "Collaborators & specialists",
     copy: "Expertise, without the unnecessary payroll theatre.",
+    seoDescription: "Independent specialists in the hiAnzy network — real capabilities and relationships, labelled honestly, not staff.",
     route: "/network/collaborators",
   },
   {
@@ -660,6 +666,7 @@ export const ORBIT_CATEGORIES = [
     name: "FACES & VOICES",
     descriptor: "Artists & creators",
     copy: "Sometimes the right message needs the right messenger.",
+    seoDescription: "Artists and creators the network can bring in when a project needs a real voice, not just reach.",
     route: "/network/artists-creators",
   },
   {
@@ -668,6 +675,7 @@ export const ORBIT_CATEGORIES = [
     name: "PLACES WITH POSSIBILITY",
     descriptor: "Venues & institutions",
     copy: "Some ideas need more than a screen.",
+    seoDescription: "Partner venues and institutions available for events, launches and experiences that need a physical space.",
     // Not /network/venues — that slug is already the Events & Venue
     // Production discipline page (see disciplines.js). This is a roster of
     // partner venues, a different thing from that capability page.
@@ -679,6 +687,7 @@ export const ORBIT_CATEGORIES = [
     name: "PARTNERS IN PROGRESS",
     descriptor: "Media, production & strategic partners",
     copy: "When the work needs to travel, scale or get specialised.",
+    seoDescription: "Media, production and strategic partners the network can activate when a project needs to scale or travel.",
     route: "/network/partners",
   },
 ];

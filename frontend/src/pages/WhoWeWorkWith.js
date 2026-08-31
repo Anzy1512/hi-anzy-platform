@@ -12,7 +12,7 @@ export default function WhoWeWorkWith() {
   const ref = useRevealObserver();
   return (
     <div ref={ref} className="pt-[84px]" data-testid="who-we-work-with-page">
-      <Seo title="Who We Work With | hiAnzy" description="Founders, founder-led companies, businesses modernising systems, D2C and commerce brands, hospitality and teams entering the next stage of growth." />
+      <Seo title="Who We Work With | Founders & Growing Teams | hiAnzy" description="Founders, founder-led companies, businesses modernising systems, D2C and commerce brands, hospitality and teams entering the next stage of growth." />
       <section className="container-page section-pad">
         <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
           <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> WHO WE WORK WITH

@@ -6,7 +6,7 @@ import { RouteLine } from "@/components/RouteLine";
 export default function NotFound() {
   return (
     <div className="relative flex min-h-[86vh] flex-col items-center justify-center px-4 pt-[84px] text-center" data-testid="not-found-page">
-      <Seo title="404: Not in the Roadmap | hiAnzy" description="This page does not exist. The rest of the system does." />
+      <Seo title="404: Not in the Roadmap | hiAnzy" description="This page does not exist. The rest of the system does." noIndex />
       <RouteLine d="M0,50 C 25,10 50,90 75,30 C 88,5 95,60 100,40" viewBox="0 0 100 100" strokeWidth={1.4} className="pointer-events-none absolute inset-x-0 top-1/3 h-40 w-full opacity-40" start="top 100%" end="top 40%" />
       {/* Signal red on paper is 2.8:1 — deepened so the label still reads red
           but clears AA at this size. */}
