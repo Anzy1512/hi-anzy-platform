@@ -48,16 +48,23 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
   // every <details> back to `ci === 0` and slammed shut whatever the reader
   // had actually opened. Category 0 stays open on first render; after that,
   // onToggle is the only thing that ever changes this.
-  const [openSlugs, setOpenSlugs] = useState(() => new Set([CATEGORIES[0]?.slug]));
+  //
+  // A single slug, not a Set: this used to be a Set that only ever grew via
+  // .add() and nothing ever removed a *previous* selection from it, so
+  // opening a second category left the first one open too — tapping one
+  // group visibly opened others along with it. "The first is open so the
+  // control explains itself on sight" (below) was always describing a
+  // one-at-a-time menu, which a Set never actually enforced.
+  const [openSlug, setOpenSlug] = useState(() => CATEGORIES[0]?.slug ?? null);
 
   // CollapseOnScroll (mounted once in App.js) closes any open <details> once
   // the reader scrolls past it, so the page doesn't silently change length
   // under them — and because that closes the DOM directly, not through
   // React, it's exactly the kind of external mutation the comment above
   // warns about: without this, the next unrelated re-render (a chip pick, a
-  // filter keystroke) would reconcile `open` back to true from openSlugs and
+  // filter keystroke) would reconcile `open` back to true from openSlug and
   // silently reopen a category the reader had just scrolled away from.
-  useEffect(() => onCollapse(() => setOpenSlugs(new Set())), []);
+  useEffect(() => onCollapse(() => setOpenSlug(null)), []);
 
   const q = query.trim().toLowerCase();
   const matches = (cap) => !q || cap.toLowerCase().includes(q);
@@ -168,19 +175,19 @@ export const PackageBuilder = ({ testId = "package-builder" }) => {
                     first is open so the control explains itself on sight. */}
                 <details
                   className="builder-group rounded-[16px] border border-[#232A2A]/12 bg-[#F7F5EE]/45 p-5 sm:p-6"
-                  open={q ? true : openSlugs.has(c.slug)}
+                  open={q ? true : openSlug === c.slug}
                   onToggle={(e) => {
                     // Ignore toggles fired while a search is forcing every
                     // group open — that state is not a choice to remember,
                     // and recording it would reopen everything the moment the
                     // query is cleared even for groups the reader had shut.
                     if (q) return;
-                    setOpenSlugs((prev) => {
-                      const next = new Set(prev);
-                      if (e.target.open) next.add(c.slug);
-                      else next.delete(c.slug);
-                      return next;
-                    });
+                    // Exclusive: opening this one closes whichever other
+                    // group was open. A toggle firing with open=false is this
+                    // same group closing itself — only clear the shared slug
+                    // if it's still the one that owns it, so that doesn't
+                    // wipe out a different group that opened in the meantime.
+                    setOpenSlug((prev) => (e.target.open ? c.slug : (prev === c.slug ? null : prev)));
                   }}
                   data-testid={`builder-details-${c.slug}`}
                 >

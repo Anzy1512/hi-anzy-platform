@@ -46,8 +46,12 @@ const Node = ({ name, index, total }) => {
         <sphereGeometry args={[0.09, 20, 20]} />
         <meshStandardMaterial color="#F19020" emissive="#F19020" emissiveIntensity={0.55} roughness={0.35} metalness={0.3} />
       </mesh>
-      <Html center transform position={[0, 0.34, 0]} scale={0.19} pointerEvents="none" zIndexRange={[2, 0]}>
-        <div style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: "0.05em", color: "#F7F5EE", whiteSpace: "nowrap" }}>
+      {/* scale 0.19 * fontSize 15 rendered at roughly 3 real CSS pixels tall
+          — unreadable. Bumped to a size actually verified against the live
+          page's computed getBoundingClientRect, not just the prop math,
+          since Html's transform mode also folds in camera distance/FOV. */}
+      <Html center transform position={[0, 0.4, 0]} scale={0.4} pointerEvents="none" zIndexRange={[2, 0]}>
+        <div style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, fontSize: 20, letterSpacing: "0.05em", color: "#F7F5EE", whiteSpace: "nowrap" }}>
           {name.toUpperCase()}
         </div>
       </Html>

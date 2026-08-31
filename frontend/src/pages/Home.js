@@ -1,6 +1,4 @@
-import React, { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Seo } from "@/components/Seo";
 import { HalftoneStatic } from "@/components/three/HalftoneStatic";
 import { PunRow } from "@/components/PunPop";
@@ -8,7 +6,6 @@ import { SectionConnector } from "@/components/SectionConnector";
 import { PinnedSequence } from "@/components/PinnedSequence";
 import { ProofStrip } from "@/components/ProofStrip";
 import { useRevealObserver, useReducedMotion, webglAvailable, gsap, prefersReducedMotion } from "@/lib/motion";
-import { track } from "@/lib/api";
 import { METHOD_STAGES } from "@/data/content";
 
 import { Hero } from "@/pages/home/Hero";
@@ -28,14 +25,6 @@ const HalftoneBackdrop = lazy(() => import("@/components/three/HalftoneBackdrop"
 export default function Home() {
   const ref = useRevealObserver();
   const reduced = useReducedMotion();
-  // Title/body/duration only — the full breakdown (inputs/outputs/pitfall)
-  // lives at /how-we-work, which this teaser now links to explicitly instead
-  // of restating it. PinnedSequence already renders inputs/outputs
-  // conditionally, so simply not including them here is enough.
-  const methodTeaserStages = useMemo(
-    () => METHOD_STAGES.map(({ label, title, page, body, duration }) => ({ label, title, page, body, duration })),
-    []
-  );
   // Computed synchronously on first render, not after it: this state used to
   // start false and only flip in an effect, so the lazy `import()` for the
   // hero canvas — a 215KB chunk — did not even begin downloading until a
@@ -119,29 +108,18 @@ export default function Home() {
       <WhatWeDoGrid />
       {/* The method used to be explained twice back-to-back here: a compact
           MethodSection (deleted) immediately followed by this same
-          PinnedSequence, both reading METHOD_STAGES — that duplication was
-          fixed within Home.js itself. It turned out /how-we-work
-          independently re-explains the same five stages at the same depth
-          (and one field further: it also carries `pitfall`, "where this
-          usually goes wrong", which this teaser never showed anyway) — so
-          PinnedSequence here now gets a stripped-down `steps` array
-          (title/body/duration only; inputs/outputs dropped) rather than the
-          full METHOD_STAGES, and leads into an explicit link to the fuller
-          page instead of silently restating everything it says. */}
+          PinnedSequence, both reading METHOD_STAGES. PinnedSequence is the
+          fuller, canonical version — duration/inputs/outputs per stage, an
+          already-reduced-motion-safe pinned scroll sequence — so it is now
+          the sole method section, with one connector leading into it instead
+          of a pair bracketing the pair. */}
       <SectionConnector variant="left" label="CAPABILITY → METHOD" testId="connector-capability-method" />
       <PinnedSequence
         kicker="THE SEQUENCE"
         title={<>One system, five moves.<br />In this order, on purpose.</>}
         testId="home-pinned-method"
-        steps={methodTeaserStages}
+        steps={METHOD_STAGES}
       />
-      <div className="bg-[#1D2424] pb-10 pt-2 lg:pb-14">
-        <p className="container-page flex justify-center">
-          <Link to="/how-we-work" onClick={() => track("method_explored", { from: "home_pinned_sequence" })} className="link-draw inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#F7F5EE]" data-testid="home-method-full-link">
-            See the full breakdown, stage by stage <ArrowRight size={14} />
-          </Link>
-        </p>
-      </div>
       <Diagnostic />
       <SectionConnector variant="centre" label="METHOD → PROOF" testId="connector-method-proof" />
       <WorkPreview />
