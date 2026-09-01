@@ -1,6 +1,7 @@
 import React, { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { AdaptiveQuality } from "@/components/three/AdaptiveQuality";
+import { useSceneVisibility } from "@/components/three/useSceneVisibility";
 import { Html, QuadraticBezierLine } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -176,13 +177,16 @@ const SceneInner = () => {
   );
 };
 
-export const SignalField = () => (
-  <div className="h-full w-full" data-testid="insights-signal-field-canvas">
-    <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 6.4], fov: 44 }} gl={{ antialias: true, alpha: true }} style={{ background: "transparent" }}>
-      <AdaptiveQuality />
-      <SceneInner />
-    </Canvas>
-  </div>
-);
+export const SignalField = () => {
+  const { ref, active } = useSceneVisibility();
+  return (
+    <div ref={ref} className="h-full w-full" data-testid="insights-signal-field-canvas">
+      <Canvas frameloop={active ? "always" : "never"} dpr={[1, 1.5]} camera={{ position: [0, 0, 6.4], fov: 44 }} gl={{ antialias: true, alpha: true }} style={{ background: "transparent" }}>
+        <AdaptiveQuality />
+        <SceneInner />
+      </Canvas>
+    </div>
+  );
+};
 
 export default SignalField;

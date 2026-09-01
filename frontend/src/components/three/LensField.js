@@ -1,6 +1,7 @@
 import React, { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { AdaptiveQuality } from "@/components/three/AdaptiveQuality";
+import { useSceneVisibility } from "@/components/three/useSceneVisibility";
 import * as THREE from "three";
 
 /**
@@ -99,17 +100,25 @@ const Field = () => {
   );
 };
 
-const LensField = () => (
-  <Canvas
-    orthographic
-    camera={{ position: [0, 0, 6], zoom: 62 }}
-    gl={{ antialias: true, alpha: true }}
-    dpr={[1, 1.75]}
-    style={{ pointerEvents: "none" }}
-  >
+const LensField = () => {
+  // The ref goes on the Canvas itself rather than a wrapper: this component's
+  // root *is* the canvas, and introducing a wrapping div to hang an observer
+  // off would change the DOM its parent lays out.
+  const { ref, active } = useSceneVisibility();
+  return (
+    <Canvas
+      ref={ref}
+      frameloop={active ? "always" : "never"}
+      orthographic
+      camera={{ position: [0, 0, 6], zoom: 62 }}
+      gl={{ antialias: true, alpha: true }}
+      dpr={[1, 1.75]}
+      style={{ pointerEvents: "none" }}
+    >
       <AdaptiveQuality />
-    <Field />
-  </Canvas>
-);
+      <Field />
+    </Canvas>
+  );
+};
 
 export default LensField;

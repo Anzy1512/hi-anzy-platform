@@ -1,6 +1,7 @@
 import React, { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { AdaptiveQuality } from "@/components/three/AdaptiveQuality";
+import { useSceneVisibility } from "@/components/three/useSceneVisibility";
 import * as THREE from "three";
 
 /**
@@ -118,17 +119,23 @@ const Scene = () => {
   );
 };
 
-const SparkGap = () => (
-  <Canvas
-    orthographic
-    camera={{ position: [0, 0, 6], zoom: 62 }}
-    gl={{ antialias: true, alpha: true }}
-    dpr={[1, 1.75]}
-    style={{ pointerEvents: "none" }}
-  >
+const SparkGap = () => {
+  // Ref on the Canvas, not a wrapper — see the note in LensField.js.
+  const { ref, active } = useSceneVisibility();
+  return (
+    <Canvas
+      ref={ref}
+      frameloop={active ? "always" : "never"}
+      orthographic
+      camera={{ position: [0, 0, 6], zoom: 62 }}
+      gl={{ antialias: true, alpha: true }}
+      dpr={[1, 1.75]}
+      style={{ pointerEvents: "none" }}
+    >
       <AdaptiveQuality />
-    <Scene />
-  </Canvas>
-);
+      <Scene />
+    </Canvas>
+  );
+};
 
 export default SparkGap;

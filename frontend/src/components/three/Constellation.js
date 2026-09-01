@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { AdaptiveQuality } from "@/components/three/AdaptiveQuality";
+import { useSceneVisibility } from "@/components/three/useSceneVisibility";
 import { Html, QuadraticBezierLine } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -338,8 +339,12 @@ const SceneInner = ({ categories, active, subs, onSelect }) => {
 
 const Constellation = ({ categories = [], active = null, subs = null, onSelect = null }) => {
   const [hovered, setHovered] = useState(false);
+  // Renders on /network and again inside the home page's NetworkPreview, where
+  // it sits far below the fold — without this it drew every frame regardless.
+  const { ref: sceneRef, active: sceneActive } = useSceneVisibility();
   return (
     <div
+      ref={sceneRef}
       className="h-full w-full"
       // pan-y (not the R3F canvas default of none) so a finger landing on the
       // diagram still scrolls the page — only a deliberate tap selects a
@@ -349,7 +354,7 @@ const Constellation = ({ categories = [], active = null, subs = null, onSelect =
       onMouseLeave={() => setHovered(false)}
       data-testid="network-constellation-canvas"
     >
-      <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 7.6], fov: 46 }} gl={{ antialias: true, alpha: true }} style={{ background: "transparent", touchAction: "pan-y" }}>
+      <Canvas frameloop={sceneActive ? "always" : "never"} dpr={[1, 1.5]} camera={{ position: [0, 0, 7.6], fov: 46 }} gl={{ antialias: true, alpha: true }} style={{ background: "transparent", touchAction: "pan-y" }}>
         <AdaptiveQuality boost={hovered} />
         <SceneInner categories={categories} active={active} subs={subs} onSelect={onSelect} />
       </Canvas>
