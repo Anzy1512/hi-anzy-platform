@@ -9,7 +9,7 @@ import { CardCarousel } from "@/components/CardCarousel";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { CaseAnatomy } from "@/components/CaseAnatomy";
 import { OrbitSection } from "@/components/OrbitSection";
-import { announceExpanded, onCollapse } from "@/components/CollapseOnScroll";
+import { onCollapse } from "@/components/CollapseOnScroll";
 import { useRevealObserver } from "@/lib/motion";
 import { getCaseStudies, getCaseStudy, track, API } from "@/lib/api";
 import { PunPop } from "@/components/PunPop";
@@ -17,6 +17,23 @@ import { abs } from "@/lib/absoluteUrl";
 import { CircularCarousel } from "@/components/ui/circular-carousel";
 import { glyphForGroup } from "@/components/deck/InfographicGlyphs";
 import axios from "axios";
+
+/**
+ * One line per portfolio category, for the sticker in the deck's side gutter.
+ * Each is about the specific discipline the category's infographic already
+ * diagrams — not a generic "great work!" filler — so the sticker earns its
+ * place rather than just occupying space.
+ */
+const DECK_STICKER_LINE = {
+  "brand-decks": "Convincing, then true — in that order.",
+  packaging: "The pitch that has to survive shipping.",
+  "web-development": "A funnel is just a promise, timed.",
+  "e-commerce": "The sale that has to happen again.",
+  "motion-graphics": "Twelve frames a second, on purpose.",
+  "audio-production": "The parts nobody notices until they're wrong.",
+  "social-media": "Reach is rented. Attention is earned.",
+  "tvc-video-production": "Thirty seconds. No second take.",
+};
 
 const CASE_SECTIONS = [
   { key: "situation", label: "SITUATION" },
@@ -60,15 +77,9 @@ export default function Work() {
       if (!el) return;
       if (window.__lenis) window.__lenis.scrollTo(el, { offset: -104, duration: 0.9 });
       else el.scrollIntoView({ behavior: "smooth", block: "start" });
-      // Announce only once the reveal scroll above has had time to land, so
-      // the global scroll-away rule (CollapseOnScroll) starts watching from
-      // the settled position. The panel now sits after the whole carousel
-      // rather than right beside the card that opened it, so that scroll
-      // can easily cover more than CollapseOnScroll's 260px threshold —
-      // announcing at click time made that reveal look identical to the
-      // reader scrolling away, so the panel closed itself the instant it
-      // opened.
-      setTimeout(announceExpanded, 950);
+      // No announce step needed: CollapseOnScroll now watches this panel by
+      // id and only closes it once fully cleared from the viewport, so the
+      // scroll-into-view above can never be mistaken for scrolling away.
     }, 150);
   };
 
@@ -312,11 +323,37 @@ export default function Work() {
                         </div>
                         <span className="sys-chip shrink-0 rounded-full border border-[#232A2A]/25 px-3 py-1 text-[#232A2A]/74">{g.items.length} PROJECTS</span>
                       </div>
-                      <div className="mt-8">
+                      {/* A real flex row, not an absolutely-positioned sticker
+                          over an oversized box — that was the first attempt,
+                          and it overlapped the deck: capping the deck's own
+                          box to max-w-4xl still left ~130px of invisible
+                          margin *inside* the box on each side (the fan of
+                          cards is narrower than the box that centres it), so
+                          a sticker positioned against the box edge landed
+                          over the cards, not beside them. A flex sibling
+                          can't make that mistake — it only ever occupies
+                          space the deck isn't using. Stacks under the deck
+                          below xl (still correct, just not side-by-side;
+                          there isn't reliably ~250px of clear width for a
+                          full sentence any narrower than that), flanks it
+                          left/right at xl+, alternating by category so eight
+                          stacked decks don't all lean the same way. */}
+                      <div className="mt-8 flex flex-col items-center gap-6 xl:flex-row xl:justify-center xl:gap-10">
+                        {gi % 2 !== 0 && DECK_STICKER_LINE[g.slug] && (
+                          <PunPop
+                            text={DECK_STICKER_LINE[g.slug]}
+                            icon={<Glyph size={22} accent />}
+                            rot={3}
+                            variant={gi % 3 === 0 ? "orange" : "paper"}
+                            className="shrink-0"
+                            testId={`portfolio-sticker-${g.slug}`}
+                          />
+                        )}
                         <CircularCarousel
                           items={items}
                           label={`${g.category} projects`}
                           tone="paper"
+                          className="mx-auto w-full max-w-2xl"
                           testId={`portfolio-deck-${g.slug}`}
                           onActivate={(item) => {
                             if (!item.href) return;
@@ -324,6 +361,16 @@ export default function Work() {
                             window.open(item.href, "_blank", "noopener,noreferrer");
                           }}
                         />
+                        {gi % 2 === 0 && DECK_STICKER_LINE[g.slug] && (
+                          <PunPop
+                            text={DECK_STICKER_LINE[g.slug]}
+                            icon={<Glyph size={22} accent />}
+                            rot={-3}
+                            variant={gi % 3 === 0 ? "orange" : "paper"}
+                            className="shrink-0"
+                            testId={`portfolio-sticker-${g.slug}`}
+                          />
+                        )}
                       </div>
                     </div>
                   </Reveal>

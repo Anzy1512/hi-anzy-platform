@@ -11,7 +11,11 @@ const VARIANTS = {
   orange: "border-[#232A2A]/25 bg-[#F19020] text-[#232A2A]",
 };
 
-export const PunPop = ({ text, rot = -2, variant = "paper", delay = 0, className = "", testId = "pun-pop" }) => (
+/** `icon`: an optional small node shown above the line — a category glyph,
+ *  for a sticker that is illustrating something specific rather than purely
+ *  decorative. Every existing call site omits it and renders exactly as
+ *  before. */
+export const PunPop = ({ text, icon, rot = -2, variant = "paper", delay = 0, className = "", testId = "pun-pop" }) => (
   <div
     className={`reveal pun-sticker pointer-events-none hidden lg:block ${className}`}
     style={{ "--rot": `${rot}deg`, ...(delay ? { transitionDelay: `${delay}ms` } : {}) }}
@@ -19,6 +23,7 @@ export const PunPop = ({ text, rot = -2, variant = "paper", delay = 0, className
     aria-hidden="true"
   >
     <div className={`pun-sticker-inner rounded-[14px] border-2 px-5 py-3 shadow-[0_10px_26px_rgba(0,0,0,0.14)] ${VARIANTS[variant] || VARIANTS.paper}`}>
+      {icon && <span className="mb-1.5 block h-6 w-6">{icon}</span>}
       <p className="font-pun max-w-[24ch] text-[clamp(1rem,1.25vw,1.25rem)] leading-[1.3]">{text}</p>
     </div>
   </div>

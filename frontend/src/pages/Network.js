@@ -9,7 +9,7 @@ import { Reveal } from "@/components/Reveal";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { ConstellationFallback, ThreeSafe } from "@/components/three/Fallbacks";
 import { useRevealObserver, useReducedMotion, webglAvailable, resyncScroll } from "@/lib/motion";
-import { getNetwork, getNetworkCategories, track } from "@/lib/api";
+import { getNetwork, getNetworkCategories, getEcosystem, track } from "@/lib/api";
 import { NETWORK_SUBCATS, ORBIT_CATEGORIES } from "@/data/content";
 import { ORBIT_GLYPHS } from "@/components/deck/OrbitGlyphs";
 import { CircularCarousel } from "@/components/ui/circular-carousel";
@@ -40,14 +40,27 @@ const ROSTER_TAG = {
   venue: "VENUES",
   partner: "PARTNERS",
 };
-const NETWORK_ROSTERS = ORBIT_CATEGORIES.filter((c) => NETWORK_ROSTER_KEYS.includes(c.key)).map((c) => ({
-  id: c.key,
-  title: c.name,
-  description: c.copy,
-  tag: ROSTER_TAG[c.key],
-  href: c.route,
-  Glyph: ORBIT_GLYPHS[c.key],
-}));
+/**
+ * `counts`: real per-category totals from /api/ecosystem, or null before
+ * they've loaded — never a placeholder number. `null` count on a given key
+ * just omits the stat rather than showing a fake "0" or "—" while the real
+ * figure is still in flight.
+ */
+const buildNetworkRosters = (counts) =>
+  ORBIT_CATEGORIES.filter((c) => NETWORK_ROSTER_KEYS.includes(c.key)).map((c) => {
+    const n = counts?.[c.key];
+    return {
+      id: c.key,
+      title: c.name,
+      // Both sentences the category page itself carries: the short on-brand
+      // tagline, then the fuller line written for its own <meta description>
+      // — genuinely more to read here than the tagline alone, not invented.
+      description: [c.copy, c.seoDescription].filter(Boolean).join(" "),
+      tag: n ? `${n} ${ROSTER_TAG[c.key]}` : ROSTER_TAG[c.key],
+      href: c.route,
+      Glyph: ORBIT_GLYPHS[c.key],
+    };
+  });
 
 const LEGEND = [
   { tag: "HI ANZY DIRECT", text: "Owned and delivered by the hiAnzy core layer." },
@@ -64,10 +77,23 @@ export default function Network() {
   const [apiCategories, setApiCategories] = useState([]);
   const [active, setActive] = useState(null);
   const [resources, setResources] = useState(null);
+  const [rosterCounts, setRosterCounts] = useState(null);
 
   useEffect(() => {
     setShow3d(!reduced && webglAvailable());
   }, [reduced]);
+
+  useEffect(() => {
+    getEcosystem()
+      .then((items) => {
+        const counts = {};
+        items.forEach((it) => { counts[it.category] = (counts[it.category] || 0) + 1; });
+        setRosterCounts(counts);
+      })
+      .catch(() => {});
+  }, []);
+
+  const networkRosters = useMemo(() => buildNetworkRosters(rosterCounts), [rosterCounts]);
 
   useEffect(() => {
     getNetworkCategories().then(setApiCategories).catch(() => setApiCategories([]));
@@ -354,10 +380,15 @@ export default function Network() {
           something it is not.
         </Reveal>
         <Reveal delay={200} className="mt-10">
+          {/* Capped width, centred: at the section's full ~1200px content
+              width, four cards fanned on an ellipse left roughly 300px of
+              bare ground on each side — the deck read as lost in the page
+              rather than composed on it. */}
           <CircularCarousel
-            items={NETWORK_ROSTERS}
+            items={networkRosters}
             label="Network rosters"
             tone="paper"
+            className="mx-auto w-full max-w-2xl"
             testId="network-orbit-deck"
             onActivate={(item) => {
               track("orbit_category_opened", { category: item.id, from: "network_rosters" });

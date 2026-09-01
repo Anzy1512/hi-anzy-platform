@@ -50,9 +50,11 @@ const VISIBLE_COUNT = 5;
  * which is why these heights are as tight as they are.
  */
 const geometryFor = (width) => {
-  // 156 + rx 104 keeps the outermost card inside a 375px viewport (2×182=364)
-  // while giving the longest tag enough room not to truncate.
-  if (width < 480) return { rx: 104, ry: 56, cardW: 156, cardH: 100, track: 172 };
+  // 180 + rx 94 keeps the outermost card inside a 375px viewport (2×184=368)
+  // while giving a count-prefixed tag ("10 SPECIALISTS", the longest one in
+  // practice) room not to truncate — 156 was originally sized for the tag
+  // alone, before per-roster item counts were added to it.
+  if (width < 480) return { rx: 94, ry: 56, cardW: 180, cardH: 100, track: 172 };
   if (width < 768) return { rx: 152, ry: 76, cardW: 168, cardH: 112, track: 196 };
   return { rx: 220, ry: 98, cardW: 192, cardH: 126, track: 218 };
 };

@@ -19,15 +19,17 @@ export const OrbitSection = () => {
     []
   );
 
-  // mt-10, not more section-pad: this section's own top padding is
-  // deliberately zeroed by App.css's adjacent-.section-pad-b rule so it
-  // doesn't double up with the Case Studies section's bottom padding — but
-  // that left zero visible breathing room between the two. A small explicit
-  // margin (untouched by that rule, which only zeroes padding-top) restores
-  // a real gap without re-introducing the double one the rule exists to
-  // prevent.
+  // Plain section-pad, no extra margin. This section used to carry an added
+  // mt-10 lg:mt-14 on top of the standard system, on the reasoning that
+  // App.css's adjacent-.section-pad-b rule zeroed its own top padding and
+  // left nothing between it and Case Studies. Measured live, that reasoning
+  // was wrong: the rule was already working, and the extra margin sat on top
+  // of a gap that was already correct — this was the one boundary on the
+  // entire site with visibly more space than every other section-to-section
+  // transition. Removed so this boundary matches the standard rhythm exactly
+  // like every other one does.
   return (
-    <section className="container-page section-pad mt-10 lg:mt-14" data-index-label="THE HI ANZY ORBIT" data-testid="orbit-section">
+    <section className="container-page section-pad" data-index-label="THE HI ANZY ORBIT" data-testid="orbit-section">
       <button
         type="button"
         onClick={() => setExpanded(true)}
@@ -41,11 +43,11 @@ export const OrbitSection = () => {
           <span className="sys-chip shrink-0 text-[#232A2A]/60">THE HI ANZY ORBIT</span>
           <span className="truncate font-display text-[17px] text-[#232A2A]">Six ways into the wider system.</span>
         </span>
-        {!expanded && (
-          <span className="link-draw inline-flex shrink-0 items-center gap-1.5 text-[13.5px] font-semibold text-[#232A2A]">
-            Tap to explore <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-          </span>
-        )}
+        {/* "Tap to explore" removed: the whole bar is already the tappable
+            surface (onClick + hover:border-orange on the button itself), so
+            the prompt was redundant microcopy rather than the only signal of
+            interactivity. */}
+        {!expanded && <ArrowRight size={14} className="shrink-0 text-[#232A2A]/50 transition-transform group-hover:translate-x-1" aria-hidden="true" />}
       </button>
 
       <AnimatePresence initial={false}>
