@@ -7,6 +7,7 @@ import { useRevealObserver } from "@/lib/motion";
 import { AUDIENCES, FILTER_LIST } from "@/data/content";
 import { CharacterQuote } from "@/components/CharacterQuote";
 import { NextSteps } from "@/components/NextSteps";
+import { OrderingGrid } from "@/components/motion/OrderingGrid";
 
 export default function WhoWeWorkWith() {
   const ref = useRevealObserver();
@@ -22,15 +23,18 @@ export default function WhoWeWorkWith() {
             People building things that have to work<span className="accent-signal-text">.</span>
           </h1>
         </Reveal>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {AUDIENCES.map((a, i) => (
-            <Reveal key={a} delay={(i % 3) * 70}>
-              <div className="cap-tile flex h-full items-center gap-4 rounded-[14px] border border-[#232A2A]/14 bg-[#F7F5EE] p-5">
-                <span className="text-[15px] font-semibold text-[#232A2A]/85">{a}</span>
-              </div>
-            </Reveal>
+        {/* Chaos → order, rather than the sitewide fade-up. This page is about
+            sorting — who fits, and who does not — so the tiles arriving very
+            slightly out of alignment and resolving into an exact grid says
+            what the page says. Identical markup and appearance once settled;
+            reduced motion renders it as a plain grid. */}
+        <OrderingGrid className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" testId="wwww-audiences">
+          {AUDIENCES.map((a) => (
+            <div key={a} className="cap-tile flex h-full items-center gap-4 rounded-[14px] border border-[#232A2A]/14 bg-[#F7F5EE] p-5">
+              <span className="text-[15px] font-semibold text-[#232A2A]/85">{a}</span>
+            </div>
           ))}
-        </div>
+        </OrderingGrid>
         <Reveal delay={150} as="p" className="mt-10 max-w-xl text-[17px] leading-[1.6] text-[#232A2A]/82">
           We especially like people who ask good questions. You do not need every answer.
           <span className="font-semibold"> That is partly why we are here.</span>

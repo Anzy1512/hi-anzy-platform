@@ -2020,3 +2020,52 @@ button.link-draw::after {
     transform: none;
   }
 }
+
+/* ========================================================================
+   PHASE 2 — OPTIONAL MOTION LAYER
+   Additive only. Every rule below is namespaced to a class that did not
+   exist before Phase 2, so deleting this whole block returns the site to
+   its previous appearance exactly. Nothing above this line was modified.
+   ======================================================================== */
+
+/* Feature 01 — chaos → order (see components/motion/OrderingGrid.js).
+   Transform and opacity only: both are compositor properties, so settling a
+   grid of tiles never triggers layout. The --scroll-v multiplier comes from
+   ScrollVelocity and falls back to 0 (a multiplier of 1) whenever that layer
+   is absent or reduced motion is on. */
+.order-item {
+  opacity: 0;
+  transform:
+    translate3d(
+      calc(var(--ox, 0px) * (1 + var(--scroll-v, 0))),
+      calc(var(--oy, 0px) * (1 + var(--scroll-v, 0))),
+      0
+    )
+    rotate(var(--rot, 0deg));
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--d, 0ms);
+  will-change: transform;
+}
+
+.order-item.is-ordered {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(0deg);
+  /* Released once settled so a long grid does not hold GPU layers forever. */
+  will-change: auto;
+}
+
+/* The tile itself must still fill its wrapper, or a grid row of mixed-height
+   cards stops matching heights once an extra element sits between them. */
+.order-item > * {
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .order-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

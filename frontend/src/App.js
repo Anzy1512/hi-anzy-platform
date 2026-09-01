@@ -15,6 +15,11 @@ import { SectionIndex } from "@/components/SectionIndex";
 import { StickyCta } from "@/components/StickyCta";
 import { CommandPalette } from "@/components/CommandPalette";
 import { Toaster } from "@/components/ui/sonner";
+// Phase 2 optional motion layers. Both render null, own no layout, and are
+// individually switchable in lib/motionFeatures.js — removing either line
+// returns the site to its pre-Phase-2 behaviour exactly.
+import { ScrollVelocity } from "@/components/motion/ScrollVelocity";
+import { ContextualCursor } from "@/components/motion/ContextualCursor";
 
 import Home from "@/pages/Home";
 const WhatWeDo = lazy(() => import("@/pages/WhatWeDo"));
@@ -52,6 +57,8 @@ const Shell = () => {
   return (
     <div className="min-h-screen bg-[#E0D8C1] text-[#232A2A]">
       <ScrollProgress />
+      <ScrollVelocity />
+      <ContextualCursor />
       {/* Cohesive deck-texture backdrop on secondary pages (Home has its animated one) */}
       {location.pathname !== "/" && <div className="halftone-static pointer-events-none fixed inset-0 -z-10" aria-hidden="true" />}
       <Nav />
