@@ -132,8 +132,9 @@ const SystemGlyph = ({ size = 22, accent }) => wrap(
   </>, size
 );
 
-/** Keyed by the portfolio group slug the API returns. */
-export const INFOGRAPHIC_GLYPHS = {
+/** Keyed by the portfolio group slug the API returns. Not exported itself —
+ *  `glyphForGroup` below is the module's only real public surface. */
+const INFOGRAPHIC_GLYPHS = {
   "brand-decks": DecksGlyph,
   packaging: PackagingGlyph,
   "web-development": WebGlyph,
@@ -145,5 +146,3 @@ export const INFOGRAPHIC_GLYPHS = {
 };
 
 export const glyphForGroup = (slug) => INFOGRAPHIC_GLYPHS[slug] || SystemGlyph;
-
-export default INFOGRAPHIC_GLYPHS;

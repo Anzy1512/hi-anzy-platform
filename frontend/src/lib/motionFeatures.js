@@ -37,8 +37,6 @@ export const MOTION_FEATURES = {
  * Reusing it is what keeps new motion feeling like the same website.
  */
 export const EASE_CSS = "cubic-bezier(0.22, 1, 0.36, 1)";
-/** GSAP's closest equivalent to the curve above. */
-export const EASE_GSAP = "expo.out";
 
 /**
  * Timing bands, also derived from what already ships:
@@ -49,13 +47,6 @@ export const DURATION = {
   ui: 0.4,
   reveal: 0.8,
 };
-
-/**
- * Stagger, matching the existing `delay={(i % 3) * 70}` convention used
- * across the reveal call sites — row-aware rather than a running index, so
- * a grid's rows arrive together instead of drifting ever later.
- */
-export const STAGGER = 0.07;
 
 /**
  * True only for devices with a precise pointer and hover — i.e. a real

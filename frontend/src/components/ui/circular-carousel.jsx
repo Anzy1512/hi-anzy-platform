@@ -295,25 +295,41 @@ export function CircularCarousel({
           <ChevronLeft size={17} />
         </DeckButton>
 
-        <div className="flex items-center gap-1.5">
-          {items.map((item, i) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`Show ${item.title}`}
-              aria-current={i === activeIndex ? "true" : undefined}
-              className={cn(
-                "h-1.5 rounded-full transition-all duration-300",
-                i === activeIndex
-                  ? "w-6 bg-[#F19020]"
-                  : dark
-                    ? "w-1.5 bg-[#F7F5EE]/25 hover:bg-[#F7F5EE]/50"
-                    : "w-1.5 bg-[#232A2A]/25 hover:bg-[#232A2A]/50"
-              )}
-            />
-          ))}
-        </div>
+        {/* One dot per item reads fine for a handful of categories, but this
+            component is also fed real, variable-length API data — the
+            portfolio decks range from 4 items to 25 (Social Media). 25
+            non-wrapping dots doesn't just look wrong, it overflows the
+            viewport at every width up to roughly 1400px; found live during
+            the Phase 4 audit, not by inspection. Above the threshold, fall
+            back to the same compact "NN / NN" numeric readout EvidenceDeck's
+            own DeckProgress uses — prev/next and clicking a visible orbit
+            card still jump to any item; only the dot-per-item overview goes
+            away, and only once it would have stopped being an overview. */}
+        {total <= 10 ? (
+          <div className="flex items-center gap-1.5">
+            {items.map((item, i) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => goTo(i)}
+                aria-label={`Show ${item.title}`}
+                aria-current={i === activeIndex ? "true" : undefined}
+                className={cn(
+                  "h-1.5 rounded-full transition-all duration-300",
+                  i === activeIndex
+                    ? "w-6 bg-[#F19020]"
+                    : dark
+                      ? "w-1.5 bg-[#F7F5EE]/25 hover:bg-[#F7F5EE]/50"
+                      : "w-1.5 bg-[#232A2A]/25 hover:bg-[#232A2A]/50"
+                )}
+              />
+            ))}
+          </div>
+        ) : (
+          <span className={cn("font-mono-sys tabular-nums text-[13px]", dark ? "text-[#F7F5EE]/55" : "text-[#232A2A]/55")} aria-live="polite">
+            {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </span>
+        )}
 
         <DeckButton onClick={next} dark={dark} label="Next" testId={testId ? `${testId}-next` : undefined}>
           <ChevronRight size={17} />
