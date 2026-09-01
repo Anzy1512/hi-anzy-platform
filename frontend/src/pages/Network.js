@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { Maximize2, Minimize2, ArrowRight } from "lucide-react";
 import { DISCIPLINES } from "@/data/disciplines";
@@ -10,7 +10,9 @@ import { ProvenanceTag } from "@/components/ProvenanceTag";
 import { ConstellationFallback, ThreeSafe } from "@/components/three/Fallbacks";
 import { useRevealObserver, useReducedMotion, webglAvailable, resyncScroll } from "@/lib/motion";
 import { getNetwork, getNetworkCategories, track } from "@/lib/api";
-import { NETWORK_SUBCATS } from "@/data/content";
+import { NETWORK_SUBCATS, ORBIT_CATEGORIES } from "@/data/content";
+import { ORBIT_GLYPHS } from "@/components/deck/OrbitGlyphs";
+import { CircularCarousel } from "@/components/ui/circular-carousel";
 
 import { PunPop } from "@/components/PunPop";
 import { NextSteps } from "@/components/NextSteps";
@@ -22,6 +24,31 @@ const Constellation = lazy(() => import("@/components/three/Constellation"));
 /** Same set the API returns, and the keys the sub-fans are looked up by. */
 const NETWORK_CATEGORY_FALLBACK = Object.keys(NETWORK_SUBCATS);
 
+/**
+ * The four Orbit categories that describe *the network*, shaped for the deck.
+ * Built Here and Built Together are omitted on purpose: they are client work
+ * and belong to /work, where they already live.
+ */
+const NETWORK_ROSTER_KEYS = ["collaborator", "creator", "venue", "partner"];
+/* Short tags rather than each category's full `descriptor`. "Media, production
+   & strategic partners" truncates to "MEDIA, PRO…" in a card chip, which reads
+   as a rendering fault; the full descriptor still appears on the category's own
+   page. One word each is enough to separate four rosters. */
+const ROSTER_TAG = {
+  collaborator: "SPECIALISTS",
+  creator: "CREATORS",
+  venue: "VENUES",
+  partner: "PARTNERS",
+};
+const NETWORK_ROSTERS = ORBIT_CATEGORIES.filter((c) => NETWORK_ROSTER_KEYS.includes(c.key)).map((c) => ({
+  id: c.key,
+  title: c.name,
+  description: c.copy,
+  tag: ROSTER_TAG[c.key],
+  href: c.route,
+  Glyph: ORBIT_GLYPHS[c.key],
+}));
+
 const LEGEND = [
   { tag: "HI ANZY DIRECT", text: "Owned and delivered by the hiAnzy core layer." },
   { tag: "HI ANZY + COLLABORATOR", text: "hiAnzy led, specialists executed alongside." },
@@ -31,6 +58,7 @@ const LEGEND = [
 
 export default function Network() {
   const ref = useRevealObserver();
+  const navigate = useNavigate();
   const reduced = useReducedMotion();
   const [show3d, setShow3d] = useState(false);
   const [apiCategories, setApiCategories] = useState([]);
@@ -304,6 +332,39 @@ export default function Network() {
             ))}
           </CardCarousel>
         </div>
+      </section>
+
+      {/* ── The network's four rosters, as an orbital deck ──────────────────
+          These four Orbit categories are network content — collaborators,
+          creators, venues, partners — but until now they were only reachable
+          from the Work page's Orbit section. The two work categories (Built
+          Here / Built Together) deliberately stay there; this is the "right
+          category in the right section" split. */}
+      <section className="container-page section-pad" data-index-label="THE ROSTERS" data-testid="network-orbit-deck-section">
+        <Reveal as="p" className="sys-chip flex items-center gap-3 text-[#232A2A]/60">
+          <span className="inline-block h-[3px] w-10 rounded-full bg-[#F19020]" /> THE ROSTERS
+        </Reveal>
+        <Reveal delay={80}>
+          <h2 className="font-display mt-4 max-w-3xl leading-[1.0] text-[#232A2A] text-[clamp(2rem,3.6vw,3.2rem)]">
+            Four ways the network shows up.
+          </h2>
+        </Reveal>
+        <Reveal delay={140} as="p" className="mt-4 max-w-[52ch] text-[16.5px] leading-[1.58] text-[#232A2A]/78">
+          Specialists, creators, venues and partners. Each roster is labelled by relationship, not dressed up as
+          something it is not.
+        </Reveal>
+        <Reveal delay={200} className="mt-10">
+          <CircularCarousel
+            items={NETWORK_ROSTERS}
+            label="Network rosters"
+            tone="paper"
+            testId="network-orbit-deck"
+            onActivate={(item) => {
+              track("orbit_category_opened", { category: item.id, from: "network_rosters" });
+              navigate(item.href);
+            }}
+          />
+        </Reveal>
       </section>
 
       <section id="network-specialists" className="container-page section-pad" data-index-label="THE SPECIALISTS">

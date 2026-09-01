@@ -1,13 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight, X } from "lucide-react";
+import { ArrowRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Seo } from "@/components/Seo";
 import { ClientMarquee } from "@/components/ClientMarquee";
 import { Reveal } from "@/components/Reveal";
 import { CardCarousel } from "@/components/CardCarousel";
 import { ProvenanceTag } from "@/components/ProvenanceTag";
-import { RouteLine } from "@/components/RouteLine";
 import { CaseAnatomy } from "@/components/CaseAnatomy";
 import { OrbitSection } from "@/components/OrbitSection";
 import { announceExpanded, onCollapse } from "@/components/CollapseOnScroll";
@@ -15,65 +14,9 @@ import { useRevealObserver } from "@/lib/motion";
 import { getCaseStudies, getCaseStudy, track, API } from "@/lib/api";
 import { PunPop } from "@/components/PunPop";
 import { abs } from "@/lib/absoluteUrl";
+import { CircularCarousel } from "@/components/ui/circular-carousel";
+import { glyphForGroup } from "@/components/deck/InfographicGlyphs";
 import axios from "axios";
-
-/**
- * One portfolio item as a chip, for the normally-sized groups.
- * Items carry a deck link where one exists; the rest stay as plain chips
- * rather than becoming dead anchors.
- */
-const PortfolioChip = ({ item: raw, dark, group }) => {
-  const item = typeof raw === "string" ? { name: raw } : raw;
-  const chip = `sys-chip rounded-full border px-3 py-1.5 transition-colors ${
-    dark
-      ? "border-[#F7F5EE]/25 text-[#F7F5EE]/80 hover:border-[#F19020]"
-      : "border-[#232A2A]/25 text-[#232A2A]/75 hover:border-[#F19020]"
-  }`;
-  if (!item.url) return <li className={chip}>{item.name}</li>;
-  return (
-    <li>
-      <a
-        href={item.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => track("portfolio_item_opened", { group, item: item.name })}
-        data-testid={`portfolio-link-${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-        className={`${chip} inline-flex items-center gap-1.5 ${dark ? "hover:text-[#F19020]" : "hover:text-[#232A2A]"}`}
-      >
-        {item.name}
-        <ArrowUpRight size={12} aria-hidden="true" />
-      </a>
-    </li>
-  );
-};
-
-/**
- * One item in the oversized group's roster. A ruled row rather than a chip:
- * at 25 names a chip cloud reads as noise, while aligned rows scan like a
- * client list, which is what it is.
- */
-const PortfolioRosterItem = ({ item: raw, group }) => {
-  const item = typeof raw === "string" ? { name: raw } : raw;
-  const base = "flex items-center justify-between gap-3 border-b border-[#F7F5EE]/12 py-2.5 text-[15px] leading-[1.35]";
-  if (!item.url) {
-    return <li className={`${base} text-[#F7F5EE]/70`}>{item.name}</li>;
-  }
-  return (
-    <li className={base}>
-      <a
-        href={item.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => track("portfolio_item_opened", { group, item: item.name })}
-        data-testid={`portfolio-link-${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-        className="group inline-flex w-full items-center justify-between gap-3 text-[#F7F5EE]/85 transition-colors hover:text-[#F19020]"
-      >
-        <span>{item.name}</span>
-        <ArrowUpRight size={13} aria-hidden="true" className="shrink-0 opacity-45 transition-opacity group-hover:opacity-100" />
-      </a>
-    </li>
-  );
-};
 
 const CASE_SECTIONS = [
   { key: "situation", label: "SITUATION" },
@@ -334,75 +277,61 @@ export default function Work() {
           </div>
 
           {!portfolio && <div className="mt-10 grid gap-5 lg:grid-cols-2">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="panel-paper h-[150px] animate-pulse" />)}</div>}
-          {portfolio && portfolio.length > 0 && (() => {
-            /* One group (social) carries 25 items against 4–9 everywhere else.
-               In a two-column grid that card grew several times the height of its
-               neighbour and dragged a column of dead space beside it. Oversized
-               groups are pulled out, sent to the end and given the full width,
-               where the count reads as range rather than as a layout accident.
-               Keyed off size rather than slug so the rule still holds if the
-               data changes. */
-            const WIDE_AT = 15;
-            const regular = portfolio.filter((g) => g.items.length < WIDE_AT);
-            const wide = portfolio.filter((g) => g.items.length >= WIDE_AT);
 
-            return (
-              <>
-                <div className="mt-10 grid gap-5 lg:grid-cols-2">
-                  {regular.map((g, gi) => (
-                    /* An odd number of groups leaves the last one alone in a
-                       two-column row with dead paper beside it. Letting it span
-                       both columns reads as deliberate instead of orphaned. */
-                    <Reveal key={g.slug} delay={(gi % 2) * 90} className={gi === regular.length - 1 && regular.length % 2 === 1 ? "lg:col-span-2" : undefined}>
-                      <article className={`h-full rounded-[18px] p-6 sm:p-7 ${gi % 3 === 0 ? "panel-dark" : "panel-paper"}`} data-testid={`portfolio-group-${g.slug}`}>
-                        <div className="flex items-center justify-between gap-3">
-                          <h3 className={`font-display text-[clamp(1.5rem,2.2vw,2rem)] leading-none ${gi % 3 === 0 ? "text-[#F7F5EE]" : "text-[#232A2A]"}`}>{g.category}</h3>
-                          <span className={`sys-chip shrink-0 rounded-full border px-3 py-1 ${gi % 3 === 0 ? "border-[#F19020]/60 accent-orange-text" : "border-[#232A2A]/25 text-[#232A2A]/74"}`}>{g.items.length} PROJECTS</span>
-                        </div>
-                        <ul className="mt-4 flex flex-wrap gap-2">
-                          {g.items.map((it) => (
-                            <PortfolioChip key={(typeof it === "string" ? it : it.name)} item={it} dark={gi % 3 === 0} group={g.slug} />
-                          ))}
-                        </ul>
-                      </article>
-                    </Reveal>
-                  ))}
-                </div>
+          {/* One orbital deck per category, stacked vertically. Replaces the
+              chip-wall: the same projects and the same links, but each
+              category now reads as its own body of work rather than as a
+              cloud of tags. Every deck carries the infographic for what that
+              discipline actually measures. Autoplay is gated on visibility,
+              so only the deck on screen is moving. */}
+          {portfolio && portfolio.length > 0 && (
+            <div className="mt-12" data-testid="portfolio-decks">
+              {portfolio.map((g, gi) => {
+                const Glyph = glyphForGroup(g.slug);
+                const items = g.items.map((raw) => {
+                  const it = typeof raw === "string" ? { name: raw } : raw;
+                  return {
+                    id: `${g.slug}-${it.name}`,
+                    title: it.name,
+                    // No tag: the section heading directly above already names
+                    // the category, and repeating it on all five visible cards
+                    // was pure noise.
+                    href: it.url || undefined,
+                    external: true,
+                    Glyph,
+                  };
+                });
 
-                {wide.map((g) => (
-                  <Reveal key={g.slug} delay={80}>
-                    <article className="panel-dark relative mt-5 overflow-hidden rounded-[18px] p-6 sm:p-8 lg:p-10" data-testid={`portfolio-group-${g.slug}`}>
-                      <RouteLine
-                        d="M0,86 C 22,58 48,96 72,52 C 86,26 94,58 100,36"
-                        viewBox="0 0 100 100"
-                        strokeWidth={1.1}
-                        className="pointer-events-none absolute inset-0 h-full w-full opacity-25"
-                      />
-                      <div className="relative flex flex-wrap items-end justify-between gap-4">
-                        <div>
-                          <p className="sys-chip accent-orange-text">THE LONG TAIL</p>
-                          <h3 className="font-display mt-2 text-[clamp(1.8rem,3.2vw,2.9rem)] leading-none text-[#F7F5EE]">{g.category}</h3>
-                          <p className="font-mono-sys mt-3 max-w-[52ch] text-[13px] leading-[1.5] text-[#F7F5EE]/60">
-                            The largest single body of work here, running accounts, not one-off posts.
-                            Every name below is a brand whose feed we have actually had to fill on a Monday.
-                          </p>
+                return (
+                  <Reveal key={g.slug} delay={(gi % 2) * 80} className={gi === 0 ? "" : "mt-16"}>
+                    <div data-testid={`portfolio-group-${g.slug}`}>
+                      <div className="flex flex-wrap items-end justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <span className="block h-7 w-7 shrink-0 text-[#232A2A]" aria-hidden="true"><Glyph size={26} accent /></span>
+                          <h3 className="font-display text-[clamp(1.5rem,2.4vw,2.2rem)] leading-none text-[#232A2A]">{g.category}</h3>
                         </div>
-                        <span className="sys-chip shrink-0 rounded-full border border-[#F19020]/60 px-3.5 py-1.5 accent-orange-text">{g.items.length} ACCOUNTS</span>
+                        <span className="sys-chip shrink-0 rounded-full border border-[#232A2A]/25 px-3 py-1 text-[#232A2A]/74">{g.items.length} PROJECTS</span>
                       </div>
-                      {/* Columns rather than a wrapped chip cloud: at this count a
-                          cloud reads as noise, a column reads as a roster. */}
-                      <ul className="relative mt-7 grid gap-x-8 gap-y-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" data-testid={`portfolio-roster-${g.slug}`}>
-                        {g.items.map((it) => (
-                          <PortfolioRosterItem key={(typeof it === "string" ? it : it.name)} item={it} group={g.slug} />
-                        ))}
-                      </ul>
-                    </article>
+                      <div className="mt-8">
+                        <CircularCarousel
+                          items={items}
+                          label={`${g.category} projects`}
+                          tone="paper"
+                          testId={`portfolio-deck-${g.slug}`}
+                          onActivate={(item) => {
+                            if (!item.href) return;
+                            track("portfolio_item_opened", { group: g.slug, item: item.title });
+                            window.open(item.href, "_blank", "noopener,noreferrer");
+                          }}
+                        />
+                      </div>
+                    </div>
                   </Reveal>
-                ))}
-              </>
-            );
-          })()}
-          <p className="font-mono-sys mt-6 text-[12.5px] text-[#232A2A]/50">Live links and walk-throughs shared in conversation. Some builds live behind client walls.</p>
+                );
+              })}
+            </div>
+          )}
+          <p className="font-mono-sys mt-10 text-[12.5px] text-[#232A2A]/50">Live links and walk-throughs shared in conversation. Some builds live behind client walls.</p>
         </div>
       </section>
     </div>

@@ -169,7 +169,9 @@
    dots disappear, so the field becomes light at a much lower alpha — the
    texture survives without turning into visible noise. */
 :root[data-theme="dark"] .halftone-static {
-  background-image: radial-gradient(rgba(233, 231, 224, 0.06) 1.2px, transparent 1.4px);
+  /* Raised alongside the light-mode nudge, by a smaller step: light dots on a
+     dark ground read stronger per unit of alpha. */
+  background-image: radial-gradient(rgba(233, 231, 224, 0.075) 1.2px, transparent 1.4px);
 }
 
 /* Photographic and collage art was prepared for a paper ground; at full

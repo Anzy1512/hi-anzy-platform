@@ -187,7 +187,9 @@ html {
 
 /* ---------- Halftone static fallback (deck texture, no motion) ---------- */
 .halftone-static {
-  background-image: radial-gradient(rgba(35, 42, 42, 0.09) 1.2px, transparent 1.4px);
+  /* Nudged up from 0.09. Deliberately a small step: the dots should register
+     as paper texture, not resolve into a visible grid. */
+  background-image: radial-gradient(rgba(35, 42, 42, 0.115) 1.2px, transparent 1.4px);
   background-size: 24px 24px;
 }
 
